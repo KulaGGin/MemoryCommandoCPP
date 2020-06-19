@@ -20,11 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MemoryCommander.cpp" />
-    <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="MemoryManagerExternal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommander.h" />
-    <ClInclude Include="MemoryManager.h" />
+    <ClInclude Include="MemoryManagerExternal.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

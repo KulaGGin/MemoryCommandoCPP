@@ -2,13 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="MemoryCommander.cpp" />
-    <ClCompile Include="MemoryManager.cpp">
+    <ClCompile Include="MemoryManagerExternal.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommander.h" />
-    <ClInclude Include="MemoryManager.h">
+    <ClInclude Include="MemoryManagerExternal.h">
       <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
