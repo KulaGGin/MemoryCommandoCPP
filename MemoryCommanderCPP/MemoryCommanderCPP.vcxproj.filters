@@ -11,10 +11,19 @@
     <ClInclude Include="MemoryManagerExternal.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="MemoryProtection.h">
+      <Filter>Native\Enumerations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
       <UniqueIdentifier>{248e7357-c067-45fc-a8d4-2f4af12f280e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Native">
+      <UniqueIdentifier>{09704117-dcab-4d4c-bef3-336b6aac6f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Native\Enumerations">
+      <UniqueIdentifier>{0f22e6f7-d1e5-4685-ba19-344d3fe27b68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
