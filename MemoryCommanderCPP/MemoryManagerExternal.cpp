@@ -110,6 +110,8 @@ namespace MemoryCommanderCpp {
             copiedToBuffer = Process32Next(toolHelp32Snapshot, &process);
         }
 
+        CloseHandle(toolHelp32Snapshot);
+
         if(!copiedToBuffer) {
             if(GetLastError() != ERROR_NO_MORE_FILES)
                 throw Process32Exception("Process32Next failed to fill the buffer.", GetLastError());
@@ -118,7 +120,6 @@ namespace MemoryCommanderCpp {
             }
         }
 
-        CloseHandle(toolHelp32Snapshot);
         return processId;
     }
 }
