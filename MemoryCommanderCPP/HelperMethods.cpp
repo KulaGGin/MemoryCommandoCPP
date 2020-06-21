@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <wchar.h>
 
-namespace MemoryCommanderCPP::Shared {
+namespace MemoryCommanderCpp::Shared {
     // Convert an UTF8 string to a wide Unicode String
     std::wstring HelperMethods::ConvertStringToWString(const std::string& narrowString)
     {

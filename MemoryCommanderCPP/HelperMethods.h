@@ -3,7 +3,7 @@
 #include <locale>
 #include <string>
 
-namespace MemoryCommanderCPP::Shared {
+namespace MemoryCommanderCpp::Shared {
     class HelperMethods {
     public:
         static std::wstring ConvertStringToWString(const std::string& narrowString);
