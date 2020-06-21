@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HelperMethods.cpp" />
     <ClCompile Include="MemoryCommander.cpp" />
     <ClCompile Include="MemoryManagerExternal.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HelperMethods.h" />
     <ClInclude Include="MemoryCommander.h" />
     <ClInclude Include="MemoryManagerExternal.h" />
     <ClInclude Include="MemoryProtection.h" />

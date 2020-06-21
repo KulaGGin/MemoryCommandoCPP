@@ -5,6 +5,9 @@
     <ClCompile Include="MemoryManagerExternal.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
+    <ClCompile Include="HelperMethods.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommander.h" />
@@ -13,6 +16,12 @@
     </ClInclude>
     <ClInclude Include="MemoryProtection.h">
       <Filter>Native\Enumerations</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessAccess.h">
+      <Filter>Native\Enumerations</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperMethods.h">
+      <Filter>Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -25,5 +34,11 @@
     <Filter Include="Native\Enumerations">
       <UniqueIdentifier>{0f22e6f7-d1e5-4685-ba19-344d3fe27b68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{74cafc92-a365-4613-8736-8f2c6a1d19a3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
