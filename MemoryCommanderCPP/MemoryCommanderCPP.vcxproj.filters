@@ -8,6 +8,19 @@
     <ClCompile Include="HelperMethods.cpp">
       <Filter>Shared</Filter>
     </ClCompile>
+    <ClCompile Include="CreateToolhelp32SnapshotException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="WinAPIException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Process32Exception.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenProcessException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommander.h" />
@@ -23,6 +36,19 @@
     <ClInclude Include="HelperMethods.h">
       <Filter>Shared</Filter>
     </ClInclude>
+    <ClInclude Include="CreateToolhelp32SnapshotException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="WinAPIException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Process32Exception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenProcessException.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
@@ -37,8 +63,8 @@
     <Filter Include="Shared">
       <UniqueIdentifier>{74cafc92-a365-4613-8736-8f2c6a1d19a3}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
+    <Filter Include="Exceptions">
+      <UniqueIdentifier>{4a57da88-c2f1-4e60-a4a8-1cb62a78111a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
