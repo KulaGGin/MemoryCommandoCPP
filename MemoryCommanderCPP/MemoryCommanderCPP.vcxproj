@@ -28,6 +28,9 @@
     <ClInclude Include="MemoryCommander.h" />
     <ClInclude Include="MemoryManagerExternal.h" />
     <ClInclude Include="MemoryProtection.h" />
+    <ClInclude Include="ProcessAccess.h" />
+  </ItemGroup>
+  <ItemGroup>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
