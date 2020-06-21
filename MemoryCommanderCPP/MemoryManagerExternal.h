@@ -17,8 +17,9 @@ namespace MemoryCommanderCpp {
         MemoryManagerExternal(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
         explicit MemoryManagerExternal(const std::string& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
-        std::vector<MODULEENTRY32> GetModules();
-        std::vector<MODULEENTRY32> GetModule(std::wstring moduleName);
+        std::vector<HMODULE> GetModulesHandles() const;
+        std::vector<MODULEENTRY32> GetModules() const;
+        HMODULE GetModule(std::wstring moduleName);
         DWORD_PTR GetModuleBaseAddress(std::wstring moduleName);
         size_t GetModuleSize(std::wstring moduleName);
         SYSTEM_INFO GetProcessInfo();
@@ -47,15 +48,17 @@ namespace MemoryCommanderCpp {
         template<typename TStructure> void WriteVirtualMemory(std::wstring moduleName, std::vector<DWORD_PTR> offsets, TStructure structure);
 
         DWORD_PTR GetAddress(std::vector<DWORD_PTR> pointers);
+        DWORD_PTR GetAddress(DWORD_PTR baseAddress, std::vector<DWORD_PTR> pointers);
         DWORD_PTR GetAddress(std::wstring moduleName, DWORD_PTR offset);
         DWORD_PTR GetAddress(std::wstring moduleName, std::vector<DWORD_PTR> offsets);
+        // todo GetAddress from array of bytes and offset but add it to the MemoryCommander probably.
     private:
-        HANDLE processHandle = nullptr;
+        HANDLE _processHandle = nullptr;
 
         HANDLE OpenProcess(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
         HANDLE OpenProcess(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
-        DWORD GetProcessIdByName(const std::wstring& processName, size_t processNumber) const;
+        DWORD GetProcessIdByName(const std::wstring& processName, size_t processNumber = 1) const;
 
 
         /*HANDLE GetProcessHandle(DWORD processId, ProcessAccess processAccess);
