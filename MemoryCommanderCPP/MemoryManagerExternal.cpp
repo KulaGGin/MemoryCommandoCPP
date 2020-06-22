@@ -7,10 +7,12 @@
 #include "ProcessAccess.h"
 #include "CreateToolhelp32SnapshotException.h"
 #include "Process32Exception.h"
+#include <wil/resource.h>
 
 namespace MemoryCommanderCpp {
     using namespace Exceptions;
     using Shared::HelperMethods;
+    using namespace wil;
 
     MemoryManagerExternal::MemoryManagerExternal(const DWORD processId, const DWORD processAccess) {
         _processHandle = OpenProcess(processId, processAccess);
@@ -91,13 +93,15 @@ namespace MemoryCommanderCpp {
         process.dwSize = sizeof(process);
 
         // todo create GetProcessList method and extract code into it
-        const HANDLE toolHelp32Snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        if (toolHelp32Snapshot == INVALID_HANDLE_VALUE)
+        const unique_tool_help_snapshot toolHelp32Snapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
+        if (!toolHelp32Snapshot)
             throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
 
         size_t currentProcessNumber = 0;
-        bool copiedToBuffer = Process32First(toolHelp32Snapshot, &process);
-        if (!copiedToBuffer) throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
+        bool copiedToBuffer = Process32First(toolHelp32Snapshot.get(), &process);
+        if (!copiedToBuffer)
+            throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
+
         while (copiedToBuffer) {
             if(!_wcsicmp(&processName[0], process.szExeFile)) {
                 currentProcessNumber++;
@@ -107,10 +111,8 @@ namespace MemoryCommanderCpp {
                 }
             }
 
-            copiedToBuffer = Process32Next(toolHelp32Snapshot, &process);
+            copiedToBuffer = Process32Next(toolHelp32Snapshot.get(), &process);
         }
-
-        CloseHandle(toolHelp32Snapshot);
 
         if(!copiedToBuffer) {
             if(GetLastError() != ERROR_NO_MORE_FILES)
