@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "../MemoryCommanderCPP/MemoryManager.h"
+#include "../MemoryCommando/MemoryManager.h"
 #include <Psapi.h>
 #include "MemoryManagerExternalTests.h"
 
-#include "../MemoryCommanderCPP/Process32Exception.h"
+#include "../MemoryCommando/Process32Exception.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

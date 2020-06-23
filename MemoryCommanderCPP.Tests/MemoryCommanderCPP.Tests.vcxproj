@@ -174,6 +174,9 @@
     <ProjectReference Include="..\MemoryCommanderCPP\MemoryCommanderCPP.vcxproj">
       <Project>{f7c6546c-6a63-4581-b5b2-ac7b64def04b}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\MemoryCommando\MemoryCommando.vcxproj">
+      <Project>{f7c6546c-6a63-4581-b5b2-ac7b64def04b}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
