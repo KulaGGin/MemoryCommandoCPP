@@ -5,7 +5,7 @@
 #include <vector>
 
 
-namespace MemoryCommanderCPPTests {
+namespace MemoryCommandoTests {
     class MemoryManagerExternalTests;
 }
 
@@ -55,6 +55,6 @@ namespace MemoryCommando {
     private:
         HANDLE _processHandle = nullptr;
 
-        friend class MemoryCommanderCPPTests::MemoryManagerExternalTests;
+        friend class MemoryCommandoTests::MemoryManagerExternalTests;
     };
 }

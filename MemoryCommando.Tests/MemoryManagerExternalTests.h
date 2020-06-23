@@ -1,7 +1,7 @@
 #pragma once
 #include <CppUnitTest.h>
 
-namespace MemoryCommanderCPPTests {
+namespace MemoryCommandoTests {
     using namespace MemoryCommando;
     TEST_CLASS(MemoryManagerExternalTests) {
     public:

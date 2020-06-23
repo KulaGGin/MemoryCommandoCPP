@@ -7,7 +7,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace MemoryCommanderCPPTests {
+namespace MemoryCommandoTests {
     using namespace MemoryCommando::Exceptions;
 
     MemoryManagerExternalTests::MemoryManagerExternalTests() {
