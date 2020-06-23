@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemoryCommando", "MemoryCommando\MemoryCommando.vcxproj", "{F7C6546C-6A63-4581-B5B2-AC7B64DEF04B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemoryCommanderCPP.Tests", "MemoryCommanderCPP.Tests\MemoryCommanderCPP.Tests.vcxproj", "{DE55B4BE-8012-4DE7-9666-55C25D4C0EA7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemoryCommando.Tests", "MemoryCommando.Tests\MemoryCommando.Tests.vcxproj", "{DE55B4BE-8012-4DE7-9666-55C25D4C0EA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

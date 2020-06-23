@@ -25,6 +25,7 @@
     <RootNamespace>MemoryCommanderCPPTests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
+    <ProjectName>MemoryCommando.Tests</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -171,9 +172,6 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MemoryCommanderCPP\MemoryCommanderCPP.vcxproj">
-      <Project>{f7c6546c-6a63-4581-b5b2-ac7b64def04b}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\MemoryCommando\MemoryCommando.vcxproj">
       <Project>{f7c6546c-6a63-4581-b5b2-ac7b64def04b}</Project>
     </ProjectReference>
