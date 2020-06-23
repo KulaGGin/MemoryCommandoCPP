@@ -8,11 +8,17 @@
 #include "CreateToolhelp32SnapshotException.h"
 #include "Process32Exception.h"
 #include <wil/resource.h>
+#include <boost/locale.hpp>
+#include <boost/locale/conversion.hpp>
+#include <boost/algorithm/string.hpp>
 
 namespace MemoryCommanderCpp {
+
     using namespace Exceptions;
     using Shared::HelperMethods;
-    using namespace wil;
+    namespace conv = boost::locale::conv;
+    namespace algorithm = boost::algorithm;
+    namespace locale = boost::locale;
 
     MemoryManagerExternal::MemoryManagerExternal(const DWORD processId, const DWORD processAccess) {
         _processHandle = OpenProcess(processId, processAccess);
@@ -58,12 +64,12 @@ namespace MemoryCommanderCpp {
         return modulesHandlesVector;
     }
 
-    //std::vector<MODULEENTRY32W> MemoryManagerExternal::GetModules() const {
+    //vector<MODULEENTRY32W> MemoryManagerExternal::GetModules() const {
     //}
 
-    //HMODULE MemoryManagerExternal::GetModule(std::wstring moduleName) {
+    //HMODULE MemoryManagerExternal::GetModule(wstring moduleName) {
     //    HMODULE module;
-    //    std::vector<HMODULE> modules = GetModulesHandles();
+    //    vector<HMODULE> modules = GetModulesHandles();
     //    for(auto module : modules) {
     //        module.name
     //    }
@@ -93,7 +99,7 @@ namespace MemoryCommanderCpp {
         process.dwSize = sizeof(process);
 
         // todo create GetProcessList method and extract code into it
-        const unique_tool_help_snapshot toolHelp32Snapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
+        const wil::unique_tool_help_snapshot toolHelp32Snapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
         if (!toolHelp32Snapshot)
             throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
 
@@ -103,7 +109,8 @@ namespace MemoryCommanderCpp {
             throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
 
         while (copiedToBuffer) {
-            if(!_wcsicmp(&processName[0], process.szExeFile)) {
+            std::wstring currentProcessNameWide(conv::utf_to_utf<wchar_t>(process.szExeFile));
+            if(boost::iequals(processName, currentProcessNameWide)) {
                 currentProcessNumber++;
                 if(currentProcessNumber >= processNumber) {
                     processId = process.th32ProcessID;
