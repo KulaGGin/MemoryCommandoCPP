@@ -2,7 +2,6 @@
 
 #include <locale>
 #include <Psapi.h>
-
 #include "HelperMethods.h"
 #include "ProcessAccess.h"
 #include "CreateToolhelp32SnapshotException.h"
@@ -99,12 +98,12 @@ namespace MemoryCommanderCpp {
         process.dwSize = sizeof(process);
 
         // todo create GetProcessList method and extract code into it
-        const wil::unique_tool_help_snapshot toolHelp32Snapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
-        if (!toolHelp32Snapshot)
+        const wil::unique_tool_help_snapshot processesSnapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
+        if (!processesSnapshot)
             throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
 
         size_t currentProcessNumber = 0;
-        bool copiedToBuffer = Process32First(toolHelp32Snapshot.get(), &process);
+        bool copiedToBuffer = Process32First(processesSnapshot.get(), &process);
         if (!copiedToBuffer)
             throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
 
@@ -118,7 +117,7 @@ namespace MemoryCommanderCpp {
                 }
             }
 
-            copiedToBuffer = Process32Next(toolHelp32Snapshot.get(), &process);
+            copiedToBuffer = Process32Next(processesSnapshot.get(), &process);
         }
 
         if(!copiedToBuffer) {
