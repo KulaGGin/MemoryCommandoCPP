@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "CppUnitTest.h"
 #include "../MemoryCommando/MemoryManager.h"
 #include <Psapi.h>
