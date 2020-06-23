@@ -109,7 +109,7 @@ namespace MemoryCommanderCpp {
             throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
 
         while (copiedToBuffer) {
-            std::wstring currentProcessNameWide(conv::utf_to_utf<wchar_t>(process.szExeFile));
+            std::wstring currentProcessNameWide(conv::utf_to_utf<WCHAR>(process.szExeFile));
             if(boost::iequals(processName, currentProcessNameWide)) {
                 currentProcessNumber++;
                 if(currentProcessNumber >= processNumber) {
