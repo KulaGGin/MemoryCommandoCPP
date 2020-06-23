@@ -17,8 +17,8 @@ namespace MemoryCommanderCpp {
         MemoryManagerExternal(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
         explicit MemoryManagerExternal(const std::string& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
-        std::vector<HMODULE> GetModulesHandles() const;
         std::vector<MODULEENTRY32> GetModules() const;
+        std::vector<HMODULE> GetModulesHandles() const;
         HMODULE GetModule(std::wstring moduleName);
         DWORD_PTR GetModuleBaseAddress(std::wstring moduleName);
         size_t GetModuleSize(std::wstring moduleName);

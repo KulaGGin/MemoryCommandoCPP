@@ -32,40 +32,13 @@ namespace MemoryCommanderCpp {
         _processHandle = OpenProcess(processNameWide, processNumber, processAccess);
     }
 
-    std::vector<HMODULE> MemoryManagerExternal::GetModulesHandles() const {
-        std::vector<HMODULE> modulesHandlesVector;
-        std::shared_ptr<HMODULE[]> modulesHandlesSmartArray;
-        size_t modulesHandlesArrayLength{128};
-        DWORD bytesNeeded;
-
-        bool queryResult = false;
-        while(true) {
-            modulesHandlesSmartArray = std::shared_ptr<HMODULE[]>(new HMODULE[modulesHandlesArrayLength]);
-            const size_t modulesArraySizeBytes = modulesHandlesArrayLength * sizeof(HMODULE);
-            queryResult = EnumProcessModules(_processHandle, modulesHandlesSmartArray.get(), modulesArraySizeBytes, &bytesNeeded);
-
-            if(modulesArraySizeBytes < bytesNeeded) {
-                modulesHandlesArrayLength = bytesNeeded / sizeof(HMODULE) + 1;
-                continue;
-            }
-
-            if(queryResult)
-                break;
-        }
-
-        
-        const size_t modulesHandlesNumber = bytesNeeded / sizeof(HMODULE);
-
-        for(size_t index = 0; index < modulesHandlesNumber; ++index) {
-            modulesHandlesVector.push_back(modulesHandlesSmartArray[index]);
-        }
-
-        return modulesHandlesVector;
-    }
-
     std::vector<MODULEENTRY32W> MemoryManagerExternal::GetModules() const {
         const DWORD processId = ::GetProcessId(_processHandle);
         return MemoryCommanderCpp::GetModules(processId);
+    }
+
+    std::vector<HMODULE> MemoryManagerExternal::GetModulesHandles() const {
+        return MemoryCommanderCpp::GetModulesHandles(_processHandle);
     }
 
     //HMODULE MemoryManagerExternal::GetModule(wstring moduleName) {

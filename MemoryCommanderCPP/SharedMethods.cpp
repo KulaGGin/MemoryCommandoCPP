@@ -4,6 +4,10 @@
 
 namespace MemoryCommanderCpp {
 
+    //std::vector<PROCESSENTRY32W> GetRunningProcesses() {
+    //    throw "not implemented";
+    //}
+
     DWORD GetProcessId(const std::wstring& processName, const size_t processNumber) {
         DWORD          processId = NULL;
         PROCESSENTRY32 process;
@@ -45,6 +49,38 @@ namespace MemoryCommanderCpp {
         }
 
         return processId;
+    }
+
+    std::vector<HMODULE> GetModulesHandles(HANDLE processHandle) {
+        std::vector<HMODULE>       modulesHandlesVector;
+        std::shared_ptr<HMODULE[]> modulesHandlesSmartArray;
+        size_t                     modulesHandlesArrayLength{128};
+        DWORD                      bytesNeeded;
+
+        bool queryResult;
+        while(true) {
+            modulesHandlesSmartArray = std::shared_ptr<HMODULE[]>(new HMODULE[modulesHandlesArrayLength]);
+            const size_t modulesArraySizeBytes = modulesHandlesArrayLength * sizeof(HMODULE);
+            queryResult = EnumProcessModules(processHandle, modulesHandlesSmartArray.get(), modulesArraySizeBytes,
+                                             &bytesNeeded);
+
+            if(modulesArraySizeBytes < bytesNeeded) {
+                modulesHandlesArrayLength = bytesNeeded / sizeof(HMODULE) + 1;
+                continue;
+            }
+
+            if(queryResult)
+                break;
+        }
+
+
+        const size_t modulesHandlesNumber = bytesNeeded / sizeof(HMODULE);
+
+        for(size_t index = 0; index < modulesHandlesNumber; ++index) {
+            modulesHandlesVector.push_back(modulesHandlesSmartArray[index]);
+        }
+
+        return modulesHandlesVector;
     }
 
     std::vector<MODULEENTRY32W> GetModules(const DWORD& processId) {

@@ -7,6 +7,8 @@
 #include <TlHelp32.h>
 #include <wil/resource.h>
 #include <boost/algorithm/string.hpp>
+#include <Psapi.h>
+
 
 #include "CreateToolhelp32SnapshotException.h"
 #include "Process32Exception.h"
@@ -21,15 +23,15 @@ namespace MemoryCommanderCpp {
     namespace algorithm = boost::algorithm;
     namespace locale = boost::locale;
 
-
-    //std::vector<PROCESSENTRY32W> GetRunningProcesses() {
-    //}
+    std::vector<PROCESSENTRY32> GetRunningProcesses();
 
     DWORD GetProcessId(const std::wstring& processName, const size_t processNumber);
 
-    std::vector<MODULEENTRY32W> GetModules(const DWORD& processId);
-
     HANDLE OpenProcess(DWORD processId, DWORD processAccess);
     HANDLE OpenProcess(const std::wstring& processName, size_t processNumber, DWORD processAccess);
+
+    std::vector<MODULEENTRY32W> GetModules(const DWORD& processId);
+    std::vector<HMODULE> GetModulesHandles(HANDLE processHandle);
+
 
 }
