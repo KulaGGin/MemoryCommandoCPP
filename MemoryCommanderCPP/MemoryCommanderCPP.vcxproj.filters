@@ -17,12 +17,14 @@
     <ClCompile Include="Process32Exception.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="OpenProcessException.cpp" />
     <ClCompile Include="Module32Exception.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
     <ClCompile Include="SharedMethods.cpp">
       <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenProcessException.cpp">
+      <Filter>Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -48,12 +50,14 @@
     <ClInclude Include="Process32Exception.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="OpenProcessException.h" />
     <ClInclude Include="Module32Exception.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="SharedMethods.h">
       <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenProcessException.h">
+      <Filter>Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
