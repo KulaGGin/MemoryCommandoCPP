@@ -1,5 +1,4 @@
 #pragma once
-#include <winnt.h>
 
 namespace MemoryCommanderCpp {
     enum ProcessAccess : unsigned long {
