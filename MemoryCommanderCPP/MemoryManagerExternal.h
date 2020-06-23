@@ -58,7 +58,8 @@ namespace MemoryCommanderCpp {
         HANDLE OpenProcess(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
         HANDLE OpenProcess(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
-        DWORD GetProcessIdByName(const std::wstring& processName, size_t processNumber = 1) const;
+
+        DWORD GetProcessId(const std::wstring& processName, size_t processNumber = 1) const;
 
 
         /*HANDLE GetProcessHandle(DWORD processId, ProcessAccess processAccess);

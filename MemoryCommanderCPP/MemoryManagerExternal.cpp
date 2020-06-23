@@ -87,12 +87,12 @@ namespace MemoryCommanderCpp {
     }
 
     HANDLE MemoryManagerExternal::OpenProcess(const std::wstring& processName, size_t processNumber, DWORD processAccess) {
-        const DWORD processId = GetProcessIdByName(processName, processNumber);
+        const DWORD processId = GetProcessId(processName, processNumber);
         const HANDLE processHandle = OpenProcess(processId, processAccess);
         return processHandle;
     }
 
-    DWORD MemoryManagerExternal::GetProcessIdByName(const std::wstring& processName, size_t processNumber) const {
+    DWORD MemoryManagerExternal::GetProcessId(const std::wstring& processName, size_t processNumber) const {
         DWORD processId = NULL;
         PROCESSENTRY32 process;
         ZeroMemory(&process, sizeof(process));
