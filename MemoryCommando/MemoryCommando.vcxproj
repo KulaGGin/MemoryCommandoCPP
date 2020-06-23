@@ -22,7 +22,7 @@
     <ClCompile Include="BaseException.cpp" />
     <ClCompile Include="CreateToolhelp32SnapshotException.cpp" />
     <ClCompile Include="External.cpp" />
-    <ClCompile Include="MemoryCommander.cpp" />
+    <ClCompile Include="MemoryCommando.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Module32Exception.cpp" />
     <ClCompile Include="OpenProcessException.cpp" />
@@ -33,7 +33,7 @@
     <ClInclude Include="BaseException.h" />
     <ClInclude Include="CreateToolhelp32SnapshotException.h" />
     <ClInclude Include="External.h" />
-    <ClInclude Include="MemoryCommander.h" />
+    <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MemoryProtection.h" />
     <ClInclude Include="Module32Exception.h" />

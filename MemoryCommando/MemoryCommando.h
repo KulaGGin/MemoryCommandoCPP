@@ -4,7 +4,7 @@
 #include <TlHelp32.h>
 
 
-namespace MemoryCommanderCpp {
-    class MemoryCommander {
+namespace MemoryCommando {
+    class MemoryCommando {
     };
 }
