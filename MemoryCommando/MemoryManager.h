@@ -9,7 +9,7 @@ namespace MemoryCommandoTests {
     class MemoryManagerExternalTests;
 }
 
-namespace MemoryCommando {
+namespace MemoryCommando::External {
 
     class MemoryManager {
     public:

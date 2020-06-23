@@ -13,9 +13,8 @@
 
 #include "External.h"
 
-namespace MemoryCommando {
+namespace MemoryCommando::External {
     using namespace Exceptions;
-    using namespace External;
     namespace conv = boost::locale::conv;
     namespace algorithm = boost::algorithm;
     namespace locale = boost::locale;
@@ -35,11 +34,12 @@ namespace MemoryCommando {
 
     std::vector<MODULEENTRY32W> MemoryManager::GetModules() const {
         const DWORD processId = ::GetProcessId(_processHandle);
-        return MemoryCommando::GetModules(processId);
+        return External::GetModules(processId);
     }
 
     std::vector<HMODULE> MemoryManager::GetModulesHandles() const {
-        return MemoryCommando::GetModulesHandles(_processHandle);
+        return External::GetModulesHandles(_processHandle);
+    }
     }
 
     //HMODULE MemoryManagerExternal::GetModule(wstring moduleName) {
