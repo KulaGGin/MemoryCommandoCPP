@@ -55,9 +55,6 @@ namespace MemoryCommanderCpp {
     private:
         HANDLE _processHandle = nullptr;
 
-        HANDLE OpenProcess(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
-        HANDLE OpenProcess(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
-
         friend class MemoryCommanderCPPTests::MemoryManagerExternalTests;
     };
 }

@@ -72,4 +72,19 @@ namespace MemoryCommanderCpp {
 
         return modulesSequence;
     }
+
+    HANDLE OpenProcess(DWORD processId, DWORD processAccess) {
+        const HANDLE processHandle = ::OpenProcess(processAccess, 0, processId);
+        if(!processHandle) {
+            throw Process32Exception("OpenProcess couldn't get a handle to the specified processId", GetLastError());
+        }
+
+        return processHandle;
+    }
+
+    HANDLE OpenProcess(const std::wstring& processName, size_t processNumber, DWORD processAccess) {
+        const DWORD  processId = GetProcessId(processName, processNumber);
+        const HANDLE processHandle = OpenProcess(processId, processAccess);
+        return processHandle;
+    }
 }

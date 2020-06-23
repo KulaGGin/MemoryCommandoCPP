@@ -29,4 +29,7 @@ namespace MemoryCommanderCpp {
 
     std::vector<MODULEENTRY32W> GetModules(const DWORD& processId);
 
+    HANDLE OpenProcess(DWORD processId, DWORD processAccess);
+    HANDLE OpenProcess(const std::wstring& processName, size_t processNumber, DWORD processAccess);
+
 }
