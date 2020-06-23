@@ -29,7 +29,7 @@ namespace MemoryCommanderCpp {
     }
 
     MemoryManagerExternal::MemoryManagerExternal(const std::string& processName, size_t processNumber, DWORD processAccess) {
-        const std::wstring processNameWide = HelperMethods::ConvertStringToWString(processName);
+        const std::wstring processNameWide = conv::utf_to_utf<WCHAR>(processName);
         _processHandle = OpenProcess(processNameWide, processNumber, processAccess);
     }
 
