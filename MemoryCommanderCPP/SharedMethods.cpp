@@ -84,7 +84,7 @@ namespace MemoryCommanderCpp {
     }
 
     std::vector<MODULEENTRY32W> GetModules(const DWORD& processId) {
-        std::vector<MODULEENTRY32W> modulesSequence{};
+        std::vector<MODULEENTRY32W> modulesSequence;
         MODULEENTRY32               module;
         ZeroMemory(&module, sizeof(module));
         module.dwSize = sizeof(module);
