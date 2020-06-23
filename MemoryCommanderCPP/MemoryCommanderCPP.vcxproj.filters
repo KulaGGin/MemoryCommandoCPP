@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="MemoryCommander.cpp" />
-    <ClCompile Include="MemoryManagerExternal.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
     <ClCompile Include="CreateToolhelp32SnapshotException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
@@ -20,18 +17,18 @@
     <ClCompile Include="Module32Exception.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="SharedMethods.cpp">
-      <Filter>Shared</Filter>
-    </ClCompile>
     <ClCompile Include="OpenProcessException.cpp">
       <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="External.cpp">
+      <Filter>Memory\External</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryManager.cpp">
+      <Filter>Memory\External</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommander.h" />
-    <ClInclude Include="MemoryManagerExternal.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryProtection.h">
       <Filter>Native\Enumerations</Filter>
     </ClInclude>
@@ -53,11 +50,14 @@
     <ClInclude Include="Module32Exception.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="SharedMethods.h">
-      <Filter>Shared</Filter>
-    </ClInclude>
     <ClInclude Include="OpenProcessException.h">
       <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="External.h">
+      <Filter>Memory\External</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryManager.h">
+      <Filter>Memory\External</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -70,11 +70,11 @@
     <Filter Include="Native\Enumerations">
       <UniqueIdentifier>{0f22e6f7-d1e5-4685-ba19-344d3fe27b68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shared">
-      <UniqueIdentifier>{74cafc92-a365-4613-8736-8f2c6a1d19a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Exceptions">
       <UniqueIdentifier>{4a57da88-c2f1-4e60-a4a8-1cb62a78111a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\External">
+      <UniqueIdentifier>{672a6db3-2779-46eb-9fb9-28c632d9f4d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

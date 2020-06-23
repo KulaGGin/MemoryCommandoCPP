@@ -3,26 +3,16 @@
 
 #include <boost/locale/encoding_utf.hpp>
 #include <string>
-
 #include <TlHelp32.h>
 #include <wil/resource.h>
 #include <boost/algorithm/string.hpp>
 #include <Psapi.h>
-
-
 #include "CreateToolhelp32SnapshotException.h"
 #include "Process32Exception.h"
-
 #include <string>
-
 #include "Module32Exception.h"
 
-namespace MemoryCommanderCpp {
-    using namespace Exceptions;
-    namespace conv = boost::locale::conv;
-    namespace algorithm = boost::algorithm;
-    namespace locale = boost::locale;
-
+namespace MemoryCommanderCpp::External {
     std::vector<PROCESSENTRY32> GetRunningProcesses();
 
     DWORD GetProcessId(const std::wstring& processName, const size_t processNumber);
@@ -32,6 +22,4 @@ namespace MemoryCommanderCpp {
 
     std::vector<MODULEENTRY32W> GetModules(const DWORD& processId);
     std::vector<HMODULE> GetModulesHandles(HANDLE processHandle);
-
-
 }

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "../MemoryCommanderCPP/MemoryManagerExternal.h"
+#include "../MemoryCommanderCPP/MemoryManager.h"
 #include <Psapi.h>
 #include "MemoryManagerExternalTests.h"
 
@@ -18,27 +18,27 @@ namespace MemoryCommanderCPPTests {
     }
 
     void MemoryManagerExternalTests::ConstructorProcessId() {
-        const MemoryManagerExternal memoryManagerExternal(_currentProcessId);
+        const MemoryManager memoryManagerExternal(_currentProcessId);
 		Assert::IsTrue(memoryManagerExternal._processHandle);
     }
 
     void MemoryManagerExternalTests::ConstructorProcessNameWide() {
         const std::wstring wCurrentProcessName(_currentProcessName.begin(), _currentProcessName.end());
 
-        const MemoryManagerExternal memoryManagerExternal(wCurrentProcessName);
+        const MemoryManager memoryManagerExternal(wCurrentProcessName);
 
 		Assert::IsTrue(memoryManagerExternal._processHandle);
     }
 
 	void MemoryManagerExternalTests::ConstructorProcessNameNarrow() {
-		const MemoryManagerExternal memoryManagerExternal(_currentProcessName);
+		const MemoryManager memoryManagerExternal(_currentProcessName);
 
 		Assert::IsTrue(memoryManagerExternal._processHandle);
 	}
 
     void MemoryManagerExternalTests::ConstructorNonExistentName() {
         try {
-            const MemoryManagerExternal memoryManagerExternal("Non existent process name.");
+            const MemoryManager memoryManagerExternal("Non existent process name.");
         }
         catch(const Process32Exception&) {
             Assert::IsTrue(true);
@@ -49,7 +49,7 @@ namespace MemoryCommanderCPPTests {
     }
 
     void MemoryManagerExternalTests::GetModulesHandles() {
-        MemoryManagerExternal memoryManagerExternal(_currentProcessId);
+        MemoryManager memoryManagerExternal(_currentProcessId);
         std::vector<HMODULE> modules = memoryManagerExternal.GetModulesHandles();
 
         Assert::IsTrue(modules.size());

@@ -11,11 +11,11 @@ namespace MemoryCommanderCPPTests {
 
 namespace MemoryCommanderCpp {
 
-    class MemoryManagerExternal {
+    class MemoryManager {
     public:
-        MemoryManagerExternal(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
-        MemoryManagerExternal(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
-        explicit MemoryManagerExternal(const std::string& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
+        MemoryManager(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
+        MemoryManager(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
+        explicit MemoryManager(const std::string& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
         std::vector<MODULEENTRY32> GetModules() const;
         std::vector<HMODULE> GetModulesHandles() const;

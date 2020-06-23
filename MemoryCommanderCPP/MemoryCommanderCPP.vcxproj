@@ -21,9 +21,9 @@
   <ItemGroup>
     <ClCompile Include="BaseException.cpp" />
     <ClCompile Include="CreateToolhelp32SnapshotException.cpp" />
-    <ClCompile Include="SharedMethods.cpp" />
+    <ClCompile Include="External.cpp" />
     <ClCompile Include="MemoryCommander.cpp" />
-    <ClCompile Include="MemoryManagerExternal.cpp" />
+    <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Module32Exception.cpp" />
     <ClCompile Include="OpenProcessException.cpp" />
     <ClCompile Include="Process32Exception.cpp" />
@@ -32,9 +32,9 @@
   <ItemGroup>
     <ClInclude Include="BaseException.h" />
     <ClInclude Include="CreateToolhelp32SnapshotException.h" />
-    <ClInclude Include="SharedMethods.h" />
+    <ClInclude Include="External.h" />
     <ClInclude Include="MemoryCommander.h" />
-    <ClInclude Include="MemoryManagerExternal.h" />
+    <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MemoryProtection.h" />
     <ClInclude Include="Module32Exception.h" />
     <ClInclude Include="OpenProcessException.h" />
