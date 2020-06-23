@@ -2,7 +2,6 @@
 
 #include <locale>
 #include <Psapi.h>
-#include "HelperMethods.h"
 #include "ProcessAccess.h"
 #include "CreateToolhelp32SnapshotException.h"
 #include "Process32Exception.h"
@@ -10,16 +9,17 @@
 #include <boost/locale.hpp>
 #include <boost/locale/conversion.hpp>
 #include <boost/algorithm/string.hpp>
+#include "Module32Exception.h"
+
+#include "SharedMethods.h"
 
 namespace MemoryCommanderCpp {
-
     using namespace Exceptions;
-    using Shared::HelperMethods;
     namespace conv = boost::locale::conv;
     namespace algorithm = boost::algorithm;
     namespace locale = boost::locale;
 
-    MemoryManagerExternal::MemoryManagerExternal(const DWORD processId, const DWORD processAccess) {
+    MemoryManagerExternal::MemoryManagerExternal(DWORD processId, DWORD processAccess) {
         _processHandle = OpenProcess(processId, processAccess);
     }
 
@@ -63,8 +63,10 @@ namespace MemoryCommanderCpp {
         return modulesHandlesVector;
     }
 
-    //vector<MODULEENTRY32W> MemoryManagerExternal::GetModules() const {
-    //}
+    std::vector<MODULEENTRY32W> MemoryManagerExternal::GetModules() const {
+        const DWORD processId = ::GetProcessId(_processHandle);
+        return MemoryCommanderCpp::GetModules(processId);
+    }
 
     //HMODULE MemoryManagerExternal::GetModule(wstring moduleName) {
     //    HMODULE module;
@@ -91,43 +93,5 @@ namespace MemoryCommanderCpp {
         return processHandle;
     }
 
-    DWORD MemoryManagerExternal::GetProcessId(const std::wstring& processName, size_t processNumber) const {
-        DWORD processId = NULL;
-        PROCESSENTRY32 process;
-        ZeroMemory(&process, sizeof(process));
-        process.dwSize = sizeof(process);
 
-        // todo create GetProcessList method and extract code into it
-        const wil::unique_tool_help_snapshot processesSnapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
-        if (!processesSnapshot)
-            throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
-
-        size_t currentProcessNumber = 0;
-        bool copiedToBuffer = Process32First(processesSnapshot.get(), &process);
-        if (!copiedToBuffer)
-            throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
-
-        while (copiedToBuffer) {
-            std::wstring currentProcessNameWide(conv::utf_to_utf<WCHAR>(process.szExeFile));
-            if(boost::iequals(processName, currentProcessNameWide)) {
-                currentProcessNumber++;
-                if(currentProcessNumber >= processNumber) {
-                    processId = process.th32ProcessID;
-                    break;
-                }
-            }
-
-            copiedToBuffer = Process32Next(processesSnapshot.get(), &process);
-        }
-
-        if(!copiedToBuffer) {
-            if(GetLastError() != ERROR_NO_MORE_FILES)
-                throw Process32Exception("Process32Next failed to fill the buffer.", GetLastError());
-            if(GetLastError() == ERROR_NO_MORE_FILES) {
-                throw Process32Exception("Process32Next iterated through the last process in the list and couldn't find the name specified.", GetLastError());
-            }
-        }
-
-        return processId;
-    }
 }

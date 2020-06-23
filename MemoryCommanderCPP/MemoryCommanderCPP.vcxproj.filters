@@ -5,9 +5,6 @@
     <ClCompile Include="MemoryManagerExternal.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
-    <ClCompile Include="HelperMethods.cpp">
-      <Filter>Shared</Filter>
-    </ClCompile>
     <ClCompile Include="CreateToolhelp32SnapshotException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
@@ -24,6 +21,9 @@
     <ClCompile Include="Module32Exception.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
+    <ClCompile Include="SharedMethods.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommander.h" />
@@ -35,9 +35,6 @@
     </ClInclude>
     <ClInclude Include="ProcessAccess.h">
       <Filter>Native\Enumerations</Filter>
-    </ClInclude>
-    <ClInclude Include="HelperMethods.h">
-      <Filter>Shared</Filter>
     </ClInclude>
     <ClInclude Include="CreateToolhelp32SnapshotException.h">
       <Filter>Exceptions</Filter>
@@ -54,6 +51,9 @@
     <ClInclude Include="OpenProcessException.h" />
     <ClInclude Include="Module32Exception.h">
       <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedMethods.h">
+      <Filter>Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
