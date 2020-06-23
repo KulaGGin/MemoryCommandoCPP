@@ -21,6 +21,9 @@
       <Filter>Exceptions</Filter>
     </ClCompile>
     <ClCompile Include="OpenProcessException.cpp" />
+    <ClCompile Include="Module32Exception.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommander.h" />
@@ -49,6 +52,9 @@
       <Filter>Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="OpenProcessException.h" />
+    <ClInclude Include="Module32Exception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">

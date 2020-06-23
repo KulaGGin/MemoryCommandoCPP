@@ -24,6 +24,7 @@
     <ClCompile Include="HelperMethods.cpp" />
     <ClCompile Include="MemoryCommander.cpp" />
     <ClCompile Include="MemoryManagerExternal.cpp" />
+    <ClCompile Include="Module32Exception.cpp" />
     <ClCompile Include="OpenProcessException.cpp" />
     <ClCompile Include="Process32Exception.cpp" />
     <ClCompile Include="WinAPIException.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="MemoryCommander.h" />
     <ClInclude Include="MemoryManagerExternal.h" />
     <ClInclude Include="MemoryProtection.h" />
+    <ClInclude Include="Module32Exception.h" />
     <ClInclude Include="OpenProcessException.h" />
     <ClInclude Include="Process32Exception.h" />
     <ClInclude Include="ProcessAccess.h" />
