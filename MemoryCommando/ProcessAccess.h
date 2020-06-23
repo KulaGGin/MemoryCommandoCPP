@@ -1,6 +1,6 @@
 #pragma once
 
-namespace MemoryCommanderCpp {
+namespace MemoryCommando {
     enum ProcessAccess : unsigned long {
         ProcessTerminate = PROCESS_TERMINATE,
         ProcessCreateThread = PROCESS_CREATE_THREAD,

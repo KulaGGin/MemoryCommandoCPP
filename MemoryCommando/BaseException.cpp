@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace  MemoryCommanderCpp::Exceptions {
+namespace  MemoryCommando::Exceptions {
     BaseException::BaseException(std::string errorMessage) : ErrorMessage(std::move(errorMessage)) {
     }
 }

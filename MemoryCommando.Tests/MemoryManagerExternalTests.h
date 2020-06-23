@@ -2,7 +2,7 @@
 #include <CppUnitTest.h>
 
 namespace MemoryCommanderCPPTests {
-    using namespace MemoryCommanderCpp;
+    using namespace MemoryCommando;
     TEST_CLASS(MemoryManagerExternalTests) {
     public:
         MemoryManagerExternalTests();

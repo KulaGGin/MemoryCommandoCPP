@@ -9,7 +9,7 @@ namespace MemoryCommanderCPPTests {
     class MemoryManagerExternalTests;
 }
 
-namespace MemoryCommanderCpp {
+namespace MemoryCommando {
 
     class MemoryManager {
     public:

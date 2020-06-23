@@ -1,6 +1,6 @@
 #pragma once
 
-namespace MemoryCommanderCpp {
+namespace MemoryCommando {
     enum class MemoryProtection {
 
         /// Disables all access to the region of virtual memory

@@ -1,7 +1,7 @@
 #pragma once
 #include "WinAPIException.h"
 
-namespace MemoryCommanderCpp::Exceptions {
+namespace MemoryCommando::Exceptions {
     class Process32Exception : WinAPIException {
 
     public:

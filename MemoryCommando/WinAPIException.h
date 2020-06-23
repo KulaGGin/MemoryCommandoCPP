@@ -3,7 +3,7 @@
 
 #include "BaseException.h"
 
-namespace MemoryCommanderCpp::Exceptions {
+namespace MemoryCommando::Exceptions {
     class WinAPIException : BaseException {
     protected:
         DWORD LastError;

@@ -12,7 +12,7 @@
 #include <string>
 #include "Module32Exception.h"
 
-namespace MemoryCommanderCpp::External {
+namespace MemoryCommando::External {
     std::vector<PROCESSENTRY32> GetRunningProcesses();
 
     DWORD GetProcessId(const std::wstring& processName, const size_t processNumber);

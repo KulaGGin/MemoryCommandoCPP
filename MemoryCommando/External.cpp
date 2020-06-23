@@ -1,6 +1,6 @@
 #include "External.h"
 
-namespace MemoryCommanderCpp::External {
+namespace MemoryCommando::External {
     using namespace Exceptions;
     namespace conv = boost::locale::conv;
     namespace algorithm = boost::algorithm;

@@ -1,6 +1,6 @@
 #include "OpenProcessException.h"
 
-namespace MemoryCommanderCpp::Exceptions {
+namespace MemoryCommando::Exceptions {
     OpenProcessException::OpenProcessException(const std::string& errorMessage, DWORD lastError)
         : WinAPIException(errorMessage, lastError) {
     }

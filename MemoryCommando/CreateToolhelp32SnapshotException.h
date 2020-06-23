@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace MemoryCommanderCpp::Exceptions {
+namespace MemoryCommando::Exceptions {
     class CreateToolhelp32SnapshotException : WinAPIException {
     private:
         DWORD _lastError;

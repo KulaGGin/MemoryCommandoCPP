@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace MemoryCommanderCpp::Exceptions {
+namespace MemoryCommando::Exceptions {
 
     CreateToolhelp32SnapshotException::CreateToolhelp32SnapshotException(std::string errorMessage, DWORD lastError)
     : WinAPIException(errorMessage, lastError) {

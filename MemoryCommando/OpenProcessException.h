@@ -1,7 +1,7 @@
 #pragma once
 #include "WinAPIException.h"
 
-namespace MemoryCommanderCpp::Exceptions {
+namespace MemoryCommando::Exceptions {
     class OpenProcessException : WinAPIException {
     public:
         OpenProcessException(const std::string& errorMessage, DWORD lastError);

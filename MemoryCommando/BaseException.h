@@ -2,7 +2,7 @@
 #include <exception>
 #include <string>
 
-namespace MemoryCommanderCpp::Exceptions {
+namespace MemoryCommando::Exceptions {
     class BaseException : std::exception {
     protected:
         std::string ErrorMessage;
