@@ -16,6 +16,7 @@ namespace MemoryCommando::External {
     std::vector<PROCESSENTRY32> GetRunningProcesses();
 
     DWORD GetProcessId(const std::wstring& processName, const size_t processNumber);
+    DWORD GetProcessId(HANDLE processHandle);
 
     HANDLE OpenProcess(DWORD processId, DWORD processAccess);
     HANDLE OpenProcess(const std::wstring& processName, size_t processNumber, DWORD processAccess);

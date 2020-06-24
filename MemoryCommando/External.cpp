@@ -49,6 +49,10 @@ namespace MemoryCommando::External {
         return processId;
     }
 
+    DWORD GetProcessId(HANDLE processHandle) {
+        return ::GetProcessId(processHandle);
+    }
+
     std::vector<HMODULE> GetModulesHandles(HANDLE processHandle) {
         std::vector<HMODULE>       modulesHandlesVector;
         std::shared_ptr<HMODULE[]> modulesHandlesSmartArray;
