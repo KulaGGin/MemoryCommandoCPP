@@ -23,4 +23,5 @@ namespace MemoryCommando::External {
 
     std::vector<MODULEENTRY32W> GetModules(DWORD processId);
     std::vector<HMODULE> GetModulesHandles(HANDLE processHandle);
+    MODULEENTRY32W GetModule(DWORD processId, const std::wstring& moduleName);
 }

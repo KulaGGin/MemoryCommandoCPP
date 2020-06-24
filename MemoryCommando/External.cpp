@@ -6,6 +6,30 @@ namespace MemoryCommando::External {
     namespace algorithm = boost::algorithm;
     namespace locale = boost::locale;
 
+    std::vector<PROCESSENTRY32W> GetRunningProcesses() {
+        std::vector<PROCESSENTRY32W> runningProcesses;
+        PROCESSENTRY32 process;
+        ZeroMemory(&process, sizeof(process));
+
+        const wil::unique_tool_help_snapshot processesSnapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
+        if (!processesSnapshot)
+            throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
+
+        bool copiedToBuffer = Process32First(processesSnapshot.get(), &process);
+        if (!copiedToBuffer)
+            throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
+
+        while(copiedToBuffer) {
+            runningProcesses.push_back(process);
+            copiedToBuffer = Process32Next(processesSnapshot.get(), &process);
+        }
+
+        if(!copiedToBuffer && GetLastError() != ERROR_NO_MORE_FILES)
+            throw Process32Exception("Process32Next failed to fill the buffer.", GetLastError());
+
+        return runningProcesses;
+    }
+
     DWORD GetProcessId(const std::wstring& processName, const size_t processNumber) {
         DWORD          processId = NULL;
         PROCESSENTRY32 process;
@@ -83,6 +107,19 @@ namespace MemoryCommando::External {
         }
 
         return modulesHandlesVector;
+    }
+
+    MODULEENTRY32W GetModule(const DWORD processId, const std::wstring& moduleName) {
+        std::vector<MODULEENTRY32W> modules = GetModules(processId);
+        MODULEENTRY32W wantedModule{};
+
+        for (auto currentModule : modules) {
+            if (algorithm::iequals(moduleName, currentModule.szModule)) {
+                wantedModule = currentModule;
+            }
+        }
+
+        return wantedModule;
     }
 
     std::vector<MODULEENTRY32W> GetModules(const DWORD processId) {
