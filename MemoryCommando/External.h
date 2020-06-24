@@ -21,6 +21,6 @@ namespace MemoryCommando::External {
     HANDLE OpenProcess(DWORD processId, DWORD processAccess);
     HANDLE OpenProcess(const std::wstring& processName, size_t processNumber, DWORD processAccess);
 
-    std::vector<MODULEENTRY32W> GetModules(const DWORD& processId);
+    std::vector<MODULEENTRY32W> GetModules(DWORD processId);
     std::vector<HMODULE> GetModulesHandles(HANDLE processHandle);
 }

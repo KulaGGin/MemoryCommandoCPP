@@ -85,7 +85,7 @@ namespace MemoryCommando::External {
         return modulesHandlesVector;
     }
 
-    std::vector<MODULEENTRY32W> GetModules(const DWORD& processId) {
+    std::vector<MODULEENTRY32W> GetModules(const DWORD processId) {
         std::vector<MODULEENTRY32W> modulesSequence;
         MODULEENTRY32               module;
         ZeroMemory(&module, sizeof(module));
