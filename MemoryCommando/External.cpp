@@ -1,10 +1,91 @@
 #include "External.h"
 
+#include <Psapi.h>
+#include <boost/locale/encoding_utf.hpp>
+#include "CreateToolhelp32SnapshotException.h"
+#include "GetProcessImageFileNameException.h"
+#include "Module32Exception.h"
+#include "Process32Exception.h"
+
 namespace MemoryCommando::External {
     using namespace Exceptions;
     namespace conv = boost::locale::conv;
     namespace algorithm = boost::algorithm;
     namespace locale = boost::locale;
+
+    PROCESSENTRY32W GetProcess(DWORD processId) {
+        std::vector<PROCESSENTRY32W> processes = GetRunningProcesses();
+        PROCESSENTRY32W wantedProcess{};
+
+        for (auto currentProcess : processes) {
+            if (processId == currentProcess.th32ProcessID)
+                wantedProcess = currentProcess;
+        }
+
+        return wantedProcess;
+    }
+
+    PROCESSENTRY32W GetProcess(const std::string& processName, const size_t processNumber) {
+        const std::wstring processNameWide = boost::locale::conv::utf_to_utf<WCHAR>(processName);
+        const PROCESSENTRY32W wantedProcess = GetProcess(processNameWide, processNumber);
+        return wantedProcess;
+    }
+
+    PROCESSENTRY32W GetProcess(const std::wstring& processName, size_t processNumber) {
+        auto processes = GetRunningProcesses();
+        PROCESSENTRY32W wantedProcess{};
+
+        size_t currentProcessNumber = 0;
+        for (auto currentProcess : processes) {
+            if (boost::iequals(processName, currentProcess.szExeFile)) {
+                currentProcessNumber++;
+
+                if (currentProcessNumber >= processNumber) {
+                    wantedProcess = currentProcess;
+                    break;
+                }
+            }
+        }
+
+        return wantedProcess;
+    }
+
+    HANDLE GetProcessHandle(const DWORD processId, const DWORD processAccess) {
+        const HANDLE processHandle = ::OpenProcess(processAccess, 0, processId);
+
+        if (!processHandle)
+            throw Process32Exception("OpenProcess couldn't get a handle to the specified processId", GetLastError());
+
+        return processHandle;
+    }
+
+    HANDLE GetProcessHandle(const std::wstring& processName, const size_t processNumber, const DWORD processAccess) {
+        const PROCESSENTRY32W process = GetProcess(processName, processNumber);
+        const DWORD  processId = process.th32ProcessID;
+        const HANDLE processHandle = GetProcessHandle(processId, processAccess);
+
+        return processHandle;
+    }
+
+    std::wstring GetProcessName(HANDLE processHandle) {
+        const auto processNameBuffer = std::unique_ptr<WCHAR[]>(new WCHAR[MAX_PATH]);
+
+        const DWORD nameLength = GetProcessImageFileName(processHandle, processNameBuffer.get(), sizeof(WCHAR) * MAX_PATH);
+
+        if (!nameLength)
+            throw GetProcessImageFileNameException("Couldn't get process name from the processHandle.", GetLastError());
+
+        const std::wstring processName(processNameBuffer.get());
+
+        return processName;
+    }
+
+    std::wstring GetProcessName(DWORD processId) {
+        const HANDLE processHandle = GetProcessHandle(processId, PROCESS_QUERY_LIMITED_INFORMATION);
+        const std::wstring processName = GetProcessName(processHandle);
+
+        return processName;
+    }
 
     std::vector<PROCESSENTRY32W> GetRunningProcesses() {
         std::vector<PROCESSENTRY32W> runningProcesses;
