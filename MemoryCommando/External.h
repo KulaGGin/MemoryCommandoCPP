@@ -1,30 +1,29 @@
 #pragma once
 #include <windows.h>
 
-#include <boost/locale/encoding_utf.hpp>
 #include <string>
 #include <TlHelp32.h>
 #include <wil/resource.h>
 #include <boost/algorithm/string.hpp>
-#include <Psapi.h>
-#include "CreateToolhelp32SnapshotException.h"
-#include "Process32Exception.h"
 #include <string>
-#include "Module32Exception.h"
 
 namespace MemoryCommando::External {
-    std::vector<PROCESSENTRY32> GetRunningProcesses();
+    std::vector<PROCESSENTRY32W> GetRunningProcesses();
 
-    DWORD GetProcessId(const std::wstring& processName, const size_t processNumber);
+    PROCESSENTRY32W GetProcess(DWORD processId);
+    PROCESSENTRY32W GetProcess(const std::string& processName, size_t processNumber = 1);
+    PROCESSENTRY32W GetProcess(const std::wstring& processName, size_t processNumber = 1);
+
     DWORD GetProcessId(HANDLE processHandle);
+    DWORD GetProcessId(const std::wstring& processName, size_t processNumber = 1);
 
-    HANDLE OpenProcess(DWORD processId, DWORD processAccess);
-    HANDLE OpenProcess(const std::wstring& processName, size_t processNumber, DWORD processAccess);
+    HANDLE GetProcessHandle(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
+    HANDLE GetProcessHandle(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
     std::wstring GetProcessName(HANDLE processHandle);
     std::wstring GetProcessName(DWORD processId);
 
     std::vector<MODULEENTRY32W> GetModules(DWORD processId);
-    std::vector<HMODULE> GetModulesHandles(HANDLE processHandle);
     MODULEENTRY32W GetModule(DWORD processId, const std::wstring& moduleName);
+    uintptr_t GetModuleBaseAddress(DWORD processId, const std::wstring& moduleName);
 }
