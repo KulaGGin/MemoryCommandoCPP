@@ -22,6 +22,7 @@
     <ClCompile Include="BaseException.cpp" />
     <ClCompile Include="CreateToolhelp32SnapshotException.cpp" />
     <ClCompile Include="External.cpp" />
+    <ClCompile Include="GetProcessIdException.cpp" />
     <ClCompile Include="GetProcessImageFileNameException.cpp" />
     <ClCompile Include="MemoryCommando.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="BaseException.h" />
     <ClInclude Include="CreateToolhelp32SnapshotException.h" />
     <ClInclude Include="External.h" />
+    <ClInclude Include="GetProcessIdException.h" />
     <ClInclude Include="GetProcessImageFileNameException.h" />
     <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="MemoryManager.h" />

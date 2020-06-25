@@ -29,6 +29,9 @@
     <ClCompile Include="GetProcessImageFileNameException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
+    <ClCompile Include="GetProcessIdException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryProtection.h">
@@ -63,6 +66,9 @@
     </ClInclude>
     <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="GetProcessImageFileNameException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="GetProcessIdException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
