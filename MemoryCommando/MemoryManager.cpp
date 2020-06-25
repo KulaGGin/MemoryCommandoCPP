@@ -20,35 +20,30 @@ namespace MemoryCommando::External {
     namespace locale = boost::locale;
 
     MemoryManager::MemoryManager(DWORD processId, DWORD processAccess) {
-        _processHandle = OpenProcess(processId, processAccess);
+        _processHandle = GetProcessHandle(processId, processAccess);
+        _processId = GetProcessId(_processHandle);
+        _processName = GetProcessName(_processHandle);
     }
 
     MemoryManager::MemoryManager(const std::wstring& processName, size_t processNumber, DWORD processAccess) {
-        _processHandle = OpenProcess(processName, processNumber, processAccess);
+        _processHandle = GetProcessHandle(processName, processNumber, processAccess);
+        _processId = GetProcessId(_processHandle);
+        _processName = GetProcessName(_processHandle);
     }
 
     MemoryManager::MemoryManager(const std::string& processName, size_t processNumber, DWORD processAccess) {
         const std::wstring processNameWide = conv::utf_to_utf<WCHAR>(processName);
-        _processHandle = OpenProcess(processNameWide, processNumber, processAccess);
+        _processHandle = GetProcessHandle(processNameWide, processNumber, processAccess);
+        _processId = GetProcessId(_processHandle);
+        _processName = GetProcessName(_processHandle);
     }
 
     std::vector<MODULEENTRY32W> MemoryManager::GetModules() const {
-        const DWORD processId = ::GetProcessId(_processHandle);
-        return External::GetModules(processId);
+        return External::GetModules(_processId);
     }
 
-    std::vector<HMODULE> MemoryManager::GetModulesHandles() const {
-        return External::GetModulesHandles(_processHandle);
+    MODULEENTRY32W MemoryManager::GetModule(const std::wstring& moduleName) {
+        const auto module = External::GetModule(_processId, moduleName);
+        return module;
     }
-    }
-
-    //HMODULE MemoryManagerExternal::GetModule(wstring moduleName) {
-    //    HMODULE module;
-    //    vector<HMODULE> modules = GetModulesHandles();
-    //    for(auto module : modules) {
-    //        module.name
-    //    }
-
-    //    return module;
-    //}
 }

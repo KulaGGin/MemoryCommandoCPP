@@ -17,43 +17,44 @@ namespace MemoryCommando::External {
         MemoryManager(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
         explicit MemoryManager(const std::string& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
-        std::vector<MODULEENTRY32> GetModules() const;
-        std::vector<HMODULE> GetModulesHandles() const;
-        HMODULE GetModule(std::wstring moduleName);
-        DWORD_PTR GetModuleBaseAddress(std::wstring moduleName);
-        size_t GetModuleSize(std::wstring moduleName);
-        SYSTEM_INFO GetProcessInfo();
-        DWORD_PTR AllocateVirtualMemory(DWORD_PTR baseAddress, size_t allocationSize, DWORD protectionType);
-        DWORD_PTR AllocateVirtualMemory(size_t allocationSize);
-        void FreeVirtualMemory(DWORD_PTR baseAddress);
-        DWORD ProtectVirtualMemory(DWORD_PTR baseAddress, size_t protectionSize, DWORD protectionType);
-        MEMORY_BASIC_INFORMATION QueryVirtualMemory(DWORD_PTR baseAddress);
+        std::vector<MODULEENTRY32W> GetModules() const;
+        MODULEENTRY32W GetModule(const std::wstring& moduleName);
+        uintptr_t GetModuleBaseAddress(const std::wstring& moduleName);
+        size_t GetModuleSize(const std::wstring& moduleName);
+        PROCESSENTRY32W GetProcess();
+        uintptr_t AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD protectionType);
+        uintptr_t AllocateVirtualMemory(size_t allocationSize);
+        void FreeVirtualMemory(uintptr_t baseAddress);
+        DWORD ProtectVirtualMemory(uintptr_t baseAddress, size_t protectionSize, DWORD protectionType);
+        MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress);
 
-        std::vector<BYTE> ReadVirtualMemory(DWORD_PTR baseAddress, size_t sequenceSize);
-        std::vector<BYTE> ReadVirtualMemory(std::vector<DWORD_PTR> pointers, size_t sequenceSize);
-        std::vector<BYTE> ReadVirtualMemory(std::wstring moduleName, DWORD_PTR pointer, size_t sequenceSize);
-        std::vector<BYTE> ReadVirtualMemory(std::wstring moduleName, std::vector<DWORD_PTR> pointers, size_t sequenceSize);
-        template<typename TStructure> TStructure ReadVirtualMemory(DWORD_PTR baseAddress);
-        template<typename TStructure> TStructure ReadVirtualMemory(std::vector<DWORD_PTR> pointers);
-        template<typename TStructure> TStructure ReadVirtualMemory(std::wstring moduleName, DWORD_PTR offset);
-        template<typename TStructure> TStructure ReadVirtualMemory(std::wstring moduleName, std::vector<DWORD_PTR> offsets);
+        std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, size_t sequenceSize);
+        std::vector<BYTE> ReadVirtualMemory(std::vector<uintptr_t> pointers, size_t sequenceSize);
+        std::vector<BYTE> ReadVirtualMemory(std::wstring moduleName, uintptr_t pointer, size_t sequenceSize);
+        std::vector<BYTE> ReadVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> pointers, size_t sequenceSize);
+        template<typename TStructure> TStructure ReadVirtualMemory(uintptr_t baseAddress);
+        template<typename TStructure> TStructure ReadVirtualMemory(std::vector<uintptr_t> pointers);
+        template<typename TStructure> TStructure ReadVirtualMemory(std::wstring moduleName, uintptr_t offset);
+        template<typename TStructure> TStructure ReadVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets);
 
-        void WriteVirtualMemory(DWORD_PTR baseAddress, std::vector<byte> byteSequence);
-        void WriteVirtualMemory(std::vector<DWORD_PTR> pointers, std::vector<byte> byteSequence);
-        void WriteVirtualMemory(std::wstring moduleName, DWORD_PTR offset, std::vector<byte> byteSequence);
-        void WriteVirtualMemory(std::wstring moduleName, std::vector<DWORD_PTR> offset, std::vector<byte> byteSequence);
-        template<typename TStructure> void WriteVirtualMemory(DWORD_PTR baseAddress, TStructure structure);
-        template<typename TStructure> void WriteVirtualMemory(std::vector<DWORD_PTR> pointers, TStructure structure);
-        template<typename TStructure> void WriteVirtualMemory(std::wstring moduleName, DWORD_PTR offset, TStructure structure);
-        template<typename TStructure> void WriteVirtualMemory(std::wstring moduleName, std::vector<DWORD_PTR> offsets, TStructure structure);
+        void WriteVirtualMemory(uintptr_t baseAddress, std::vector<byte> byteSequence);
+        void WriteVirtualMemory(std::vector<uintptr_t> pointers, std::vector<byte> byteSequence);
+        void WriteVirtualMemory(std::wstring moduleName, uintptr_t offset, std::vector<byte> byteSequence);
+        void WriteVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offset, std::vector<byte> byteSequence);
+        template<typename TStructure> void WriteVirtualMemory(uintptr_t baseAddress, TStructure structure);
+        template<typename TStructure> void WriteVirtualMemory(std::vector<uintptr_t> pointers, TStructure structure);
+        template<typename TStructure> void WriteVirtualMemory(std::wstring moduleName, uintptr_t offset, TStructure structure);
+        template<typename TStructure> void WriteVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets, TStructure structure);
 
-        DWORD_PTR GetAddress(std::vector<DWORD_PTR> pointers);
-        DWORD_PTR GetAddress(DWORD_PTR baseAddress, std::vector<DWORD_PTR> pointers);
-        DWORD_PTR GetAddress(std::wstring moduleName, DWORD_PTR offset);
-        DWORD_PTR GetAddress(std::wstring moduleName, std::vector<DWORD_PTR> offsets);
+        uintptr_t GetAddress(std::vector<uintptr_t> pointers);
+        uintptr_t GetAddress(uintptr_t baseAddress, std::vector<uintptr_t> pointers);
+        uintptr_t GetAddress(std::wstring moduleName, uintptr_t offset);
+        uintptr_t GetAddress(std::wstring moduleName, std::vector<uintptr_t> offsets);
         // todo GetAddress from array of bytes and offset but add it to the MemoryCommander probably.
     private:
         HANDLE _processHandle = nullptr;
+        DWORD _processId{};
+        std::wstring _processName;
 
         friend class MemoryCommandoTests::MemoryManagerExternalTests;
     };
