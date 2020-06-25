@@ -40,7 +40,7 @@ namespace MemoryCommandoTests {
         try {
             const MemoryManager memoryManagerExternal("Non existent process name.");
         }
-        catch(const Process32Exception&) {
+        catch(const std::runtime_error&) {
             Assert::IsTrue(true);
             return;
         }
@@ -49,10 +49,10 @@ namespace MemoryCommandoTests {
     }
 
     void MemoryManagerExternalTests::GetModulesHandles() {
-        MemoryManager memoryManagerExternal(_currentProcessId);
-        std::vector<HMODULE> modules = memoryManagerExternal.GetModulesHandles();
+        const MemoryManager memoryManagerExternal(_currentProcessId);
+        const auto modules = memoryManagerExternal.GetModules();
 
-        Assert::IsTrue(modules.size());
+        Assert::IsTrue(!modules.empty());
     }
 
     std::string MemoryManagerExternalTests::GetCurrentProcessName() {

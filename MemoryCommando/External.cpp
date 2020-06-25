@@ -121,25 +121,6 @@ namespace MemoryCommando::External {
         return runningProcesses;
     }
 
-    MODULEENTRY32W GetModule(const DWORD processId, const std::wstring& moduleName) {
-        std::vector<MODULEENTRY32W> modules = GetModules(processId);
-
-        for (auto currentModule : modules) {
-            if (algorithm::iequals(moduleName, currentModule.szModule))
-                return currentModule;
-        }
-
-        throw std::runtime_error("Couldn't find a module with the specified name in the modules list.");
-    }
-
-    uintptr_t GetModuleBaseAddress(DWORD processId, const std::wstring& moduleName) {
-        uintptr_t moduleBaseAddress;
-        auto module = GetModule(processId, moduleName);
-        moduleBaseAddress = uintptr_t(module.modBaseAddr);
-
-        return moduleBaseAddress;
-    }
-
     std::vector<MODULEENTRY32W> GetModules(const DWORD processId) {
         std::vector<MODULEENTRY32W> modules;
         MODULEENTRY32               module;
@@ -165,4 +146,19 @@ namespace MemoryCommando::External {
 
         return modules;
     }
-}
+
+    MODULEENTRY32W GetModule(const DWORD processId, const std::wstring& moduleName) {
+        std::vector<MODULEENTRY32W> modules = GetModules(processId);
+
+        for (auto currentModule : modules) {
+            if (algorithm::iequals(moduleName, currentModule.szModule))
+                return currentModule;
+        }
+
+        throw std::runtime_error("Couldn't find a module with the specified name in the modules list.");
+    }
+
+    uintptr_t GetModuleBaseAddress(DWORD processId, const std::wstring& moduleName) {
+        auto module = GetModule(processId, moduleName);
+        return uintptr_t(module.modBaseAddr);
+    }
