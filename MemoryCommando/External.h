@@ -26,4 +26,5 @@ namespace MemoryCommando::External {
     std::vector<MODULEENTRY32W> GetModules(DWORD processId);
     MODULEENTRY32W GetModule(DWORD processId, const std::wstring& moduleName);
     uintptr_t GetModuleBaseAddress(DWORD processId, const std::wstring& moduleName);
+    size_t GetModuleSize(DWORD processId, const std::wstring& moduleName);
 }

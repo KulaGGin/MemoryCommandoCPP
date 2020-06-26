@@ -162,3 +162,8 @@ namespace MemoryCommando::External {
         auto module = GetModule(processId, moduleName);
         return uintptr_t(module.modBaseAddr);
     }
+
+    size_t GetModuleSize(DWORD processId, const std::wstring& moduleName) {
+        const auto module = GetModule(processId, moduleName);
+        return size_t(module.modBaseSize);
+    }
