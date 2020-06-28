@@ -51,6 +51,8 @@ namespace MemoryCommando::External {
         uintptr_t GetAddress(std::wstring moduleName, uintptr_t offset);
         uintptr_t GetAddress(std::wstring moduleName, std::vector<uintptr_t> offsets);
         // todo GetAddress from array of bytes and offset but add it to the MemoryCommander probably.
+
+        // todo Commit, Reserve, Free memory functions that auto free memory on object destruction.
     private:
         HANDLE _processHandle = nullptr;
         DWORD _processId{};
