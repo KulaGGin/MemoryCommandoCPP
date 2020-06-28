@@ -12,12 +12,38 @@
 #include "VirtualAllocExException.h"
 #include "VirtualFreeExException.h"
 #include "VirtualProtectExException.h"
+#include "WriteProcessMemoryException.h"
 
 namespace MemoryCommando::External {
     using namespace Exceptions;
     namespace conv = boost::locale::conv;
     namespace algorithm = boost::algorithm;
     namespace locale = boost::locale;
+
+    std::vector<PROCESSENTRY32W> GetRunningProcesses() {
+        std::vector<PROCESSENTRY32W> runningProcesses{};
+        PROCESSENTRY32 process{};
+        process.dwSize = sizeof(process);
+
+        const wil::unique_tool_help_snapshot processesSnapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
+
+        if (!processesSnapshot)
+            throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
+
+        bool copiedToBuffer = Process32First(processesSnapshot.get(), &process);
+        if (!copiedToBuffer)
+            throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
+
+        do {
+            runningProcesses.push_back(process);
+            copiedToBuffer = Process32Next(processesSnapshot.get(), &process);
+        } while (copiedToBuffer);
+
+        if (!copiedToBuffer && GetLastError() != ERROR_NO_MORE_FILES)
+            throw Process32Exception("Process32Next failed to fill the buffer.", GetLastError());
+
+        return runningProcesses;
+    }
 
     PROCESSENTRY32W GetProcess(const DWORD processId) {
         std::vector<PROCESSENTRY32W> processes = GetRunningProcesses();
@@ -30,10 +56,11 @@ namespace MemoryCommando::External {
         throw std::runtime_error("Couldn't find a process with the specified processId in the process list.");
     }
 
-    PROCESSENTRY32W GetProcess(const std::string& processName, const size_t processNumber) {
-        const std::wstring processNameWide = boost::locale::conv::utf_to_utf<WCHAR>(processName);
-        const PROCESSENTRY32W wantedProcess = GetProcess(processNameWide, processNumber);
-        return wantedProcess;
+    PROCESSENTRY32W GetProcess(HANDLE processHandle) {
+        const DWORD processId = GetProcessId(processHandle);
+        const PROCESSENTRY32W process = GetProcess(processId);
+
+        return process;
     }
 
     PROCESSENTRY32W GetProcess(const std::wstring& processName, const size_t processNumber) {
@@ -63,7 +90,7 @@ namespace MemoryCommando::External {
     }
 
     DWORD GetProcessId(const std::wstring& processName, const size_t processNumber) {
-        const auto process = GetProcess(processName, processNumber);
+        const PROCESSENTRY32W process = GetProcess(processName, processNumber);
         const DWORD processId = process.th32ProcessID;
 
         return processId;
@@ -86,7 +113,8 @@ namespace MemoryCommando::External {
     }
 
     std::wstring GetProcessName(const HANDLE processHandle) {
-        const auto processName = GetProcessName(GetProcessId(processHandle));
+        const auto process = GetProcess(processHandle);
+        const std::wstring processName = process.szExeFile;
 
         return processName;
     }
@@ -96,31 +124,6 @@ namespace MemoryCommando::External {
         const std::wstring processName = process.szExeFile;
 
         return processName;
-    }
-
-    std::vector<PROCESSENTRY32W> GetRunningProcesses() {
-        std::vector<PROCESSENTRY32W> runningProcesses{};
-        PROCESSENTRY32 process{};
-        process.dwSize = sizeof(process);
-
-        const wil::unique_tool_help_snapshot processesSnapshot{CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)};
-
-        if(!processesSnapshot)
-            throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
-
-        bool copiedToBuffer = Process32First(processesSnapshot.get(), &process);
-        if(!copiedToBuffer)
-            throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
-
-        do {
-            runningProcesses.push_back(process);
-            copiedToBuffer = Process32Next(processesSnapshot.get(), &process);
-        } while (copiedToBuffer);
-
-        if(!copiedToBuffer && GetLastError() != ERROR_NO_MORE_FILES)
-            throw Process32Exception("Process32Next failed to fill the buffer.", GetLastError());
-
-        return runningProcesses;
     }
 
     std::vector<MODULEENTRY32W> GetModules(const DWORD processId) {
@@ -148,7 +151,21 @@ namespace MemoryCommando::External {
         return modules;
     }
 
-    MODULEENTRY32W GetModule(const DWORD processId, const std::wstring& moduleName) {
+    std::vector<MODULEENTRY32W> GetModules(HANDLE processHandle) {
+        const auto processId = GetProcessId(processHandle);
+        const auto modules = GetModules(processId);
+
+        return modules;
+    }
+
+    std::vector<MODULEENTRY32W> GetModules(const std::wstring& processName, size_t processNumber) {
+        const auto processId = GetProcessId(processName, processNumber);
+        const auto modules = GetModules(processId);
+
+        return modules;
+    }
+
+    MODULEENTRY32W GetModule(const std::wstring& moduleName, const DWORD processId) {
         std::vector<MODULEENTRY32W> modules = GetModules(processId);
 
         for (auto currentModule : modules) {
@@ -159,13 +176,50 @@ namespace MemoryCommando::External {
         throw std::runtime_error("Couldn't find a module with the specified name in the modules list.");
     }
 
-    uintptr_t GetModuleBaseAddress(const DWORD processId, const std::wstring& moduleName) {
-        auto module = GetModule(processId, moduleName);
+    MODULEENTRY32W GetModule(const std::wstring& moduleName, HANDLE processHandle) {
+        const auto processId = GetProcessId(processHandle);
+        const auto module = GetModule(moduleName, processId);
+
+        return module;
+    }
+
+    MODULEENTRY32W GetModule(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
+        const auto processId = GetProcessId(processName, processNumber);
+        const auto module = GetModule(moduleName, processId);
+
+        return module;
+    }
+
+    uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, const DWORD processId) {
+        auto module = GetModule(moduleName, processId);
+
+        return uintptr_t(module.modBaseAddr);
+    }
+
+    uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, HANDLE processHandle) {
+        const auto module = GetModule(moduleName, processHandle);
+
+        return uintptr_t(module.modBaseAddr);
+    }
+
+    uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
+        const auto module = GetModule(moduleName,processName, processNumber);
+
         return uintptr_t(module.modBaseAddr);
     }
 
     size_t GetModuleSize(const DWORD processId, const std::wstring& moduleName) {
-        const auto module = GetModule(processId, moduleName);
+        const auto module = GetModule(moduleName, processId);
+        return size_t(module.modBaseSize);
+    }
+
+    size_t GetModuleSize(const std::wstring& moduleName, HANDLE processHandle) {
+        const auto module = GetModule(moduleName, processHandle);
+        return size_t(module.modBaseSize);
+    }
+
+    size_t GetModuleSize(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
+        const auto module = GetModule(moduleName, processName, processNumber);
         return size_t(module.modBaseSize);
     }
 
@@ -246,6 +300,106 @@ namespace MemoryCommando::External {
         return structure;
     }
 
+    template <typename TStructure>
+    TStructure ReadVirtualMemory(HANDLE processHandle, std::vector<uintptr_t> pointers) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, pointers);
+        TStructure structure = ReadVirtualMemory<TStructure>(processHandle, calculatedAddress);
+
+        return structure;
+    }
+
+    template <typename TStructure>
+    TStructure ReadVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, std::vector<uintptr_t> offsets) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, baseAddress, offsets);
+        TStructure structure = ReadVirtualMemory<TStructure>(processHandle, calculatedAddress);
+
+        return structure;
+    }
+
+    template <typename TStructure>
+    TStructure ReadVirtualMemory(HANDLE processHandle, const std::wstring& moduleName, uintptr_t offset) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, moduleName, offset);
+        TStructure structure = ReadVirtualMemory<TStructure>(processHandle, calculatedAddress);
+
+        return structure;
+    }
+
+    template <typename TStructure>
+    TStructure ReadVirtualMemory(HANDLE processHandle, std::wstring moduleName, std::vector<uintptr_t> offsets) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, moduleName, offsets);
+        TStructure structure = ReadVirtualMemory<TStructure>(processHandle, calculatedAddress);
+
+        return structure;
+    }
+
+    void WriteVirtualMemory(HANDLE processHandle, uintptr_t address, const std::vector<byte>& byteSequence) {
+        const BYTE* firstBytePointer = &byteSequence[0];
+        SIZE_T bytesWritten;
+
+        const bool didWrite = WriteProcessMemory(processHandle, LPVOID(address), firstBytePointer, byteSequence.size(), &bytesWritten);
+
+        if(!didWrite)
+            throw WriteProcessMemoryException("WriteProcessMemory couldn't write memory and failed with the error " + std::to_string(GetLastError()) + ".", GetLastError());
+        if (bytesWritten != byteSequence.size())
+            throw WriteProcessMemoryException("WriteProcessMemory couldn't fully write byteSequence into the memory", GetLastError());
+    }
+
+    void WriteVirtualMemory(HANDLE processHandle, std::vector<uintptr_t> pointers, std::vector<byte> byteSequence) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, pointers);
+        WriteVirtualMemory(processHandle, calculatedAddress, byteSequence);
+    }
+
+    void WriteVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, std::vector<uintptr_t> offsets, std::vector<byte> byteSequence) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, baseAddress, offsets);
+        WriteVirtualMemory(processHandle, calculatedAddress, byteSequence);
+    }
+
+    void WriteVirtualMemory(HANDLE processHandle, std::wstring moduleName, uintptr_t offset, std::vector<byte> byteSequence) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, moduleName, offset);
+        WriteVirtualMemory(processHandle, calculatedAddress, byteSequence);
+    }
+
+    void WriteVirtualMemory(HANDLE processHandle, const std::wstring& moduleName, std::vector<uintptr_t> offsets, std::vector<byte> byteSequence) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, moduleName, offsets);
+        WriteVirtualMemory(processHandle, calculatedAddress, byteSequence);
+    }
+
+    template <typename TStructure>
+    void WriteVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, TStructure structure) {
+        const size_t structureSize = sizeof(TStructure);
+        std::vector<BYTE> structureByteSequence{};
+
+        for(BYTE* bytePointer = &structure; bytePointer < &structure + structureSize; ++bytePointer) {
+            structureByteSequence.push_back(*bytePointer);
+        }
+
+        WriteVirtualMemory(processHandle, baseAddress, structureByteSequence);
+    }
+
+    template <typename TStructure>
+    void WriteVirtualMemory(HANDLE processHandle, std::vector<uintptr_t> pointers, TStructure structure) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, pointers);
+        WriteVirtualMemory(processHandle, calculatedAddress, structure);
+    }
+
+    template <typename TStructure>
+    void WriteVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, std::vector<uintptr_t> pointers, TStructure structure) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, baseAddress, pointers);
+        WriteVirtualMemory(processHandle, calculatedAddress, structure);
+    }
+
+    template <typename TStructure>
+    void WriteVirtualMemory(HANDLE processHandle, std::wstring moduleName, uintptr_t offset, TStructure structure) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, moduleName, offset);
+        WriteVirtualMemory(processHandle, calculatedAddress, structure);
+    }
+
+    template <typename TStructure>
+    void WriteVirtualMemory(HANDLE processHandle, std::wstring moduleName, std::vector<uintptr_t> offsets, TStructure structure) {
+        const uintptr_t calculatedAddress = GetAddress(processHandle, moduleName, offsets);
+        WriteVirtualMemory(processHandle, calculatedAddress, structure);
+    }
+
     uintptr_t GetAddress(HANDLE processHandle, std::vector<uintptr_t> pointers) {
         auto pointerIterator = pointers.begin();
         uintptr_t baseAddress = *pointerIterator;
@@ -270,16 +424,14 @@ namespace MemoryCommando::External {
     }
 
     uintptr_t GetAddress(HANDLE processHandle, const std::wstring& moduleName, uintptr_t offset) {
-        const DWORD processId = GetProcessId(processHandle);
-        const uintptr_t baseAddress = GetModuleBaseAddress(processId, moduleName);
+        const uintptr_t baseAddress = GetModuleBaseAddress(moduleName, processHandle);
         const uintptr_t calculatedAddress = baseAddress + offset;
 
         return calculatedAddress;
     }
 
     uintptr_t GetAddress(HANDLE processHandle, const std::wstring& moduleName, std::vector<uintptr_t> offsets) {
-        const DWORD processId = GetProcessId(processHandle);
-        const uintptr_t baseAddress = GetModuleBaseAddress(processId, moduleName);
+        const uintptr_t baseAddress = GetModuleBaseAddress(moduleName, processHandle);
         offsets.insert(offsets.begin(), baseAddress);
         const uintptr_t calculatedAddress = GetAddress(processHandle, offsets);
 

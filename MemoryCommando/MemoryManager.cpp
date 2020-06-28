@@ -43,11 +43,11 @@ namespace MemoryCommando::External {
     }
 
     MODULEENTRY32W MemoryManager::GetModule(const std::wstring& moduleName) {
-        return External::GetModule(_processId, moduleName);
+        return External::GetModule(moduleName, _processId);
     }
 
     uintptr_t MemoryManager::GetModuleBaseAddress(const std::wstring& moduleName) {
-        return External::GetModuleBaseAddress(_processId, moduleName);;
+        return External::GetModuleBaseAddress(moduleName, _processId);;
     }
 
     size_t MemoryManager::GetModuleSize(const std::wstring& moduleName) {
