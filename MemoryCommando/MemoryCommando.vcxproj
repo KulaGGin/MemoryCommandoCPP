@@ -29,7 +29,12 @@
     <ClCompile Include="Module32Exception.cpp" />
     <ClCompile Include="OpenProcessException.cpp" />
     <ClCompile Include="Process32Exception.cpp" />
+    <ClCompile Include="ReadProcessMemoryException.cpp" />
+    <ClCompile Include="VirtualAllocExException.cpp" />
+    <ClCompile Include="VirtualFreeExException.cpp" />
+    <ClCompile Include="VirtualProtectExException.cpp" />
     <ClCompile Include="WinAPIException.cpp" />
+    <ClCompile Include="WriteProcessMemoryException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseException.h" />
@@ -44,7 +49,12 @@
     <ClInclude Include="OpenProcessException.h" />
     <ClInclude Include="Process32Exception.h" />
     <ClInclude Include="ProcessAccess.h" />
+    <ClInclude Include="ReadProcessMemoryException.h" />
+    <ClInclude Include="VirtualAllocExException.h" />
+    <ClInclude Include="VirtualFreeExException.h" />
+    <ClInclude Include="VirtualProtectExException.h" />
     <ClInclude Include="WinAPIException.h" />
+    <ClInclude Include="WriteProcessMemoryException.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

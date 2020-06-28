@@ -32,6 +32,17 @@
     <ClCompile Include="GetProcessIdException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
+    <ClCompile Include="VirtualAllocExException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualFreeExException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualProtectExException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadProcessMemoryException.cpp" />
+    <ClCompile Include="WriteProcessMemoryException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryProtection.h">
@@ -71,6 +82,17 @@
     <ClInclude Include="GetProcessIdException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="VirtualAllocExException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualFreeExException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualProtectExException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadProcessMemoryException.h" />
+    <ClInclude Include="WriteProcessMemoryException.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
