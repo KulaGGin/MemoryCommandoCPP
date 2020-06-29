@@ -27,6 +27,7 @@
     <ClCompile Include="MemoryCommando.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Module32Exception.cpp" />
+    <ClCompile Include="VirtualQueryExException.cpp" />
     <ClCompile Include="OpenProcessException.cpp" />
     <ClCompile Include="Process32Exception.cpp" />
     <ClCompile Include="ReadProcessMemoryException.cpp" />
@@ -46,6 +47,7 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MemoryProtection.h" />
     <ClInclude Include="Module32Exception.h" />
+    <ClInclude Include="VirtualQueryExException.h" />
     <ClInclude Include="OpenProcessException.h" />
     <ClInclude Include="Process32Exception.h" />
     <ClInclude Include="ProcessAccess.h" />
