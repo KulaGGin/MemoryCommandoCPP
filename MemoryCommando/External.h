@@ -1,11 +1,9 @@
 #pragma once
-#include <windows.h>
-
+#include <apiquery2.h>
 #include <string>
 #include <TlHelp32.h>
-#include <wil/resource.h>
-#include <boost/algorithm/string.hpp>
-#include <string>
+#include <vector>
+
 
 namespace MemoryCommando::External {
     std::vector<PROCESSENTRY32W> GetRunningProcesses();
@@ -41,7 +39,8 @@ namespace MemoryCommando::External {
 
     uintptr_t AllocateVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, size_t allocationSize, DWORD allocationType = MEM_RESERVE | MEM_COMMIT, DWORD protectionType = PAGE_EXECUTE_READWRITE);
     void FreeVirtualMemory(HANDLE processHandle, uintptr_t address, DWORD freeType = MEM_RELEASE, size_t size = 0);
-    void ProtectVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, size_t protectionSize, DWORD protectionType);
+    void ProtectVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, size_t protectionSize, DWORD protectionType = PAGE_EXECUTE_READWRITE);
+    MEMORY_BASIC_INFORMATION QueryVirtualMemory(HANDLE processHandle, uintptr_t baseAddress);
     
     std::vector<BYTE> ReadVirtualMemory(HANDLE processHandle, uintptr_t address, int bytesNumber);
     std::vector<BYTE> ReadVirtualMemory(HANDLE processHandle, std::vector<uintptr_t> pointers, int bytesNumber);

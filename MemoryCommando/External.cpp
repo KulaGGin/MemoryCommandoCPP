@@ -1,4 +1,18 @@
+#include <windows.h>
+
 #include "External.h"
+#include <wil/resource.h>
+#include <string>
+#include <TlHelp32.h>
+#include <boost/algorithm/string.hpp>
+#include <string>
+
+
+#include <wil/resource.h>
+#include <string>
+#include <TlHelp32.h>
+#include <boost/algorithm/string.hpp>
+#include <string>
 
 #include <Psapi.h>
 #include <boost/locale/encoding_utf.hpp>
@@ -12,6 +26,7 @@
 #include "VirtualAllocExException.h"
 #include "VirtualFreeExException.h"
 #include "VirtualProtectExException.h"
+#include "VirtualQueryExException.h"
 #include "WriteProcessMemoryException.h"
 
 namespace MemoryCommando::External {
@@ -249,6 +264,17 @@ namespace MemoryCommando::External {
 
         if (!didProtect)
             throw VirtualProtectExException("VirtualProtectEx failed to protect memory with the error code " + std::to_string(GetLastError()) + ".", GetLastError());
+    }
+
+    MEMORY_BASIC_INFORMATION QueryVirtualMemory(HANDLE processHandle, uintptr_t baseAddress) {
+        MEMORY_BASIC_INFORMATION memoryBasicInformation{};
+
+        const SIZE_T bytesReturned = VirtualQueryEx(processHandle, LPVOID(baseAddress), &memoryBasicInformation, sizeof memoryBasicInformation);
+
+        if (!bytesReturned)
+            throw VirtualQueryExException("VirtualQueryEx couldn't query memory and failed with error code " + std::to_string(GetLastError()), GetLastError());
+
+        return memoryBasicInformation;
     }
 
     std::vector<BYTE> ReadVirtualMemory(HANDLE processHandle, uintptr_t address, int bytesNumber) {
