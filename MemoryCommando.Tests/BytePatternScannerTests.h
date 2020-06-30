@@ -1,4 +1,5 @@
 #pragma once
+
 #include <CppUnitTest.h>
 
 #include "../MemoryCommando/BytePatternScanner.h"
