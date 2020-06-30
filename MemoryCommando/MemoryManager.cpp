@@ -1,5 +1,6 @@
 #include "MemoryManager.h"
 #include "External.h"
+#include "Memory.h"
 
 namespace MemoryCommando::External {
     MemoryManager::MemoryManager(DWORD processId, DWORD processAccess) {
@@ -18,6 +19,11 @@ namespace MemoryCommando::External {
 
     DWORD MemoryManager::GetProcessId() {
         return _process.th32ProcessID;
+    }
+
+    SYSTEM_INFO MemoryManager::GetSystemInfo() {
+        const SYSTEM_INFO systemInfo = Memory::GetSystemInfo();
+        return systemInfo;
     }
 
     HANDLE MemoryManager::GetProcessHandle() {

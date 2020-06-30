@@ -17,6 +17,7 @@ namespace MemoryCommando::External {
 
         PROCESSENTRY32W GetProcess();
         DWORD GetProcessId();
+        SYSTEM_INFO GetSystemInfo();
         HANDLE GetProcessHandle();
         std::wstring GetProcessName();
         std::vector<MODULEENTRY32W> GetModules() const;
