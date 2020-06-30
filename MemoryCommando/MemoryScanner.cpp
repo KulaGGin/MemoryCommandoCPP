@@ -29,27 +29,6 @@ namespace MemoryCommando::External {
         return memoryRegions;
     }
 
-    std::vector<BYTE> MemoryScanner::GetMemoryRegionBytes(const _MEMORY_BASIC_INFORMATION& memoryRegion, uintptr_t scanStartAddress, uintptr_t scanEndAddress) {
-        const uintptr_t memoryRegionBaseAddress = uintptr_t(memoryRegion.BaseAddress);
-        const uintptr_t memoryRegionEndAddress = uintptr_t(memoryRegion.BaseAddress) + memoryRegion.RegionSize;
-        uintptr_t readStartAddress = memoryRegionBaseAddress;
-        uintptr_t readEndAddress = memoryRegionEndAddress;
-        size_t readSize;
-
-        if(scanStartAddress > memoryRegionBaseAddress) {
-            readStartAddress = scanStartAddress;
-        }
-        if(scanEndAddress < memoryRegionEndAddress) {
-            readEndAddress = scanEndAddress;
-        }
-
-        readSize = readEndAddress - readStartAddress;
-
-        std::vector<BYTE> memoryRegionBytes = _memoryManager.ReadVirtualMemory(readStartAddress, readSize);
-
-        return memoryRegionBytes;
-    }
-
     std::vector<uintptr_t> MemoryScanner::Scan(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::string& pattern) {
         std::vector<uintptr_t> scanResults{};
         SYSTEM_INFO processInfo = _memoryManager.GetSystemInfo();
@@ -64,13 +43,14 @@ namespace MemoryCommando::External {
         std::vector<MEMORY_BASIC_INFORMATION> memoryRegions = GetMemoryRegions(scanStartAddress, scanEndAddress);
 
         for(auto memoryRegion : memoryRegions) {
-            const std::vector<BYTE> memoryRegionBytes = GetMemoryRegionBytes(memoryRegion, scanStartAddress, scanEndAddress);
+            const std::vector<BYTE> memoryRegionBytes = _memoryManager.ReadVirtualMemory(uintptr_t(memoryRegion.BaseAddress), size_t(memoryRegion.RegionSize));
 
             std::vector<size_t> patternOffsets = _bytePatternScanner.Scan(memoryRegionBytes, pattern);
 
             for(auto patternOffset : patternOffsets) {
                 uintptr_t patternAddress = uintptr_t(memoryRegion.BaseAddress) + patternOffset;
-                scanResults.push_back(patternAddress);
+                if(patternAddress >= scanStartAddress && patternAddress <= scanEndAddress)
+                    scanResults.push_back(patternAddress);
             }
         }
 

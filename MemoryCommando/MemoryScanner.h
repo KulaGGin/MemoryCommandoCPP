@@ -20,7 +20,6 @@ namespace MemoryCommando::External {
         DWORD _memoryFilter = PAGE_NOACCESS & PAGE_GUARD;
 
         std::vector<MEMORY_BASIC_INFORMATION> GetMemoryRegions(uintptr_t startAddress, uintptr_t endAddress);
-        std::vector<BYTE> GetMemoryRegionBytes(const _MEMORY_BASIC_INFORMATION& memoryRegion, uintptr_t scanStartAddress, uintptr_t scanEndAddress);
 
         friend class MemoryCommandoTests::MemoryScannerTests;
     };
