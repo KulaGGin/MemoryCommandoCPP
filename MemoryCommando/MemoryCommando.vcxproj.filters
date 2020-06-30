@@ -41,9 +41,13 @@
     <ClCompile Include="VirtualProtectExException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="ReadProcessMemoryException.cpp" />
-    <ClCompile Include="WriteProcessMemoryException.cpp" />
     <ClCompile Include="VirtualQueryExException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteProcessMemoryException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadProcessMemoryException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -94,9 +98,13 @@
     <ClInclude Include="VirtualProtectExException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="ReadProcessMemoryException.h" />
-    <ClInclude Include="WriteProcessMemoryException.h" />
     <ClInclude Include="VirtualQueryExException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteProcessMemoryException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadProcessMemoryException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
