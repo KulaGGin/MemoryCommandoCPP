@@ -3,12 +3,11 @@
   <ItemGroup>
     <ClCompile Include="MemoryManagerExternalTests.cpp" />
     <ClCompile Include="BytePatternScannerTests.cpp" />
+    <ClCompile Include="MemoryScannerTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryManagerExternalTests.h" />
     <ClInclude Include="BytePatternScannerTests.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
+    <ClInclude Include="MemoryScannerTests.h" />
   </ItemGroup>
 </Project>

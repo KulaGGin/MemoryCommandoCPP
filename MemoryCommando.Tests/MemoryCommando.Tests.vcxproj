@@ -162,10 +162,12 @@
   <ItemGroup>
     <ClCompile Include="BytePatternScannerTests.cpp" />
     <ClCompile Include="MemoryManagerExternalTests.cpp" />
+    <ClCompile Include="MemoryScannerTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BytePatternScannerTests.h" />
     <ClInclude Include="MemoryManagerExternalTests.h" />
+    <ClInclude Include="MemoryScannerTests.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MemoryCommando\MemoryCommando.vcxproj">
