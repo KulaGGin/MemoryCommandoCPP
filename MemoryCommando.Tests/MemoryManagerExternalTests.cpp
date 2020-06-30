@@ -1,9 +1,6 @@
-#pragma once
 #include <windows.h>
 
 #include "CppUnitTest.h"
-
-#include "../MemoryCommando/External.h"
 
 #include "../MemoryCommando/MemoryManager.h"
 #include "../MemoryCommando/Process32Exception.h"
@@ -11,6 +8,9 @@
 #include "MemoryManagerExternalTests.h"
 
 #include <Psapi.h>
+
+#include <boost/locale/encoding_utf.hpp>
+#include <boost/algorithm/string.hpp>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -22,7 +22,7 @@ namespace MemoryCommandoTests {
     MemoryManagerExternalTests::MemoryManagerExternalTests() {
         _currentProcessId = GetCurrentProcessId();
         _currentProcessHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, _currentProcessId);
-        _currentProcessName = GetProcessName(_currentProcessId);
+        _currentProcessName = GetCurrentProcessName();
     }
 
     void MemoryManagerExternalTests::ConstructorProcessId() {
@@ -55,5 +55,13 @@ namespace MemoryCommandoTests {
         const auto modules = memoryManagerExternal.GetModules();
 
         Assert::IsTrue(!modules.empty());
+    }
+
+    std::string MemoryManagerExternalTests::GetCurrentProcessName() {
+        std::unique_ptr<CHAR[]> fileNamePointer(new CHAR[MAX_PATH]);
+        
+        GetModuleBaseNameA(_currentProcessHandle, NULL, fileNamePointer.get(), MAX_PATH * sizeof(CHAR));
+        std::string processName = boost::locale::conv::utf_to_utf<CHAR>(fileNamePointer.get());
+        return processName;
     }
 }

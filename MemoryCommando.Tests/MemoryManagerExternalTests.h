@@ -14,8 +14,8 @@ namespace MemoryCommandoTests {
     private:
         DWORD _currentProcessId;
         HANDLE _currentProcessHandle;
-        std::wstring _currentProcessName;
+        std::string _currentProcessName;
 
-        std::wstring GetCurrentProcessName();
+        std::string GetCurrentProcessName();
     };
 }
