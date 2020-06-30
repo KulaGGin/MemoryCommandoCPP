@@ -80,7 +80,7 @@ namespace MemoryCommando::Scan {
 
         // loop until pattern will overflow over the end of byte sequence.
         size_t offsetIndex = 0; // shift offset of the pattern with respect to byte sequence.
-        while(offsetIndex <= byteSequence.size() - filteredPattern.size()) {
+        while(offsetIndex < byteSequence.size() - lastByteIndex) {
 
             // Check the pattern at the current offset in the byte sequence
             // loop as long as we have a match between byte in the byte sequence and pattern byte
@@ -106,11 +106,9 @@ namespace MemoryCommando::Scan {
 
                     // Shift the pattern so that the next byte in the byte array aligns with the last occurrence of it in pattern.
                     // The condition memoryOffset+fullPatternLength < memoryRegion.Length is necessary for the case when pattern occurs at the end of text.
-                    if(byteSequence.size() - lastByteIndex > offsetIndex) {
-                        const auto byteShiftNumber = std::max(SSIZE_T(1), SSIZE_T(fullPatternIndex - badByteTable[byteSequenceByte]));
-                        offsetIndex += byteShiftNumber;
-                        break;
-                    }
+                    const auto byteShiftNumber = std::max(SSIZE_T(1), SSIZE_T(fullPatternIndex - badByteTable[byteSequenceByte]));
+                    offsetIndex += byteShiftNumber;
+                    break;
                 }
             }
         }
