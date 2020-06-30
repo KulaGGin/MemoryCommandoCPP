@@ -50,8 +50,12 @@
     <ClCompile Include="ReadProcessMemoryException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
+    <ClCompile Include="Memory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
     <ClCompile Include="BytePatternScanner.cpp">
       <Filter>Scan</Filter>
+      <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,8 +114,12 @@
     <ClInclude Include="ReadProcessMemoryException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="Memory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
     <ClInclude Include="BytePatternScanner.h">
       <Filter>Scan</Filter>
+      <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
