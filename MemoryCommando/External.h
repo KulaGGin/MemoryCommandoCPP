@@ -4,7 +4,6 @@
 #include <TlHelp32.h>
 #include <vector>
 
-
 namespace MemoryCommando::External {
     std::vector<PROCESSENTRY32W> GetRunningProcesses();
 
