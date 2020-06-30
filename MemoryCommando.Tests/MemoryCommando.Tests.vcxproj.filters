@@ -2,8 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="MemoryManagerExternalTests.cpp" />
+    <ClCompile Include="BytePatternScannerTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryManagerExternalTests.h" />
+    <ClInclude Include="BytePatternScannerTests.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

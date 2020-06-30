@@ -160,9 +160,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BytePatternScannerTests.cpp" />
     <ClCompile Include="MemoryManagerExternalTests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BytePatternScannerTests.h" />
     <ClInclude Include="MemoryManagerExternalTests.h" />
   </ItemGroup>
   <ItemGroup>
