@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseException.cpp" />
+    <ClCompile Include="BytePatternScanner.cpp" />
     <ClCompile Include="CreateToolhelp32SnapshotException.cpp" />
     <ClCompile Include="External.cpp" />
     <ClCompile Include="GetProcessIdException.cpp" />
@@ -39,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseException.h" />
+    <ClInclude Include="BytePatternScanner.h" />
     <ClInclude Include="CreateToolhelp32SnapshotException.h" />
     <ClInclude Include="External.h" />
     <ClInclude Include="GetProcessIdException.h" />
