@@ -54,7 +54,6 @@
       <Filter>Memory</Filter>
     </ClCompile>
     <ClCompile Include="BytePatternScanner.cpp">
-      <Filter>Scan</Filter>
       <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
@@ -118,7 +117,6 @@
       <Filter>Memory</Filter>
     </ClInclude>
     <ClInclude Include="BytePatternScanner.h">
-      <Filter>Scan</Filter>
       <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
@@ -137,9 +135,6 @@
     </Filter>
     <Filter Include="Memory\External">
       <UniqueIdentifier>{672a6db3-2779-46eb-9fb9-28c632d9f4d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scan">
-      <UniqueIdentifier>{552a5123-7532-48d0-8b12-09d084676330}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
