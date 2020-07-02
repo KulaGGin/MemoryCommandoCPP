@@ -25,6 +25,7 @@
     <ClCompile Include="External.cpp" />
     <ClCompile Include="GetProcessIdException.cpp" />
     <ClCompile Include="GetProcessImageFileNameException.cpp" />
+    <ClCompile Include="Internal.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MemoryCommando.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="External.h" />
     <ClInclude Include="GetProcessIdException.h" />
     <ClInclude Include="GetProcessImageFileNameException.h" />
+    <ClInclude Include="Internal.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="MemoryManager.h" />

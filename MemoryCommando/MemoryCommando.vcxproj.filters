@@ -59,6 +59,9 @@
     <ClCompile Include="BytePatternScanner.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
+    <ClCompile Include="Internal.cpp">
+      <Filter>Memory\Internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryProtection.h">
@@ -125,6 +128,9 @@
     <ClInclude Include="BytePatternScanner.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="Internal.h">
+      <Filter>Memory\Internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
@@ -141,6 +147,9 @@
     </Filter>
     <Filter Include="Memory\External">
       <UniqueIdentifier>{672a6db3-2779-46eb-9fb9-28c632d9f4d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Internal">
+      <UniqueIdentifier>{d7856151-2628-49ed-96b9-e4a9c3c99e65}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
