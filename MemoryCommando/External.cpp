@@ -29,39 +29,16 @@
 #include "VirtualQueryExException.h"
 #include "WriteProcessMemoryException.h"
 
+#include "Memory.h"
+
 namespace MemoryCommando::External {
     using namespace Exceptions;
     namespace conv = boost::locale::conv;
     namespace algorithm = boost::algorithm;
     namespace locale = boost::locale;
 
-    std::vector<PROCESSENTRY32W> GetRunningProcesses() {
-        std::vector<PROCESSENTRY32W> runningProcesses{};
-        PROCESSENTRY32 process{};
-        process.dwSize = sizeof(process);
-
-        const wil::unique_tool_help_snapshot processesSnapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
-
-        if (!processesSnapshot)
-            throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
-
-        bool copiedToBuffer = Process32First(processesSnapshot.get(), &process);
-        if (!copiedToBuffer)
-            throw Process32Exception("Process32First failed to fill the buffer.", GetLastError());
-
-        do {
-            runningProcesses.push_back(process);
-            copiedToBuffer = Process32Next(processesSnapshot.get(), &process);
-        } while (copiedToBuffer);
-
-        if (!copiedToBuffer && GetLastError() != ERROR_NO_MORE_FILES)
-            throw Process32Exception("Process32Next failed to fill the buffer.", GetLastError());
-
-        return runningProcesses;
-    }
-
     PROCESSENTRY32W GetProcess(const DWORD processId) {
-        std::vector<PROCESSENTRY32W> processes = GetRunningProcesses();
+        std::vector<PROCESSENTRY32W> processes = Memory::GetRunningProcesses();
 
         for (auto currentProcess : processes) {
             if (processId == currentProcess.th32ProcessID)
@@ -79,7 +56,7 @@ namespace MemoryCommando::External {
     }
 
     PROCESSENTRY32W GetProcess(const std::wstring& processName, const size_t processNumber) {
-        auto processes = GetRunningProcesses();
+        auto processes = Memory::GetRunningProcesses();
 
         size_t foundProcessNumber = 0;
         for (auto currentProcess : processes) {
