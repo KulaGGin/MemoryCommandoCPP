@@ -30,6 +30,7 @@ namespace MemoryCommando::External {
     uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, HANDLE processHandle);
     uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber = 1);
 
+    // todo make moduleName first argument to best match other signatures of overloaded methods.
     size_t GetModuleSize(DWORD processId, const std::wstring& moduleName);
     size_t GetModuleSize(const std::wstring& moduleName, HANDLE processHandle);
     size_t GetModuleSize(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber = 1);
@@ -51,18 +52,21 @@ namespace MemoryCommando::External {
     template<typename TStructure> TStructure ReadVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, std::vector<uintptr_t> offsets);
     template<typename TStructure> TStructure ReadVirtualMemory(HANDLE processHandle, const std::wstring& moduleName, uintptr_t offset);
     template<typename TStructure> TStructure ReadVirtualMemory(HANDLE processHandle, std::wstring moduleName, std::vector<uintptr_t> offsets);
+    // todo ReadVirtualMemory from array of bytes and offset
 
     void WriteVirtualMemory(HANDLE processHandle, uintptr_t address, const std::vector<byte>& byteSequence);
     void WriteVirtualMemory(HANDLE processHandle, std::vector<uintptr_t> pointers, std::vector<byte> byteSequence);
     void WriteVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, std::vector<uintptr_t> offsets, std::vector<byte> byteSequence);
     void WriteVirtualMemory(HANDLE processHandle, std::wstring moduleName, uintptr_t offset, std::vector<byte> byteSequence);
     void WriteVirtualMemory(HANDLE processHandle, const std::wstring& moduleName, std::vector<uintptr_t> offsets, std::vector<byte> byteSequence);
+    // todo WriteVirtualMemory from array of bytes and offset
 
     template<typename TStructure> void WriteVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, TStructure structure);
     template<typename TStructure> void WriteVirtualMemory(HANDLE processHandle, std::vector<uintptr_t> pointers, TStructure structure);
     template<typename TStructure> void WriteVirtualMemory(HANDLE processHandle, uintptr_t baseAddress, std::vector<uintptr_t> pointers, TStructure structure);
     template<typename TStructure> void WriteVirtualMemory(HANDLE processHandle, std::wstring moduleName, uintptr_t offset, TStructure structure);
     template<typename TStructure> void WriteVirtualMemory(HANDLE processHandle, std::wstring moduleName, std::vector<uintptr_t> offsets, TStructure structure);
+    // todo WriteVirtualMemory from array of bytes and offset
 
     uintptr_t GetAddress(HANDLE processHandle, std::vector<uintptr_t> pointers);
     uintptr_t GetAddress(HANDLE processHandle, uintptr_t baseAddress, std::vector<uintptr_t> offsets);
