@@ -1,5 +1,7 @@
 #pragma once
 #include <CppUnitTest.h>
+#include <minwindef.h>
+#include <strsafe.h>
 
 
 namespace MemoryCommandoTests {

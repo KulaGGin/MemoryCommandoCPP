@@ -10,4 +10,7 @@
     <ClInclude Include="BytePatternScannerTests.h" />
     <ClInclude Include="MemoryScannerTests.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

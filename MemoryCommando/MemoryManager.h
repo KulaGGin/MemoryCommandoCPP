@@ -3,6 +3,8 @@
 #include <TlHelp32.h>
 #include <string>
 #include <vector>
+#include <wil/resource.h>
+
 
 namespace MemoryCommandoTests {
     class MemoryManagerExternalTests;
@@ -60,7 +62,7 @@ namespace MemoryCommando::External {
         // todo Commit, Reserve, Free memory functions that auto free memory on object destruction.
     private:
         PROCESSENTRY32W _process;
-        HANDLE _processHandle = nullptr;
+        wil::unique_handle _processHandle;
 
         friend class MemoryCommandoTests::MemoryManagerExternalTests;
     };

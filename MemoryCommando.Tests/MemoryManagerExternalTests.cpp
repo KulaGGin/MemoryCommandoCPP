@@ -1,16 +1,20 @@
 #include <windows.h>
 
+#include "MemoryManagerExternalTests.h"
+
 #include "CppUnitTest.h"
 
 #include "../MemoryCommando/MemoryManager.h"
 #include "../MemoryCommando/Process32Exception.h"
 
-#include "MemoryManagerExternalTests.h"
+
 
 #include <Psapi.h>
 
 #include <boost/locale/encoding_utf.hpp>
 #include <boost/algorithm/string.hpp>
+
+
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -27,7 +31,7 @@ namespace MemoryCommandoTests {
 
     void MemoryManagerExternalTests::ConstructorProcessId() {
         const MemoryManager memoryManagerExternal(_currentProcessId);
-		Assert::IsTrue(memoryManagerExternal._processHandle);
+		Assert::IsTrue(memoryManagerExternal._processHandle.get());
     }
 
     void MemoryManagerExternalTests::ConstructorProcessNameWide() {
@@ -35,7 +39,7 @@ namespace MemoryCommandoTests {
 
         const MemoryManager memoryManagerExternal(wCurrentProcessName);
 
-		Assert::IsTrue(memoryManagerExternal._processHandle);
+		Assert::IsTrue(memoryManagerExternal._processHandle.get());
     }
 
     void MemoryManagerExternalTests::ConstructorNonExistentName() {
