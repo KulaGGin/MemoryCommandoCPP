@@ -38,38 +38,15 @@ namespace MemoryCommando::External {
     namespace locale = boost::locale;
 
     PROCESSENTRY32W GetProcess(const DWORD processId) {
-        std::vector<PROCESSENTRY32W> processes = Memory::GetRunningProcesses();
-
-        for (auto currentProcess : processes) {
-            if (processId == currentProcess.th32ProcessID)
-                return currentProcess;
-        }
-
-        throw std::runtime_error("Couldn't find a process with the specified processId in the process list.");
+        return Memory::GetProcess(processId);
     }
 
     PROCESSENTRY32W GetProcess(HANDLE processHandle) {
-        const DWORD processId = GetProcessId(processHandle);
-        const PROCESSENTRY32W process = GetProcess(processId);
-
-        return process;
+        return Memory::GetProcess(processHandle);
     }
 
     PROCESSENTRY32W GetProcess(const std::wstring& processName, const size_t processNumber) {
-        auto processes = Memory::GetRunningProcesses();
-
-        size_t foundProcessNumber = 0;
-        for (auto currentProcess : processes) {
-            if (boost::iequals(processName, currentProcess.szExeFile)) {
-                foundProcessNumber++;
-
-                if (foundProcessNumber >= processNumber) {
-                    return currentProcess;
-                }
-            }
-        }
-
-        throw std::runtime_error("Couldn't find a process with the specified process name in the process list.");
+        return Memory::GetProcess(processName, processNumber);
     }
 
     DWORD GetProcessId(const HANDLE processHandle) {
@@ -119,28 +96,7 @@ namespace MemoryCommando::External {
     }
 
     std::vector<MODULEENTRY32W> GetModules(const DWORD processId) {
-        std::vector<MODULEENTRY32W> modules{};
-        MODULEENTRY32               module{};
-        module.dwSize = sizeof(module);
-
-        const auto modulesSnapshot = wil::unique_tool_help_snapshot(CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, processId));
-
-        if (!modulesSnapshot)
-            throw CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot of modules.", GetLastError());
-
-        bool copiedToBuffer = Module32First(modulesSnapshot.get(), &module);
-        if (!copiedToBuffer)
-            throw Module32Exception("Module32First failed to fill the buffer.", GetLastError());
-
-        do {
-            modules.push_back(module);
-            copiedToBuffer = Module32Next(modulesSnapshot.get(), &module);
-        } while (copiedToBuffer);
-
-        if (GetLastError() != ERROR_NO_MORE_FILES)
-            throw Module32Exception("Module32Next failed to fill the buffer.", GetLastError());
-
-        return modules;
+        return Memory::GetModules(processId);
     }
 
     std::vector<MODULEENTRY32W> GetModules(HANDLE processHandle) {
@@ -158,14 +114,7 @@ namespace MemoryCommando::External {
     }
 
     MODULEENTRY32W GetModule(const std::wstring& moduleName, const DWORD processId) {
-        std::vector<MODULEENTRY32W> modules = GetModules(processId);
-
-        for (auto currentModule : modules) {
-            if (algorithm::iequals(moduleName, currentModule.szModule))
-                return currentModule;
-        }
-
-        throw std::runtime_error("Couldn't find a module with the specified name in the modules list.");
+        return Memory::GetModule(moduleName, processId);
     }
 
     MODULEENTRY32W GetModule(const std::wstring& moduleName, HANDLE processHandle) {
@@ -183,9 +132,7 @@ namespace MemoryCommando::External {
     }
 
     uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, const DWORD processId) {
-        auto module = GetModule(moduleName, processId);
-
-        return uintptr_t(module.modBaseAddr);
+        return Memory::GetModuleBaseAddress(moduleName, processId);
     }
 
     uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, HANDLE processHandle) {
@@ -201,8 +148,7 @@ namespace MemoryCommando::External {
     }
 
     size_t GetModuleSize(const DWORD processId, const std::wstring& moduleName) {
-        const auto module = GetModule(moduleName, processId);
-        return size_t(module.modBaseSize);
+        return Memory::GetModuleSize(moduleName, processId);
     }
 
     size_t GetModuleSize(const std::wstring& moduleName, HANDLE processHandle) {
