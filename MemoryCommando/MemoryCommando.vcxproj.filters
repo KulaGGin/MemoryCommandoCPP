@@ -62,6 +62,18 @@
     <ClCompile Include="Internal.cpp">
       <Filter>Memory\Internal</Filter>
     </ClCompile>
+    <ClCompile Include="VirtualAllocException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualFreeException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualProtectException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualQueryException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryProtection.h">
@@ -130,6 +142,18 @@
     </ClInclude>
     <ClInclude Include="Internal.h">
       <Filter>Memory\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualAllocException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualQueryException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualFreeException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualProtectException.h">
+      <Filter>Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
