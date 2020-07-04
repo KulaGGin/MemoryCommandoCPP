@@ -2,7 +2,7 @@
 
 #include <CppUnitTest.h>
 
-#include "../MemoryCommando/BytePatternScanner.h"
+#include "../MemoryCommando/Memory/BytePatternScanner.h"
 
 namespace MemoryCommandoTests {
     TEST_CLASS(BytePatternScannerTests) {

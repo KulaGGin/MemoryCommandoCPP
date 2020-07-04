@@ -1,13 +1,13 @@
 #include "Internal.h"
 
-#include "Memory.h"
+#include "../Memory.h"
 #include <memory>
 #include <stdexcept>
 
-#include "VirtualAllocException.h"
-#include "VirtualFreeException.h"
-#include "VirtualProtectException.h"
-#include "VirtualQueryException.h"
+#include "../../Exceptions/VirtualAllocException.h"
+#include "../../Exceptions/VirtualFreeException.h"
+#include "../../Exceptions/VirtualProtectException.h"
+#include "../../Exceptions/VirtualQueryException.h"
 
 namespace MemoryCommando::Internal {
     PROCESSENTRY32W GetProcess() {

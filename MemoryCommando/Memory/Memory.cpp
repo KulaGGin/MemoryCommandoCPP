@@ -6,11 +6,12 @@
 
 
 
-#include "CreateToolhelp32SnapshotException.h"
-#include "Process32Exception.h"
+#include "../Exceptions/CreateToolhelp32SnapshotException.h"
+#include "../Exceptions/Process32Exception.h"
+#include "../Exceptions/Module32Exception.h"
 #include <boost/algorithm/string.hpp>
 
-#include "Module32Exception.h"
+
 
 namespace MemoryCommando::Memory {
     using namespace Exceptions;

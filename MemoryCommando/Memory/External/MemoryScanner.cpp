@@ -1,7 +1,7 @@
 #include "MemoryScanner.h"
 
 #include "MemoryManager.h"
-#include "VirtualQueryExException.h"
+#include "../../Exceptions/VirtualQueryExException.h"
 
 
 namespace MemoryCommando::External {

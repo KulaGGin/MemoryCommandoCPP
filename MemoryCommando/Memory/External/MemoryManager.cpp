@@ -1,6 +1,6 @@
 #include "MemoryManager.h"
 #include "External.h"
-#include "Memory.h"
+#include "../Memory.h"
 
 namespace MemoryCommando::External {
     MemoryManager::MemoryManager(DWORD processId, DWORD processAccess) {

@@ -6,7 +6,7 @@
 #include <vector>
 #include <boost/algorithm/string.hpp>
 
-#include "../MemoryCommando/BytePatternScanner.h"
+#include "../MemoryCommando/Memory/BytePatternScanner.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

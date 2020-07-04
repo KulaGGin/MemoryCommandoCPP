@@ -1,159 +1,159 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="CreateToolhelp32SnapshotException.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="WinAPIException.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseException.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="Process32Exception.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="Module32Exception.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenProcessException.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="External.cpp">
-      <Filter>Memory\External</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryManager.cpp">
-      <Filter>Memory\External</Filter>
-    </ClCompile>
     <ClCompile Include="MemoryCommando.cpp" />
-    <ClCompile Include="GetProcessImageFileNameException.cpp">
+    <ClCompile Include="Exceptions\BaseException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="GetProcessIdException.cpp">
+    <ClCompile Include="Exceptions\WinAPIException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualAllocExException.cpp">
+    <ClCompile Include="Exceptions\CreateToolhelp32SnapshotException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualFreeExException.cpp">
+    <ClCompile Include="Exceptions\GetProcessIdException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualProtectExException.cpp">
+    <ClCompile Include="Exceptions\GetProcessImageFileNameException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="VirtualQueryExException.cpp">
+    <ClCompile Include="Exceptions\Module32Exception.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="WriteProcessMemoryException.cpp">
+    <ClCompile Include="Exceptions\OpenProcessException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="ReadProcessMemoryException.cpp">
+    <ClCompile Include="Exceptions\Process32Exception.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="MemoryScanner.cpp">
+    <ClCompile Include="Exceptions\ReadProcessMemoryException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\VirtualAllocException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\VirtualAllocExException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\VirtualFreeException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\VirtualFreeExException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\VirtualProtectException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\VirtualProtectExException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\VirtualQueryException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\VirtualQueryExException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions\WriteProcessMemoryException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Memory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\BytePatternScanner.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\External\External.cpp">
       <Filter>Memory\External</Filter>
     </ClCompile>
-    <ClCompile Include="Memory.cpp">
-      <Filter>Memory</Filter>
+    <ClCompile Include="Memory\External\MemoryManager.cpp">
+      <Filter>Memory\External</Filter>
     </ClCompile>
-    <ClCompile Include="BytePatternScanner.cpp">
-      <Filter>Memory</Filter>
+    <ClCompile Include="Memory\External\MemoryScanner.cpp">
+      <Filter>Memory\External</Filter>
     </ClCompile>
-    <ClCompile Include="Internal.cpp">
+    <ClCompile Include="Memory\Internal\Internal.cpp">
       <Filter>Memory\Internal</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualAllocException.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualFreeException.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualProtectException.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="VirtualQueryException.cpp">
-      <Filter>Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MemoryProtection.h">
-      <Filter>Native\Enumerations</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessAccess.h">
-      <Filter>Native\Enumerations</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateToolhelp32SnapshotException.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="WinAPIException.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseException.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="Process32Exception.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="Module32Exception.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenProcessException.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="External.h">
-      <Filter>Memory\External</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryManager.h">
-      <Filter>Memory\External</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryCommando.h" />
-    <ClInclude Include="GetProcessImageFileNameException.h">
+    <ClInclude Include="Exceptions\BaseException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="GetProcessIdException.h">
+    <ClInclude Include="Exceptions\WinAPIException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="VirtualAllocExException.h">
+    <ClInclude Include="Exceptions\CreateToolhelp32SnapshotException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="VirtualFreeExException.h">
+    <ClInclude Include="Exceptions\GetProcessIdException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="VirtualProtectExException.h">
+    <ClInclude Include="Exceptions\GetProcessImageFileNameException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="VirtualQueryExException.h">
+    <ClInclude Include="Exceptions\Module32Exception.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="WriteProcessMemoryException.h">
+    <ClInclude Include="Exceptions\OpenProcessException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="ReadProcessMemoryException.h">
+    <ClInclude Include="Exceptions\Process32Exception.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryScanner.h">
+    <ClInclude Include="Exceptions\ReadProcessMemoryException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\VirtualAllocException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\VirtualAllocExException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\VirtualFreeException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\VirtualFreeExException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\VirtualProtectException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\VirtualProtectExException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\VirtualQueryException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\VirtualQueryExException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\WriteProcessMemoryException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Memory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\BytePatternScanner.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\External\External.h">
       <Filter>Memory\External</Filter>
     </ClInclude>
-    <ClInclude Include="Memory.h">
-      <Filter>Memory</Filter>
+    <ClInclude Include="Memory\External\MemoryManager.h">
+      <Filter>Memory\External</Filter>
     </ClInclude>
-    <ClInclude Include="BytePatternScanner.h">
-      <Filter>Memory</Filter>
+    <ClInclude Include="Memory\External\MemoryScanner.h">
+      <Filter>Memory\External</Filter>
     </ClInclude>
-    <ClInclude Include="Internal.h">
+    <ClInclude Include="Memory\Internal\Internal.h">
       <Filter>Memory\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="VirtualAllocException.h">
-      <Filter>Exceptions</Filter>
+    <ClInclude Include="Native\Enumerations\ProcessAccess.h">
+      <Filter>Native\Enumerations</Filter>
     </ClInclude>
-    <ClInclude Include="VirtualQueryException.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="VirtualFreeException.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="VirtualProtectException.h">
-      <Filter>Exceptions</Filter>
+    <ClInclude Include="Native\Enumerations\MemoryProtection.h">
+      <Filter>Native\Enumerations</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

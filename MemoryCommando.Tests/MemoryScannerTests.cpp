@@ -1,4 +1,4 @@
-#include "../MemoryCommando/BytePatternScanner.h"
+#include "../MemoryCommando/Memory/BytePatternScanner.h"
 
 #include "MemoryScannerTests.h"
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 
+
 #include "BaseException.h"
 
 namespace MemoryCommando::Exceptions {

@@ -1,7 +1,8 @@
 #pragma once
-#include "WinAPIException.h"
 
 #include <string>
+
+#include "WinAPIException.h"
 
 namespace MemoryCommando::Exceptions {
     class CreateToolhelp32SnapshotException : WinAPIException {

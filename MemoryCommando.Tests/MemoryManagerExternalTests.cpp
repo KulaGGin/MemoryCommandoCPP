@@ -4,8 +4,8 @@
 
 #include "CppUnitTest.h"
 
-#include "../MemoryCommando/MemoryManager.h"
-#include "../MemoryCommando/Process32Exception.h"
+#include "../MemoryCommando/Memory/External/MemoryManager.h"
+#include "../MemoryCommando/Exceptions/Process32Exception.h"
 
 
 

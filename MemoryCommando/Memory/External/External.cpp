@@ -17,19 +17,19 @@
 #include <Psapi.h>
 #include <boost/locale/encoding_utf.hpp>
 #include <utility>
-#include "CreateToolhelp32SnapshotException.h"
-#include "GetProcessIdException.h"
-#include "Module32Exception.h"
-#include "Process32Exception.h"
-#include "OpenProcessException.h"
-#include "ReadProcessMemoryException.h"
-#include "VirtualAllocExException.h"
-#include "VirtualFreeExException.h"
-#include "VirtualProtectExException.h"
-#include "VirtualQueryExException.h"
-#include "WriteProcessMemoryException.h"
+#include "../../Exceptions/CreateToolhelp32SnapshotException.h"
+#include "../../Exceptions/GetProcessIdException.h"
+#include "../../Exceptions/Module32Exception.h"
+#include "../../Exceptions/Process32Exception.h"
+#include "../../Exceptions/OpenProcessException.h"
+#include "../../Exceptions/ReadProcessMemoryException.h"
+#include "../../Exceptions/VirtualAllocExException.h"
+#include "../../Exceptions/VirtualFreeExException.h"
+#include "../../Exceptions/VirtualProtectExException.h"
+#include "../../Exceptions/VirtualQueryExException.h"
+#include "../../Exceptions/WriteProcessMemoryException.h"
 
-#include "Memory.h"
+#include "../Memory.h"
 
 namespace MemoryCommando::External {
     using namespace Exceptions;

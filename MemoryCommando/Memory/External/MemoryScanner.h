@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BytePatternScanner.h"
+#include "../BytePatternScanner.h"
 #include "MemoryManager.h"
 #include <winnt.h>
 
