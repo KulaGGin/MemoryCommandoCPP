@@ -12,7 +12,7 @@ namespace MemoryCommandoTests {
         TEST_METHOD(GetMemoryRegions);
         TEST_METHOD(Scan);
     private:
-        MemoryManager _memoryManager = MemoryManager(GetCurrentProcessId());
+        MemoryManagerExternal _memoryManager = MemoryManagerExternal(GetCurrentProcessId());
         MemoryScanner _memoryScanner = MemoryScanner(_memoryManager);
         
     };

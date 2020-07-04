@@ -1,11 +1,11 @@
 #include "MemoryScanner.h"
 
-#include "MemoryManager.h"
+#include "MemoryManagerExternal.h"
 #include "../../Exceptions/VirtualQueryExException.h"
 
 
 namespace MemoryCommando::External {
-    MemoryScanner::MemoryScanner(MemoryManager& memoryManager) : _memoryManager(memoryManager) {
+    MemoryScanner::MemoryScanner(MemoryManagerExternal& memoryManager) : _memoryManager(memoryManager) {
 
     }
 

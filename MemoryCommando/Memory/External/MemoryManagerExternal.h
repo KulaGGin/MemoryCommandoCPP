@@ -12,10 +12,10 @@ namespace MemoryCommandoTests {
 
 namespace MemoryCommando::External {
 
-    class MemoryManager {
+    class MemoryManagerExternal {
     public:
-        MemoryManager(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
-        MemoryManager(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
+        MemoryManagerExternal(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
+        MemoryManagerExternal(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
         PROCESSENTRY32W GetProcess();
         DWORD GetProcessId();

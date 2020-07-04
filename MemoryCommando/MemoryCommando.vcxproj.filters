@@ -65,9 +65,6 @@
     <ClCompile Include="Memory\External\External.cpp">
       <Filter>Memory\External</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\External\MemoryManager.cpp">
-      <Filter>Memory\External</Filter>
-    </ClCompile>
     <ClCompile Include="Memory\External\MemoryScanner.cpp">
       <Filter>Memory\External</Filter>
     </ClCompile>
@@ -75,6 +72,9 @@
       <Filter>Memory\Internal</Filter>
     </ClCompile>
     <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp" />
+    <ClCompile Include="Memory\External\MemoryManagerExternal.cpp">
+      <Filter>Memory\External</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -141,9 +141,6 @@
     <ClInclude Include="Memory\External\External.h">
       <Filter>Memory\External</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\External\MemoryManager.h">
-      <Filter>Memory\External</Filter>
-    </ClInclude>
     <ClInclude Include="Memory\External\MemoryScanner.h">
       <Filter>Memory\External</Filter>
     </ClInclude>
@@ -157,6 +154,9 @@
       <Filter>Native\Enumerations</Filter>
     </ClInclude>
     <ClInclude Include="Memory\Internal\MemoryManagerInternal.h" />
+    <ClInclude Include="Memory\External\MemoryManagerExternal.h">
+      <Filter>Memory\External</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
