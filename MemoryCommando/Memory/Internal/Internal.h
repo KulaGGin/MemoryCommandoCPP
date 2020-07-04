@@ -4,7 +4,7 @@
 #include <TlHelp32.h>
 #include <vector>
 
-namespace MemoryCommando::Internal {
+namespace MemoryCommando::Memory::Internal {
     PROCESSENTRY32W GetProcess();
     DWORD GetProcessId();
     HANDLE GetProcessHandle();

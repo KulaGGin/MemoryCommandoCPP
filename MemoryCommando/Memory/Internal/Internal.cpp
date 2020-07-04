@@ -9,7 +9,7 @@
 #include "../../Exceptions/VirtualProtectException.h"
 #include "../../Exceptions/VirtualQueryException.h"
 
-namespace MemoryCommando::Internal {
+namespace MemoryCommando::Memory::Internal {
     PROCESSENTRY32W GetProcess() {
         const DWORD currentProcessId = GetProcessId();
         return Memory::GetProcess(currentProcessId);
