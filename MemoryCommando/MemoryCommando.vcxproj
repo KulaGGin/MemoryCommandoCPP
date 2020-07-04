@@ -30,7 +30,7 @@
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="MemoryCommando.cpp" />
     <ClCompile Include="Memory\External\MemoryManagerExternal.cpp" />
-    <ClCompile Include="Memory\External\MemoryScanner.cpp" />
+    <ClCompile Include="Memory\MemoryScanner.cpp" />
     <ClCompile Include="Exceptions\Module32Exception.cpp" />
     <ClCompile Include="Exceptions\VirtualAllocException.cpp" />
     <ClCompile Include="Exceptions\VirtualFreeException.cpp" />
@@ -59,7 +59,7 @@
     <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="Memory\External\MemoryManagerExternal.h" />
     <ClInclude Include="Native\Enumerations\MemoryProtection.h" />
-    <ClInclude Include="Memory\External\MemoryScanner.h" />
+    <ClInclude Include="Memory\MemoryScanner.h" />
     <ClInclude Include="Exceptions\Module32Exception.h" />
     <ClInclude Include="Exceptions\VirtualAllocException.h" />
     <ClInclude Include="Exceptions\VirtualFreeException.h" />

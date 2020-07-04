@@ -5,7 +5,7 @@
 #include <map>
 #include <algorithm>
 
-namespace MemoryCommando::Scan {
+namespace MemoryCommando::Memory {
 
     std::vector<size_t> BytePatternScanner::Scan(std::vector<BYTE> byteSequence, std::string pattern) {
         std::vector<size_t> patternIndexes{};

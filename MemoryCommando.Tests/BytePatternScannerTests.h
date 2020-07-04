@@ -14,6 +14,6 @@ namespace MemoryCommandoTests {
         TEST_METHOD(GenerateBadByteTable);
         TEST_METHOD(Scan);
     private:
-        MemoryCommando::Scan::BytePatternScanner _bytePatternScanner;
+        MemoryCommando::Memory::BytePatternScanner _bytePatternScanner;
     };
 };

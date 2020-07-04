@@ -5,7 +5,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace MemoryCommandoTests {
-    using namespace MemoryCommando::Scan;
+    using namespace MemoryCommando::Memory;
 
     MemoryScannerTests::MemoryScannerTests() {
     }

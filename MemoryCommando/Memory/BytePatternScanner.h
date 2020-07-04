@@ -8,7 +8,7 @@ namespace MemoryCommandoTests {
     class BytePatternScannerTests;
 }
 
-namespace MemoryCommando::Scan {
+namespace MemoryCommando::Memory {
     class BytePatternScanner {
     public:
         std::vector<size_t> Scan(std::vector<BYTE> byteSequence, std::string pattern);

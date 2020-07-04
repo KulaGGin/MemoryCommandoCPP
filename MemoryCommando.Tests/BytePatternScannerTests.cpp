@@ -11,7 +11,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace MemoryCommandoTests {
-    using namespace MemoryCommando::Scan;
+    using namespace MemoryCommando::Memory;
 
     BytePatternScannerTests::BytePatternScannerTests() {
         _bytePatternScanner = BytePatternScanner();
