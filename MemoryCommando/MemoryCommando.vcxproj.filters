@@ -74,6 +74,7 @@
     <ClCompile Include="Memory\Internal\Internal.cpp">
       <Filter>Memory\Internal</Filter>
     </ClCompile>
+    <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Native\Enumerations\MemoryProtection.h">
       <Filter>Native\Enumerations</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\Internal\MemoryManagerInternal.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
