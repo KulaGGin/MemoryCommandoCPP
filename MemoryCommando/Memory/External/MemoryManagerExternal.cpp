@@ -2,7 +2,7 @@
 #include "External.h"
 #include "../Memory.h"
 
-namespace MemoryCommando::External {
+namespace MemoryCommando::Memory::External {
     MemoryManagerExternal::MemoryManagerExternal(DWORD processId, DWORD processAccess) {
         _process = External::GetProcess(processId);
         _processHandle = wil::unique_handle(External::GetProcessHandle(processId, processAccess));

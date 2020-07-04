@@ -31,7 +31,7 @@
 
 #include "../Memory.h"
 
-namespace MemoryCommando::External {
+namespace MemoryCommando::Memory::External {
     using namespace Exceptions;
     namespace conv = boost::locale::conv;
     namespace algorithm = boost::algorithm;

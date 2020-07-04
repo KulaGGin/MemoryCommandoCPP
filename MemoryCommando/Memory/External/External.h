@@ -4,7 +4,7 @@
 #include <TlHelp32.h>
 #include <vector>
 
-namespace MemoryCommando::External {
+namespace MemoryCommando::Memory::External {
     PROCESSENTRY32W GetProcess(DWORD processId);
     PROCESSENTRY32W GetProcess(HANDLE processHandle);
     PROCESSENTRY32W GetProcess(const std::wstring& processName, size_t processNumber = 1);

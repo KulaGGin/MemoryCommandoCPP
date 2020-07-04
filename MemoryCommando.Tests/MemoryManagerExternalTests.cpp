@@ -21,7 +21,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace MemoryCommandoTests {
     using namespace MemoryCommando;
     using namespace Exceptions;
-    using namespace External;
+    using namespace Memory::External;
 
     MemoryManagerExternalTests::MemoryManagerExternalTests() {
         _currentProcessId = GetCurrentProcessId();

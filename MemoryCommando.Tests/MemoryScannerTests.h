@@ -5,7 +5,7 @@
 
 namespace MemoryCommandoTests {
     using namespace MemoryCommando::Memory;
-    using namespace MemoryCommando::External;
+    using namespace External;
     TEST_CLASS(MemoryScannerTests) {
     public:
         MemoryScannerTests();
