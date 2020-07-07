@@ -12,6 +12,9 @@
 #include <boost/algorithm/string.hpp>
 
 
+#include "../Exceptions/GetProcessIdException.h"
+#include "../Exceptions/OpenProcessException.h"
+
 
 namespace MemoryCommando::Memory {
     using namespace Exceptions;
@@ -82,6 +85,52 @@ namespace MemoryCommando::Memory {
         throw std::runtime_error("Couldn't find a process with the specified process name in the process list.");
     }
 
+    DWORD GetProcessId(const HANDLE processHandle) {
+        const DWORD processId = ::GetProcessId(processHandle);
+
+        if(!processId)
+            throw GetProcessIdException("Couldn't get processId from the specified processHandle", GetLastError());
+
+        return processId;
+    }
+
+    DWORD GetProcessId(const std::wstring& processName, const size_t processNumber) {
+        const PROCESSENTRY32W process = GetProcess(processName, processNumber);
+        const DWORD processId = process.th32ProcessID;
+
+        return processId;
+    }
+
+    HANDLE GetProcessHandle(const DWORD processId, const DWORD processAccess) {
+        const HANDLE processHandle = ::OpenProcess(processAccess, 0, processId);
+
+        if(!processHandle)
+            throw OpenProcessException("OpenProcess couldn't get a handle to the specified processId with the error " + std::to_string(GetLastError()) + ".", GetLastError());
+
+        return processHandle;
+    }
+
+    HANDLE GetProcessHandle(const std::wstring& processName, const size_t processNumber, const DWORD processAccess) {
+        const PROCESSENTRY32W process = GetProcess(processName, processNumber);
+        const HANDLE processHandle = GetProcessHandle(process.th32ProcessID, processAccess);
+
+        return processHandle;
+    }
+
+    std::wstring GetProcessName(const HANDLE processHandle) {
+        const auto process = GetProcess(processHandle);
+        const std::wstring processName = process.szExeFile;
+
+        return processName;
+    }
+
+    std::wstring GetProcessName(const DWORD processId) {
+        const auto process = GetProcess(processId);
+        const std::wstring processName = process.szExeFile;
+
+        return processName;
+    }
+
     std::vector<MODULEENTRY32W> GetModules(const DWORD processId) {
         std::vector<MODULEENTRY32W> modules{};
         MODULEENTRY32               module{};
@@ -107,6 +156,19 @@ namespace MemoryCommando::Memory {
         return modules;
     }
 
+    std::vector<MODULEENTRY32W> GetModules(HANDLE processHandle) {
+        const auto processId = GetProcessId(processHandle);
+        const auto modules = GetModules(processId);
+
+        return modules;
+    }
+
+    std::vector<MODULEENTRY32W> GetModules(const std::wstring& processName, size_t processNumber) {
+        const auto processId = GetProcessId(processName, processNumber);
+        const auto modules = GetModules(processId);
+
+        return modules;
+    }
 
     MODULEENTRY32W GetModule(const std::wstring& moduleName, const DWORD processId) {
         std::vector<MODULEENTRY32W> modules = GetModules(processId);
@@ -119,14 +181,50 @@ namespace MemoryCommando::Memory {
         throw std::runtime_error("Couldn't find a module with the specified name in the modules list.");
     }
 
+    MODULEENTRY32W GetModule(const std::wstring& moduleName, HANDLE processHandle) {
+        const auto processId = GetProcessId(processHandle);
+        const auto module = GetModule(moduleName, processId);
+
+        return module;
+    }
+
+    MODULEENTRY32W GetModule(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
+        const auto processId = GetProcessId(processName, processNumber);
+        const auto module = GetModule(moduleName, processId);
+
+        return module;
+    }
+
     uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, DWORD processId) {
         auto module = GetModule(moduleName, processId);
 
         return uintptr_t(module.modBaseAddr);
     }
 
+    uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, HANDLE processHandle) {
+        const auto module = GetModule(moduleName, processHandle);
+
+        return uintptr_t(module.modBaseAddr);
+    }
+
+    uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
+        const auto module = GetModule(moduleName, processName, processNumber);
+
+        return uintptr_t(module.modBaseAddr);
+    }
+
     size_t GetModuleSize(const std::wstring& moduleName, DWORD processId) {
         const auto module = GetModule(moduleName, processId);
+        return size_t(module.modBaseSize);
+    }
+
+    size_t GetModuleSize(const std::wstring& moduleName, HANDLE processHandle) {
+        const auto module = GetModule(moduleName, processHandle);
+        return size_t(module.modBaseSize);
+    }
+
+    size_t GetModuleSize(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
+        const auto module = GetModule(moduleName, processName, processNumber);
         return size_t(module.modBaseSize);
     }
 }

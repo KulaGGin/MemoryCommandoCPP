@@ -50,49 +50,27 @@ namespace MemoryCommando::Memory::External {
     }
 
     DWORD GetProcessId(const HANDLE processHandle) {
-        const DWORD processId = ::GetProcessId(processHandle);
-
-        if(!processId)
-            throw GetProcessIdException("Couldn't get processId from the specified processHandle", GetLastError());
-
-        return processId;
+        return Memory::GetProcessId(processHandle);
     }
 
     DWORD GetProcessId(const std::wstring& processName, const size_t processNumber) {
-        const PROCESSENTRY32W process = GetProcess(processName, processNumber);
-        const DWORD processId = process.th32ProcessID;
-
-        return processId;
+        return Memory::GetProcessId(processName, processNumber);
     }
 
     HANDLE GetProcessHandle(const DWORD processId, const DWORD processAccess) {
-        const HANDLE processHandle = ::OpenProcess(processAccess, 0, processId);
-
-        if (!processHandle)
-            throw OpenProcessException("OpenProcess couldn't get a handle to the specified processId with the error " + std::to_string(GetLastError()) + ".", GetLastError());
-
-        return processHandle;
+        return Memory::GetProcessHandle(processId, processAccess);
     }
 
     HANDLE GetProcessHandle(const std::wstring& processName, const size_t processNumber, const DWORD processAccess) {
-        const PROCESSENTRY32W process = GetProcess(processName, processNumber);
-        const HANDLE processHandle = GetProcessHandle(process.th32ProcessID, processAccess);
-
-        return processHandle;
+        return Memory::GetProcessHandle(processName, processNumber, processAccess);
     }
 
     std::wstring GetProcessName(const HANDLE processHandle) {
-        const auto process = GetProcess(processHandle);
-        const std::wstring processName = process.szExeFile;
-
-        return processName;
+        return Memory::GetProcessName(processHandle);
     }
 
     std::wstring GetProcessName(const DWORD processId) {
-        const auto process = GetProcess(processId);
-        const std::wstring processName = process.szExeFile;
-
-        return processName;
+        return Memory::GetProcessName(processId);
     }
 
     std::vector<MODULEENTRY32W> GetModules(const DWORD processId) {
@@ -100,17 +78,11 @@ namespace MemoryCommando::Memory::External {
     }
 
     std::vector<MODULEENTRY32W> GetModules(HANDLE processHandle) {
-        const auto processId = GetProcessId(processHandle);
-        const auto modules = GetModules(processId);
-
-        return modules;
+        return Memory::GetModules(processHandle);
     }
 
     std::vector<MODULEENTRY32W> GetModules(const std::wstring& processName, size_t processNumber) {
-        const auto processId = GetProcessId(processName, processNumber);
-        const auto modules = GetModules(processId);
-
-        return modules;
+        return Memory::GetModules(processName, processNumber);
     }
 
     MODULEENTRY32W GetModule(const std::wstring& moduleName, const DWORD processId) {
@@ -118,17 +90,11 @@ namespace MemoryCommando::Memory::External {
     }
 
     MODULEENTRY32W GetModule(const std::wstring& moduleName, HANDLE processHandle) {
-        const auto processId = GetProcessId(processHandle);
-        const auto module = GetModule(moduleName, processId);
-
-        return module;
+        return Memory::GetModule(moduleName, processHandle);
     }
 
     MODULEENTRY32W GetModule(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
-        const auto processId = GetProcessId(processName, processNumber);
-        const auto module = GetModule(moduleName, processId);
-
-        return module;
+        return Memory::GetModule(moduleName, processName, processNumber);
     }
 
     uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, const DWORD processId) {
@@ -136,15 +102,11 @@ namespace MemoryCommando::Memory::External {
     }
 
     uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, HANDLE processHandle) {
-        const auto module = GetModule(moduleName, processHandle);
-
-        return uintptr_t(module.modBaseAddr);
+        return Memory::GetModuleBaseAddress(moduleName, processHandle);
     }
 
     uintptr_t GetModuleBaseAddress(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
-        const auto module = GetModule(moduleName,processName, processNumber);
-
-        return uintptr_t(module.modBaseAddr);
+        return Memory::GetModuleBaseAddress(moduleName, processName, processNumber);
     }
 
     size_t GetModuleSize(const DWORD processId, const std::wstring& moduleName) {
@@ -152,13 +114,11 @@ namespace MemoryCommando::Memory::External {
     }
 
     size_t GetModuleSize(const std::wstring& moduleName, HANDLE processHandle) {
-        const auto module = GetModule(moduleName, processHandle);
-        return size_t(module.modBaseSize);
+        return Memory::GetModuleSize(moduleName, processHandle);
     }
 
     size_t GetModuleSize(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
-        const auto module = GetModule(moduleName, processName, processNumber);
-        return size_t(module.modBaseSize);
+        return Memory::GetModuleSize(moduleName, processName, processNumber);
     }
 
     uintptr_t AllocateVirtualMemory(const HANDLE processHandle, const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) {
