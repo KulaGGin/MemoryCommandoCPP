@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Exceptions\BaseException.cpp" />
+    <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp" />
     <ClCompile Include="Memory\BytePatternScanner.cpp" />
     <ClCompile Include="Exceptions\CreateToolhelp32SnapshotException.cpp" />
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exceptions\BaseException.h" />
+    <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\Internal\MemoryManagerInternal.h" />
     <ClInclude Include="Memory\BytePatternScanner.h" />
     <ClInclude Include="Exceptions\CreateToolhelp32SnapshotException.h" />

@@ -75,6 +75,7 @@
     <ClCompile Include="Memory\MemoryScanner.cpp">
       <Filter>Memory\External</Filter>
     </ClCompile>
+    <ClCompile Include="Memory\MemoryManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Memory\MemoryScanner.h">
       <Filter>Memory\External</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\MemoryManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
