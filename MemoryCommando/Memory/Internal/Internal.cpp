@@ -10,13 +10,13 @@
 #include "../../Exceptions/VirtualQueryException.h"
 
 namespace MemoryCommando::Memory::Internal {
+    DWORD GetProcessId() {
+        return GetCurrentProcessId();
+    }
+
     PROCESSENTRY32W GetProcess() {
         const DWORD currentProcessId = GetProcessId();
         return Memory::GetProcess(currentProcessId);
-    }
-
-    DWORD GetProcessId() {
-        return GetCurrentProcessId();
     }
 
     HANDLE GetProcessHandle() {

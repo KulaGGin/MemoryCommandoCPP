@@ -5,8 +5,8 @@
 #include <vector>
 
 namespace MemoryCommando::Memory::Internal {
-    PROCESSENTRY32W GetProcess();
     DWORD GetProcessId();
+    PROCESSENTRY32W GetProcess();
     HANDLE GetProcessHandle();
     std::wstring GetProcessName();
     std::vector<MODULEENTRY32W> GetModules();
