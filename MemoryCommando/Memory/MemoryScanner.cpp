@@ -5,19 +5,18 @@
 
 
 namespace MemoryCommando::Memory {
-    MemoryScanner::MemoryScanner(External::MemoryManagerExternal& memoryManager) : _memoryManager(memoryManager) {
+    MemoryScanner::MemoryScanner(MemoryManager& memoryManager) : _memoryManager(memoryManager) {
 
     }
 
-    std::vector<MEMORY_BASIC_INFORMATION> MemoryScanner::GetMemoryRegions(uintptr_t startAddress, uintptr_t endAddress) {
+    std::vector<MEMORY_BASIC_INFORMATION> MemoryScanner::GetMemoryRegions(const uintptr_t startAddress, const uintptr_t endAddress) {
         std::vector<MEMORY_BASIC_INFORMATION> memoryRegions;
-        MEMORY_BASIC_INFORMATION memoryRegion;
 
         uintptr_t queryAddress = startAddress;
 
         while(queryAddress < endAddress) {
             // calculating new base address for a query right after current memory address
-            memoryRegion = _memoryManager.QueryVirtualMemory(queryAddress);
+            MEMORY_BASIC_INFORMATION memoryRegion = _memoryManager.QueryVirtualMemory(queryAddress);
 
             if(!(memoryRegion.Protect & _memoryFilter)) {
                 memoryRegions.push_back(memoryRegion);
@@ -31,7 +30,7 @@ namespace MemoryCommando::Memory {
 
     std::vector<uintptr_t> MemoryScanner::Scan(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::string& pattern) {
         std::vector<uintptr_t> scanResults{};
-        SYSTEM_INFO processInfo = _memoryManager.GetSystemInfo();
+        SYSTEM_INFO processInfo = MemoryManager::GetSystemInfo();
         const uintptr_t minimumApplicationAddress { uintptr_t(processInfo.lpMinimumApplicationAddress) };
         const uintptr_t maximumApplicationAddress { uintptr_t(processInfo.lpMaximumApplicationAddress) };
 
