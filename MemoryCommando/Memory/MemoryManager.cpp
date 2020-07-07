@@ -13,7 +13,7 @@
 
 namespace MemoryCommando::Memory {
     PROCESSENTRY32W MemoryManager::GetProcess() {
-        return Memory::GetProcess(_processId);
+        return GetProcess(_processId);
     }
 
     std::wstring MemoryManager::GetProcessName() {
@@ -267,7 +267,7 @@ namespace MemoryCommando::Memory {
     }
 
     PROCESSENTRY32W MemoryManager::GetProcess(DWORD processId) {
-        std::vector<PROCESSENTRY32W> processes = Memory::GetRunningProcesses();
+        std::vector<PROCESSENTRY32W> processes = GetRunningProcesses();
 
         for(auto currentProcess : processes) {
             if(processId == currentProcess.th32ProcessID)
@@ -285,7 +285,7 @@ namespace MemoryCommando::Memory {
     }
 
     PROCESSENTRY32W MemoryManager::GetProcess(const std::wstring& processName, const size_t processNumber) {
-        auto processes = Memory::GetRunningProcesses();
+        auto processes = GetRunningProcesses();
 
         size_t foundProcessNumber = 0;
         for(auto currentProcess : processes) {
