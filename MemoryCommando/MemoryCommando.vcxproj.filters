@@ -56,17 +56,8 @@
     <ClCompile Include="Exceptions\WriteProcessMemoryException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\Memory.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
     <ClCompile Include="Memory\BytePatternScanner.cpp">
       <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Memory\External\External.cpp">
-      <Filter>Memory\External</Filter>
-    </ClCompile>
-    <ClCompile Include="Memory\Internal\Internal.cpp">
-      <Filter>Memory\Internal</Filter>
     </ClCompile>
     <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp" />
     <ClCompile Include="Memory\External\MemoryManagerExternal.cpp">
@@ -133,17 +124,8 @@
     <ClInclude Include="Exceptions\WriteProcessMemoryException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\Memory.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
     <ClInclude Include="Memory\BytePatternScanner.h">
       <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\External\External.h">
-      <Filter>Memory\External</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\Internal\Internal.h">
-      <Filter>Memory\Internal</Filter>
     </ClInclude>
     <ClInclude Include="Native\Enumerations\ProcessAccess.h">
       <Filter>Native\Enumerations</Filter>

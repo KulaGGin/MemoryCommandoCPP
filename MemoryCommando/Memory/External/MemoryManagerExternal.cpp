@@ -10,8 +10,6 @@
 #include "../../Exceptions/VirtualProtectExException.h"
 #include "../../Exceptions/VirtualQueryExException.h"
 #include "../../Exceptions/WriteProcessMemoryException.h"
-#include "External.h"
-#include "../Memory.h"
 
 namespace MemoryCommando::Memory::External {
     MemoryManagerExternal::MemoryManagerExternal(const DWORD processId, const DWORD processAccess) {

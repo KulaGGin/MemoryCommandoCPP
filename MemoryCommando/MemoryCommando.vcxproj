@@ -24,11 +24,8 @@
     <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp" />
     <ClCompile Include="Memory\BytePatternScanner.cpp" />
     <ClCompile Include="Exceptions\CreateToolhelp32SnapshotException.cpp" />
-    <ClCompile Include="Memory\External\External.cpp" />
     <ClCompile Include="Exceptions\GetProcessIdException.cpp" />
     <ClCompile Include="Exceptions\GetProcessImageFileNameException.cpp" />
-    <ClCompile Include="Memory\Internal\Internal.cpp" />
-    <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="MemoryCommando.cpp" />
     <ClCompile Include="Memory\External\MemoryManagerExternal.cpp" />
     <ClCompile Include="Memory\MemoryScanner.cpp" />
@@ -53,11 +50,8 @@
     <ClInclude Include="Memory\Internal\MemoryManagerInternal.h" />
     <ClInclude Include="Memory\BytePatternScanner.h" />
     <ClInclude Include="Exceptions\CreateToolhelp32SnapshotException.h" />
-    <ClInclude Include="Memory\External\External.h" />
     <ClInclude Include="Exceptions\GetProcessIdException.h" />
     <ClInclude Include="Exceptions\GetProcessImageFileNameException.h" />
-    <ClInclude Include="Memory\Internal\Internal.h" />
-    <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="Memory\External\MemoryManagerExternal.h" />
     <ClInclude Include="Native\Enumerations\MemoryProtection.h" />
