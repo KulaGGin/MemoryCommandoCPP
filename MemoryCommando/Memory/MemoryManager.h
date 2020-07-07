@@ -70,6 +70,7 @@ namespace MemoryCommando::Memory {
     protected:
         wil::unique_handle _processHandle = nullptr;
         DWORD _processId = 0;
+        PROCESSENTRY32W _process = {};
     };
 }
 
