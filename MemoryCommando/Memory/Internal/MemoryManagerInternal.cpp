@@ -16,6 +16,7 @@ namespace MemoryCommando::Memory::Internal {
     MemoryManagerInternal::MemoryManagerInternal() {
         _processId = MemoryManagerInternal::GetProcessId();
         _processHandle = wil::unique_handle(MemoryManagerInternal::GetProcessHandle());
+        _process = MemoryManager::GetProcess();
     }
 
     DWORD MemoryManagerInternal::GetProcessId() {
