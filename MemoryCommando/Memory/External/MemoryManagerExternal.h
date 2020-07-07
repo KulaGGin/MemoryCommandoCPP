@@ -3,7 +3,8 @@
 #include <TlHelp32.h>
 #include <string>
 #include <vector>
-#include <wil/resource.h>
+
+#include "../MemoryManager.h"
 
 
 namespace MemoryCommandoTests {
@@ -12,64 +13,25 @@ namespace MemoryCommandoTests {
 
 namespace MemoryCommando::Memory::External {
 
-    class MemoryManagerExternal {
+    class MemoryManagerExternal final : public MemoryManager {
     public:
-        MemoryManagerExternal(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
-        MemoryManagerExternal(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
+        MemoryManagerExternal() = delete;
+        explicit MemoryManagerExternal(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
+        explicit MemoryManagerExternal(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
-        PROCESSENTRY32W GetProcess();
-        DWORD GetProcessId();
-        SYSTEM_INFO GetSystemInfo();
-        HANDLE GetProcessHandle();
-        std::wstring GetProcessName();
-        std::vector<MODULEENTRY32W> GetModules() const;
-        MODULEENTRY32W GetModule(const std::wstring& moduleName);
-        uintptr_t GetModuleBaseAddress(const std::wstring& moduleName);
-        size_t GetModuleSize(const std::wstring& moduleName);
-        uintptr_t AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType = MEM_RESERVE | MEM_COMMIT, DWORD protectionType = PAGE_EXECUTE_READWRITE);
-        void FreeVirtualMemory(uintptr_t baseAddress, DWORD freeType = MEM_RELEASE, size_t size = 0);
-        void ProtectVirtualMemory(uintptr_t baseAddress, size_t protectionSize, DWORD protectionType = PAGE_EXECUTE_READWRITE);
-        MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress);
+        DWORD GetProcessId() override;
+        HANDLE GetProcessHandle() override;
+        uintptr_t AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType = MEM_RESERVE | MEM_COMMIT, DWORD protectionType = PAGE_EXECUTE_READWRITE) override;
+        void FreeVirtualMemory(uintptr_t address, DWORD freeType = MEM_RELEASE, size_t size = 0) override;
+        void ProtectVirtualMemory(uintptr_t baseAddress, size_t protectionSize, DWORD protectionType = PAGE_EXECUTE_READWRITE) override;
+        MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress) override;
+        std::vector<BYTE> ReadVirtualMemory(uintptr_t address, size_t bytesNumber) override;
+        void WriteVirtualMemory(uintptr_t address, const std::vector<byte>& byteSequence) override;
 
-        std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, size_t bytesNumber);
-        std::vector<BYTE> ReadVirtualMemory(std::vector<uintptr_t> pointers, size_t bytesNumber);
-        std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, std::vector<uintptr_t> offsets, int bytesNumber);
-        std::vector<BYTE> ReadVirtualMemory(std::wstring moduleName, uintptr_t offset, size_t bytesNumber);
-        std::vector<BYTE> ReadVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets, size_t bytesNumber);
-        // todo ReadVirtualMemory from array of bytes and offset
 
-        template<typename TStructure> TStructure ReadVirtualMemory(uintptr_t baseAddress);
-        template<typename TStructure> TStructure ReadVirtualMemory(std::vector<uintptr_t> pointers);
-        template<typename TStructure> TStructure ReadVirtualMemory(uintptr_t baseAddress, std::vector<uintptr_t> offsets);
-        template<typename TStructure> TStructure ReadVirtualMemory(std::wstring moduleName, uintptr_t offset);
-        template<typename TStructure> TStructure ReadVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets);
-        // todo ReadVirtualMemory from array of bytes and offset
-
-        void WriteVirtualMemory(uintptr_t baseAddress, std::vector<byte> byteSequence);
-        void WriteVirtualMemory(std::vector<uintptr_t> pointers, std::vector<byte> byteSequence);
-        void WriteVirtualMemory(uintptr_t baseAddress, std::vector<uintptr_t> offsets, std::vector<byte> byteSequence);
-        void WriteVirtualMemory(std::wstring moduleName, uintptr_t offset, std::vector<byte> byteSequence);
-        void WriteVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offset, std::vector<byte> byteSequence);
-        // todo WriteVirtualMemory from array of bytes and offset
-
-        template<typename TStructure> void WriteVirtualMemory(uintptr_t baseAddress, TStructure structure);
-        template<typename TStructure> void WriteVirtualMemory(std::vector<uintptr_t> pointers, TStructure structure);
-        template<typename TStructure> void WriteVirtualMemory(uintptr_t baseAddress, std::vector<uintptr_t> pointers, TStructure structure);
-        template<typename TStructure> void WriteVirtualMemory(std::wstring moduleName, uintptr_t offset, TStructure structure);
-        template<typename TStructure> void WriteVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets, TStructure structure);
-        // todo WriteVirtualMemory from array of bytes and offset
-
-        uintptr_t GetAddress(std::vector<uintptr_t> pointers);
-        uintptr_t GetAddress(uintptr_t baseAddress, std::vector<uintptr_t> pointers);
-        uintptr_t GetAddress(std::wstring moduleName, uintptr_t offset);
-        uintptr_t GetAddress(std::wstring moduleName, std::vector<uintptr_t> offsets);
-        // todo GetAddress from array of bytes and offset but add it to the MemoryCommander probably.
-
-        // todo Commit, Reserve, Free memory functions that auto free memory on object destruction.
     private:
-        PROCESSENTRY32W _process;
-        wil::unique_handle _processHandle;
-
         friend class MemoryCommandoTests::MemoryManagerExternalTests;
+
+        HANDLE GetProcessHandle(DWORD processAccess = PROCESS_ALL_ACCESS);
     };
 }

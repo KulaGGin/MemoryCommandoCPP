@@ -1,174 +1,109 @@
 #include "MemoryManagerExternal.h"
+
+
+#include <memory>
+#include <stdexcept>
+
+
+#include "../../Exceptions/OpenProcessException.h"
+#include "../../Exceptions/ReadProcessMemoryException.h"
+#include "../../Exceptions/VirtualAllocExException.h"
+#include "../../Exceptions/VirtualFreeExException.h"
+#include "../../Exceptions/VirtualProtectExException.h"
+#include "../../Exceptions/VirtualQueryExException.h"
+#include "../../Exceptions/WriteProcessMemoryException.h"
 #include "External.h"
 #include "../Memory.h"
 
 namespace MemoryCommando::Memory::External {
-    MemoryManagerExternal::MemoryManagerExternal(DWORD processId, DWORD processAccess) {
+    MemoryManagerExternal::MemoryManagerExternal(const DWORD processId, const DWORD processAccess) {
         _process = External::GetProcess(processId);
         _processHandle = wil::unique_handle(External::GetProcessHandle(processId, processAccess));
     }
 
-    MemoryManagerExternal::MemoryManagerExternal(const std::wstring& processName, size_t processNumber, DWORD processAccess) {
+    MemoryManagerExternal::MemoryManagerExternal(const std::wstring& processName, const size_t processNumber, const DWORD processAccess) {
         _process = External::GetProcess(processName, processNumber);
         _processHandle = wil::unique_handle(External::GetProcessHandle(processName, processNumber, processAccess));
-    }
-
-    PROCESSENTRY32W MemoryManagerExternal::GetProcess() {
-        return _process;
     }
 
     DWORD MemoryManagerExternal::GetProcessId() {
         return _process.th32ProcessID;
     }
 
-    SYSTEM_INFO MemoryManagerExternal::GetSystemInfo() {
-        const SYSTEM_INFO systemInfo = Memory::GetSystemInfo();
-        return systemInfo;
-    }
-
     HANDLE MemoryManagerExternal::GetProcessHandle() {
         return _processHandle.get();
     }
 
-    std::wstring MemoryManagerExternal::GetProcessName() {
-        return _process.szExeFile;
+    HANDLE MemoryManagerExternal::GetProcessHandle(const DWORD processAccess) {
+        const HANDLE processHandle = OpenProcess(processAccess, 0, _processId);
+
+        if(!processHandle)
+            throw Exceptions::OpenProcessException("OpenProcess couldn't get a handle to the specified processId with the error " + std::to_string(GetLastError()) + ".", GetLastError());
+
+        return processHandle;
     }
 
-    std::vector<MODULEENTRY32W> MemoryManagerExternal::GetModules() const {
-        return External::GetModules(_process.th32ProcessID);
+    uintptr_t MemoryManagerExternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) {
+        LPVOID allocationAddress = VirtualAllocEx(_processHandle.get(), LPVOID(baseAddress), allocationSize, allocationType, protectionType);
+
+        if(!allocationAddress) {
+            throw Exceptions::VirtualAllocExException("VirtualAllocEx couldn't allocate memory with error code " + std::to_string(GetLastError()) + ".", GetLastError());
+        }
+
+        return uintptr_t(allocationAddress);
     }
 
-    MODULEENTRY32W MemoryManagerExternal::GetModule(const std::wstring& moduleName) {
-        return External::GetModule(moduleName, _process.th32ProcessID);
+    void MemoryManagerExternal::FreeVirtualMemory(const uintptr_t address, const DWORD freeType, const size_t size) {
+        if(freeType == MEM_RELEASE && size != 0)
+            throw std::invalid_argument("When freeType is MEM_RELEASE, size must be 0.");
+
+        const bool didFree = VirtualFreeEx(_processHandle.get(), LPVOID(address), size, freeType);
+
+        if(!didFree)
+            throw Exceptions::VirtualFreeExException("VirtualFreeEx couldn't free memory with error code " + std::to_string(GetLastError()) + ".", GetLastError());
     }
 
-    uintptr_t MemoryManagerExternal::GetModuleBaseAddress(const std::wstring& moduleName) {
-        return External::GetModuleBaseAddress(moduleName, _process.th32ProcessID);;
+    void MemoryManagerExternal::ProtectVirtualMemory(const uintptr_t baseAddress, const size_t protectionSize, const DWORD protectionType) {
+        DWORD oldProtection;
+        const bool didProtect = VirtualProtectEx(_processHandle.get(), LPVOID(baseAddress), protectionSize, protectionType, &oldProtection);
+
+        if(!didProtect)
+            throw Exceptions::VirtualProtectExException("VirtualProtectEx failed to protect memory with the error code " + std::to_string(GetLastError()) + ".", GetLastError());
     }
 
-    size_t MemoryManagerExternal::GetModuleSize(const std::wstring& moduleName) {
-        return External::GetModuleSize(_process.th32ProcessID, moduleName);
+    MEMORY_BASIC_INFORMATION MemoryManagerExternal::QueryVirtualMemory(const uintptr_t baseAddress) {
+        MEMORY_BASIC_INFORMATION memoryBasicInformation{};
+
+        const SIZE_T bytesReturned = VirtualQueryEx(_processHandle.get(), LPVOID(baseAddress), &memoryBasicInformation, sizeof memoryBasicInformation);
+
+        if(!bytesReturned)
+            throw Exceptions::VirtualQueryExException("VirtualQueryEx couldn't query memory and failed with error code " + std::to_string(GetLastError()), GetLastError());
+
+        return memoryBasicInformation;
     }
 
-    uintptr_t MemoryManagerExternal::AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType, DWORD protectionType) {
-        return External::AllocateVirtualMemory(_processHandle.get(), baseAddress, allocationSize, allocationType, protectionType);
+    std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(const uintptr_t address, const size_t bytesNumber) {
+        const std::unique_ptr<BYTE[]> byteBuffer(new BYTE[bytesNumber]);
+        SIZE_T bytesReadNumber;
+        const bool didReadMemory = ReadProcessMemory(_processHandle.get(), LPCVOID(address), byteBuffer.get(), bytesNumber, &bytesReadNumber);
+
+        if(!didReadMemory)
+            throw Exceptions::ReadProcessMemoryException("ReadProcessMemory couldn't read memory at address" + std::to_string(address) + " and failed with error code" + std::to_string(GetLastError()) + ".", GetLastError());
+
+        const std::vector<BYTE> byteSequence(byteBuffer.get(), byteBuffer.get() + bytesReadNumber);
+
+        return byteSequence;
     }
 
-    void MemoryManagerExternal::FreeVirtualMemory(uintptr_t baseAddress, DWORD freeType, size_t size) {
-        External::FreeVirtualMemory(_processHandle.get(), baseAddress, freeType, size);
-    }
+    void MemoryManagerExternal::WriteVirtualMemory(const uintptr_t address, const std::vector<byte>& byteSequence) {
+        const BYTE* firstBytePointer = &byteSequence[0];
+        SIZE_T bytesWritten;
 
-    void MemoryManagerExternal::ProtectVirtualMemory(uintptr_t baseAddress, size_t protectionSize, DWORD protectionType) {
-        External::ProtectVirtualMemory(_processHandle.get(), baseAddress, protectionSize, protectionType);
-    }
+        const bool didWrite = WriteProcessMemory(_processHandle.get(), LPVOID(address), firstBytePointer, byteSequence.size(), &bytesWritten);
 
-    MEMORY_BASIC_INFORMATION MemoryManagerExternal::QueryVirtualMemory(uintptr_t baseAddress) {
-        return External::QueryVirtualMemory(_processHandle.get(), baseAddress);
-    }
-
-    std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(uintptr_t baseAddress, size_t bytesNumber) {
-        return External::ReadVirtualMemory(_processHandle.get(), baseAddress, bytesNumber);
-    }
-
-    std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(std::vector<uintptr_t> pointers, size_t bytesNumber) {
-        return External::ReadVirtualMemory(_processHandle.get(), pointers, bytesNumber);
-    }
-
-    std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(uintptr_t baseAddress, std::vector<uintptr_t> offsets, int bytesNumber) {
-        return External::ReadVirtualMemory(_processHandle.get(), baseAddress, offsets, bytesNumber);
-    }
-
-    std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(std::wstring moduleName, uintptr_t offset, size_t bytesNumber) {
-        return External::ReadVirtualMemory(_processHandle.get(), moduleName, offset, bytesNumber);
-    }
-
-    std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets, size_t bytesNumber) {
-        return External::ReadVirtualMemory(_processHandle.get(), moduleName, offsets, bytesNumber);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryManagerExternal::ReadVirtualMemory(uintptr_t baseAddress) {
-        return External::ReadVirtualMemory<TStructure>(_processHandle.get(), baseAddress);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryManagerExternal::ReadVirtualMemory(std::vector<uintptr_t> pointers) {
-        return External::ReadVirtualMemory<TStructure>(_processHandle.get(), pointers);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryManagerExternal::ReadVirtualMemory(uintptr_t baseAddress, std::vector<uintptr_t> offsets) {
-        return External::ReadVirtualMemory<TStructure>(_processHandle.get(), baseAddress, offsets);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryManagerExternal::ReadVirtualMemory(std::wstring moduleName, uintptr_t offset) {
-        return External::ReadVirtualMemory<TStructure>(_processHandle.get(), moduleName, offset);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryManagerExternal::ReadVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets) {
-        return External::ReadVirtualMemory<TStructure>(_processHandle.get(), moduleName, offsets);
-    }
-
-    void MemoryManagerExternal::WriteVirtualMemory(uintptr_t baseAddress, std::vector<byte> byteSequence) {
-        External::WriteVirtualMemory(_processHandle.get(), baseAddress, byteSequence);
-    }
-
-    void MemoryManagerExternal::WriteVirtualMemory(std::vector<uintptr_t> pointers, std::vector<byte> byteSequence) {
-        External::WriteVirtualMemory(_processHandle.get(), pointers, byteSequence);
-    }
-
-    void MemoryManagerExternal::WriteVirtualMemory(uintptr_t baseAddress, std::vector<uintptr_t> offsets, std::vector<byte> byteSequence) {
-        External::WriteVirtualMemory(_processHandle.get(), baseAddress, offsets, byteSequence);
-    }
-
-    void MemoryManagerExternal::WriteVirtualMemory(std::wstring moduleName, uintptr_t offset, std::vector<byte> byteSequence) {
-        External::WriteVirtualMemory(_processHandle.get(), moduleName, offset, byteSequence);
-    }
-
-    void MemoryManagerExternal::WriteVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets, std::vector<byte> byteSequence) {
-        External::WriteVirtualMemory(_processHandle.get(), moduleName, offsets, byteSequence);
-    }
-
-    template <typename TStructure>
-    void MemoryManagerExternal::WriteVirtualMemory(uintptr_t baseAddress, TStructure structure) {
-        External::WriteVirtualMemory<TStructure>(_processHandle.get(), baseAddress, structure);
-    }
-
-    template <typename TStructure>
-    void MemoryManagerExternal::WriteVirtualMemory(std::vector<uintptr_t> pointers, TStructure structure) {
-        External::WriteVirtualMemory<TStructure>(_processHandle.get(), pointers, structure);
-    }
-
-    template <typename TStructure>
-    void MemoryManagerExternal::WriteVirtualMemory(uintptr_t baseAddress, std::vector<uintptr_t> pointers, TStructure structure) {
-        External::WriteVirtualMemory<TStructure>(_processHandle.get(), baseAddress, pointers, structure);
-    }
-
-    template <typename TStructure>
-    void MemoryManagerExternal::WriteVirtualMemory(std::wstring moduleName, uintptr_t offset, TStructure structure) {
-        External::WriteVirtualMemory<TStructure>(_processHandle.get(), moduleName, offset, structure);
-    }
-
-    template <typename TStructure>
-    void MemoryManagerExternal::WriteVirtualMemory(std::wstring moduleName, std::vector<uintptr_t> offsets, TStructure structure) {
-        External::WriteVirtualMemory<TStructure>(_processHandle.get(), moduleName, offsets, structure);
-    }
-
-    uintptr_t MemoryManagerExternal::GetAddress(std::vector<uintptr_t> pointers) {
-        return External::GetAddress(_processHandle.get(), pointers);
-    }
-
-    uintptr_t MemoryManagerExternal::GetAddress(uintptr_t baseAddress, std::vector<uintptr_t> pointers) {
-        return External::GetAddress(_processHandle.get(), baseAddress, pointers);
-    }
-
-    uintptr_t MemoryManagerExternal::GetAddress(std::wstring moduleName, uintptr_t offset) {
-        return External::GetAddress(_processHandle.get(), moduleName, offset);
-    }
-
-    uintptr_t MemoryManagerExternal::GetAddress(std::wstring moduleName, std::vector<uintptr_t> offsets) {
-        return External::GetAddress(_processHandle.get(), moduleName, offsets);
+        if(!didWrite)
+            throw Exceptions::WriteProcessMemoryException("WriteProcessMemory couldn't write memory and failed with the error " + std::to_string(GetLastError()) + ".", GetLastError());
+        if(bytesWritten != byteSequence.size())
+            throw Exceptions::WriteProcessMemoryException("WriteProcessMemory couldn't fully write byteSequence into the memory", GetLastError());
     }
 }
