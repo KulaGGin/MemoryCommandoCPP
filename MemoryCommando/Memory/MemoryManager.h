@@ -10,10 +10,11 @@
 #include <wil/resource.h>
 
 namespace MemoryCommando::Memory {
-    class MemoryScanner;
-
     class MemoryManager {
     public:
+        MemoryManager() = default;
+        MemoryManager(const MemoryManager&) = default;
+        MemoryManager& operator=(const MemoryManager&) = default;
         virtual ~MemoryManager() = default;
 
         virtual PROCESSENTRY32W GetProcess() const;
