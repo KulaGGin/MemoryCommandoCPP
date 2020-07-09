@@ -1,8 +1,6 @@
 #include "MemoryScanner.h"
 
 #include "External/MemoryManagerExternal.h"
-#include "../Exceptions/VirtualQueryExException.h"
-
 
 namespace MemoryCommando::Memory {
     MemoryScanner::MemoryScanner(const MemoryManager &memoryManager) : _memoryManager(memoryManager) {
