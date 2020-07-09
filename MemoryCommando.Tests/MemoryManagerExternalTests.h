@@ -4,7 +4,10 @@
 #include <strsafe.h>
 
 
+#include "../MemoryCommando/Memory/External/MemoryManagerExternal.h"
+
 namespace MemoryCommandoTests {
+    using namespace MemoryCommando::Memory::External;
     TEST_CLASS(MemoryManagerExternalTests) {
     public:
         MemoryManagerExternalTests();
@@ -17,6 +20,8 @@ namespace MemoryCommandoTests {
         DWORD _currentProcessId;
         HANDLE _currentProcessHandle;
         std::string _currentProcessName;
+
+        MemoryManagerExternal _memoryManagerExternal;
 
         std::string GetCurrentProcessName();
     };

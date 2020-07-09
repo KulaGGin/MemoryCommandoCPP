@@ -7,7 +7,7 @@
 
 namespace MemoryCommando::Memory {
 
-    std::vector<size_t> BytePatternScanner::Scan(std::vector<BYTE> byteSequence, std::string pattern) {
+    std::vector<size_t> BytePatternScanner::Scan(std::vector<BYTE> byteSequence, std::string pattern) const {
         std::vector<size_t> patternIndexes{};
 
         patternIndexes = GetPatternIndexes(byteSequence, pattern);
@@ -15,7 +15,7 @@ namespace MemoryCommando::Memory {
         return patternIndexes;
     }
 
-    size_t BytePatternScanner::GetLastWildcardIndex(const std::vector<std::string>& patternStringSequence) {
+    size_t BytePatternScanner::GetLastWildcardIndex(const std::vector<std::string>& patternStringSequence) const {
         // Initialize lastWildcardIndex to 0 in case there are no wildcards in the pattern
         size_t lastWildcardIndex;
 
@@ -33,7 +33,7 @@ namespace MemoryCommando::Memory {
         return lastWildcardIndex;
     }
 
-    std::vector<std::pair<size_t, BYTE>> BytePatternScanner::GetFilteredPattern(std::vector<std::string> pattern) {
+    std::vector<std::pair<size_t, BYTE>> BytePatternScanner::GetFilteredPattern(std::vector<std::string> pattern) const {
         std::vector<std::pair<size_t, BYTE>> filteredPattern;
 
         for(size_t index = 0; index < pattern.size(); ++index) {
@@ -47,7 +47,7 @@ namespace MemoryCommando::Memory {
         return filteredPattern;
     }
 
-    std::map<int, size_t> BytePatternScanner::GenerateBadByteTable(const std::vector<std::string>& patternStringSequence) {
+    std::map<int, size_t> BytePatternScanner::GenerateBadByteTable(const std::vector<std::string>& patternStringSequence) const {
         constexpr int ByteQuantity = MAXBYTE + 1;
         std::map<int, size_t> badByteTable{};
         auto lastWildcardIndex = GetLastWildcardIndex(patternStringSequence);
@@ -68,7 +68,7 @@ namespace MemoryCommando::Memory {
         return badByteTable;
     }
 
-    std::vector<size_t> BytePatternScanner::GetPatternIndexes(const std::vector<BYTE>& byteSequence, std::string pattern) {
+    std::vector<size_t> BytePatternScanner::GetPatternIndexes(const std::vector<BYTE>& byteSequence, std::string pattern) const {
         std::vector<size_t> patternIndexes{};
         // getting pattern ready for scanning
         std::vector<std::string> patternStringSequence;

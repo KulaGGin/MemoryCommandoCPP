@@ -24,11 +24,11 @@ namespace MemoryCommando::Memory::External {
         _processHandle = wil::unique_handle(GetProcessHandle(processAccess));
     }
 
-    DWORD MemoryManagerExternal::GetProcessId() {
+    DWORD MemoryManagerExternal::GetProcessId() const {
         return _process.th32ProcessID;
     }
 
-    HANDLE MemoryManagerExternal::GetProcessHandle() {
+    HANDLE MemoryManagerExternal::GetProcessHandle() const {
         return _processHandle.get();
     }
 
@@ -41,7 +41,7 @@ namespace MemoryCommando::Memory::External {
         return processHandle;
     }
 
-    uintptr_t MemoryManagerExternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) {
+    uintptr_t MemoryManagerExternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) const {
         LPVOID allocationAddress = VirtualAllocEx(_processHandle.get(), LPVOID(baseAddress), allocationSize, allocationType, protectionType);
 
         if(!allocationAddress) {
@@ -51,7 +51,7 @@ namespace MemoryCommando::Memory::External {
         return uintptr_t(allocationAddress);
     }
 
-    void MemoryManagerExternal::FreeVirtualMemory(const uintptr_t address, const DWORD freeType, const size_t size) {
+    void MemoryManagerExternal::FreeVirtualMemory(const uintptr_t address, const DWORD freeType, const size_t size) const {
         if(freeType == MEM_RELEASE && size != 0)
             throw std::invalid_argument("When freeType is MEM_RELEASE, size must be 0.");
 
@@ -61,7 +61,7 @@ namespace MemoryCommando::Memory::External {
             throw Exceptions::VirtualFreeExException("VirtualFreeEx couldn't free memory with error code " + std::to_string(GetLastError()) + ".", GetLastError());
     }
 
-    void MemoryManagerExternal::ProtectVirtualMemory(const uintptr_t baseAddress, const size_t protectionSize, const DWORD protectionType) {
+    void MemoryManagerExternal::ProtectVirtualMemory(const uintptr_t baseAddress, const size_t protectionSize, const DWORD protectionType) const {
         DWORD oldProtection;
         const bool didProtect = VirtualProtectEx(_processHandle.get(), LPVOID(baseAddress), protectionSize, protectionType, &oldProtection);
 
@@ -69,7 +69,7 @@ namespace MemoryCommando::Memory::External {
             throw Exceptions::VirtualProtectExException("VirtualProtectEx failed to protect memory with the error code " + std::to_string(GetLastError()) + ".", GetLastError());
     }
 
-    MEMORY_BASIC_INFORMATION MemoryManagerExternal::QueryVirtualMemory(const uintptr_t baseAddress) {
+    MEMORY_BASIC_INFORMATION MemoryManagerExternal::QueryVirtualMemory(const uintptr_t baseAddress) const {
         MEMORY_BASIC_INFORMATION memoryBasicInformation{};
 
         const SIZE_T bytesReturned = VirtualQueryEx(_processHandle.get(), LPVOID(baseAddress), &memoryBasicInformation, sizeof memoryBasicInformation);
@@ -80,7 +80,7 @@ namespace MemoryCommando::Memory::External {
         return memoryBasicInformation;
     }
 
-    std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(const uintptr_t address, const size_t bytesNumber) {
+    std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(const uintptr_t address, const size_t bytesNumber) const {
         const std::unique_ptr<BYTE[]> byteBuffer(new BYTE[bytesNumber]);
         SIZE_T bytesReadNumber;
         const bool didReadMemory = ReadProcessMemory(_processHandle.get(), LPCVOID(address), byteBuffer.get(), bytesNumber, &bytesReadNumber);
@@ -93,7 +93,7 @@ namespace MemoryCommando::Memory::External {
         return byteSequence;
     }
 
-    void MemoryManagerExternal::WriteVirtualMemory(const uintptr_t address, const std::vector<byte>& byteSequence) {
+    void MemoryManagerExternal::WriteVirtualMemory(const uintptr_t address, const std::vector<byte>& byteSequence) const {
         const BYTE* firstBytePointer = &byteSequence[0];
         SIZE_T bytesWritten;
 

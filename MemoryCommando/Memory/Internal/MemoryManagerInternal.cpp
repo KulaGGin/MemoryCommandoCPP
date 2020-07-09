@@ -19,15 +19,15 @@ namespace MemoryCommando::Memory::Internal {
         _process = MemoryManager::GetProcess();
     }
 
-    DWORD MemoryManagerInternal::GetProcessId() {
+    DWORD MemoryManagerInternal::GetProcessId() const {
         return GetCurrentProcessId();
     }
 
-    HANDLE MemoryManagerInternal::GetProcessHandle() {
+    HANDLE MemoryManagerInternal::GetProcessHandle() const {
         return GetCurrentProcess();
     }
 
-    uintptr_t MemoryManagerInternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) {
+    uintptr_t MemoryManagerInternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) const {
         LPVOID allocationAddress = VirtualAlloc(LPVOID(baseAddress), allocationSize, allocationType, protectionType);
 
         if(!allocationAddress)
@@ -36,7 +36,7 @@ namespace MemoryCommando::Memory::Internal {
         return uintptr_t(allocationAddress);
     }
 
-    void MemoryManagerInternal::FreeVirtualMemory(const uintptr_t address, const DWORD freeType, const size_t size) {
+    void MemoryManagerInternal::FreeVirtualMemory(const uintptr_t address, const DWORD freeType, const size_t size) const {
         if(freeType == MEM_RELEASE && size != 0)
             throw std::invalid_argument("When freeType is MEM_RELEASE, size must be 0.");
 
@@ -46,7 +46,7 @@ namespace MemoryCommando::Memory::Internal {
             throw Exceptions::VirtualFreeException("VirtualFree couldn't free memory with error code " + std::to_string(GetLastError()) + ".", GetLastError());
     }
 
-    void MemoryManagerInternal::ProtectVirtualMemory(const uintptr_t baseAddress, const size_t protectionSize, const DWORD protectionType) {
+    void MemoryManagerInternal::ProtectVirtualMemory(const uintptr_t baseAddress, const size_t protectionSize, const DWORD protectionType) const {
         DWORD oldProtection;
         const bool didProtect = VirtualProtect(LPVOID(baseAddress), protectionSize, protectionType, &oldProtection);
 
@@ -54,7 +54,7 @@ namespace MemoryCommando::Memory::Internal {
             throw Exceptions::VirtualProtectException("VirtualProtect failed to protect memory with the error code " + std::to_string(GetLastError()) + ".", GetLastError());
     }
 
-    MEMORY_BASIC_INFORMATION MemoryManagerInternal::QueryVirtualMemory(const uintptr_t baseAddress) {
+    MEMORY_BASIC_INFORMATION MemoryManagerInternal::QueryVirtualMemory(const uintptr_t baseAddress) const {
         MEMORY_BASIC_INFORMATION memoryBasicInformation{};
 
         const SIZE_T bytesReturned = VirtualQuery(LPVOID(baseAddress), &memoryBasicInformation, sizeof memoryBasicInformation);
@@ -65,7 +65,7 @@ namespace MemoryCommando::Memory::Internal {
         return memoryBasicInformation;
     }
 
-    std::vector<BYTE> MemoryManagerInternal::ReadVirtualMemory(const uintptr_t address, const size_t bytesNumber) {
+    std::vector<BYTE> MemoryManagerInternal::ReadVirtualMemory(const uintptr_t address, const size_t bytesNumber) const {
         std::vector<BYTE> bytesSequence;
         bytesSequence.resize(bytesNumber, 0);
         std::memcpy(&bytesSequence[0], LPVOID(address), bytesNumber);
@@ -73,7 +73,7 @@ namespace MemoryCommando::Memory::Internal {
         return bytesSequence;
     }
 
-    void MemoryManagerInternal::WriteVirtualMemory(const uintptr_t address, const std::vector<byte>& byteSequence) {
+    void MemoryManagerInternal::WriteVirtualMemory(const uintptr_t address, const std::vector<byte>& byteSequence) const {
         std::memcpy(LPVOID(address), &byteSequence[0], byteSequence.size());
     }
 }

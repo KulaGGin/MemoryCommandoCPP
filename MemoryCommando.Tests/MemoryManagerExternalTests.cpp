@@ -23,10 +23,11 @@ namespace MemoryCommandoTests {
     using namespace Exceptions;
     using namespace Memory::External;
 
-    MemoryManagerExternalTests::MemoryManagerExternalTests() {
-        _currentProcessId = GetCurrentProcessId();
-        _currentProcessHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, _currentProcessId);
-        _currentProcessName = GetCurrentProcessName();
+    MemoryManagerExternalTests::MemoryManagerExternalTests() :
+    _currentProcessId(GetCurrentProcessId()),
+    _currentProcessHandle(OpenProcess(PROCESS_ALL_ACCESS, 0, _currentProcessId)),
+    _currentProcessName(GetCurrentProcessName()),
+    _memoryManagerExternal(_currentProcessId) {
     }
 
     void MemoryManagerExternalTests::ConstructorProcessId() {

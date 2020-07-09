@@ -5,11 +5,11 @@
 
 
 namespace MemoryCommando::Memory {
-    MemoryScanner::MemoryScanner(MemoryManager& memoryManager) : _memoryManager(memoryManager) {
-
+    MemoryScanner::MemoryScanner(const MemoryManager &memoryManager) : _memoryManager(memoryManager) {
     }
 
-    std::vector<MEMORY_BASIC_INFORMATION> MemoryScanner::GetMemoryRegions(const uintptr_t startAddress, const uintptr_t endAddress) {
+
+    std::vector<MEMORY_BASIC_INFORMATION> MemoryScanner::GetMemoryRegions(const uintptr_t startAddress, const uintptr_t endAddress) const {
         std::vector<MEMORY_BASIC_INFORMATION> memoryRegions;
 
         uintptr_t queryAddress = startAddress;
@@ -28,7 +28,7 @@ namespace MemoryCommando::Memory {
         return memoryRegions;
     }
 
-    std::vector<uintptr_t> MemoryScanner::Scan(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::string& pattern) {
+    std::vector<uintptr_t> MemoryScanner::Scan(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::string& pattern) const {
         std::vector<uintptr_t> scanResults{};
         SYSTEM_INFO processInfo = MemoryManager::GetSystemInfo();
         const uintptr_t minimumApplicationAddress { uintptr_t(processInfo.lpMinimumApplicationAddress) };

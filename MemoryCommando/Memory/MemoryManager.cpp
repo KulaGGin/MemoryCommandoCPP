@@ -9,14 +9,12 @@
 #include "../Exceptions/OpenProcessException.h"
 #include "../Exceptions/Process32Exception.h"
 
-#include "Memory.h"
-
 namespace MemoryCommando::Memory {
-    PROCESSENTRY32W MemoryManager::GetProcess() {
+    PROCESSENTRY32W MemoryManager::GetProcess() const {
         return GetProcess(_processId);
     }
 
-    std::wstring MemoryManager::GetProcessName() {
+    std::wstring MemoryManager::GetProcessName() const {
             const PROCESSENTRY32W process = GetProcess();
             return process.szExeFile;
     }
@@ -46,7 +44,7 @@ namespace MemoryCommando::Memory {
         return modules;
     }
 
-    MODULEENTRY32W MemoryManager::GetModule(const std::wstring& moduleName) {
+    MODULEENTRY32W MemoryManager::GetModule(const std::wstring& moduleName) const {
         std::vector<MODULEENTRY32W> modules = GetModules();
 
         for(auto currentModule : modules) {
@@ -57,70 +55,70 @@ namespace MemoryCommando::Memory {
         throw std::runtime_error("Couldn't find a module with the specified name in the modules list.");
     }
 
-    uintptr_t MemoryManager::GetModuleBaseAddress(const std::wstring& moduleName) {
+    uintptr_t MemoryManager::GetModuleBaseAddress(const std::wstring& moduleName) const {
         auto module = GetModule(moduleName);
 
         return uintptr_t(module.modBaseAddr);
     }
 
-    size_t MemoryManager::GetModuleSize(const std::wstring& moduleName) {
+    size_t MemoryManager::GetModuleSize(const std::wstring& moduleName) const {
         const auto module = GetModule(moduleName);
         return size_t(module.modBaseSize);
     }
 
-    DWORD MemoryManager::GetProcessId() {
+    DWORD MemoryManager::GetProcessId() const {
         return _processId;
     }
 
-    std::vector<BYTE> MemoryManager::ReadVirtualMemory(const std::vector<uintptr_t>& pointers, const size_t bytesNumber) {
+    std::vector<BYTE> MemoryManager::ReadVirtualMemory(const std::vector<uintptr_t>& pointers, const size_t bytesNumber) const {
         const uintptr_t calculatedAddress = GetAddress(pointers);
         std::vector<BYTE> byteSequence = ReadVirtualMemory(calculatedAddress, bytesNumber);
 
         return byteSequence;
     }
 
-    std::vector<BYTE> MemoryManager::ReadVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const int bytesNumber) {
+    std::vector<BYTE> MemoryManager::ReadVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const int bytesNumber) const {
         const uintptr_t calculatedAddress = GetAddress(baseAddress, offsets);
         std::vector<BYTE> byteSequence = ReadVirtualMemory(calculatedAddress, bytesNumber);
 
         return byteSequence;
     }
 
-    std::vector<BYTE> MemoryManager::ReadVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const size_t bytesNumber) {
+    std::vector<BYTE> MemoryManager::ReadVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const size_t bytesNumber) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offset);
         std::vector<BYTE> byteSequence = ReadVirtualMemory(calculatedAddress, bytesNumber);
 
         return byteSequence;
     }
 
-    std::vector<BYTE> MemoryManager::ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const size_t bytesNumber) {
+    std::vector<BYTE> MemoryManager::ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const size_t bytesNumber) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offsets);
         std::vector<BYTE> byteSequence = ReadVirtualMemory(calculatedAddress, bytesNumber);
 
         return byteSequence;
     }
 
-    void MemoryManager::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const std::vector<byte>& byteSequence) {
+    void MemoryManager::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const std::vector<byte>& byteSequence) const {
         const uintptr_t calculatedAddress = GetAddress(pointers);
         WriteVirtualMemory(calculatedAddress, byteSequence);
     }
 
-    void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) {
+    void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) const {
         const uintptr_t calculatedAddress = GetAddress(baseAddress, offsets);
         WriteVirtualMemory(calculatedAddress, byteSequence);
     }
 
-    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const std::vector<byte>& byteSequence) {
+    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const std::vector<byte>& byteSequence) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offset);
         WriteVirtualMemory(calculatedAddress, byteSequence);
     }
 
-    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) {
+    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offsets);
         WriteVirtualMemory(calculatedAddress, byteSequence);
     }
 
-    uintptr_t MemoryManager::GetAddress(const std::vector<uintptr_t>& pointers) {
+    uintptr_t MemoryManager::GetAddress(const std::vector<uintptr_t>& pointers) const {
         auto pointerIterator = pointers.begin();
         uintptr_t baseAddress = *pointerIterator;
         ++pointerIterator;
@@ -137,20 +135,20 @@ namespace MemoryCommando::Memory {
         return endAddress;
     }
 
-    uintptr_t MemoryManager::GetAddress(const uintptr_t baseAddress, std::vector<uintptr_t> offsets) {
+    uintptr_t MemoryManager::GetAddress(const uintptr_t baseAddress, std::vector<uintptr_t> offsets) const {
         offsets.insert(offsets.begin(), baseAddress);
         const uintptr_t calculatedAddress = GetAddress(offsets);
         return calculatedAddress;
     }
 
-    uintptr_t MemoryManager::GetAddress(const std::wstring& moduleName, const uintptr_t offset) {
+    uintptr_t MemoryManager::GetAddress(const std::wstring& moduleName, const uintptr_t offset) const {
         const uintptr_t baseAddress = GetModuleBaseAddress(moduleName);
         const uintptr_t calculatedAddress = baseAddress + offset;
 
         return calculatedAddress;
     }
 
-    uintptr_t MemoryManager::GetAddress(const std::wstring& moduleName, std::vector<uintptr_t> offsets) {
+    uintptr_t MemoryManager::GetAddress(const std::wstring& moduleName, std::vector<uintptr_t> offsets) const {
         const uintptr_t baseAddress = GetModuleBaseAddress(moduleName);
         offsets.insert(offsets.begin(), baseAddress);
         const uintptr_t calculatedAddress = GetAddress(offsets);
@@ -160,7 +158,7 @@ namespace MemoryCommando::Memory {
 
 
     template <typename TStructure>
-    TStructure MemoryManager::ReadVirtualMemory(const uintptr_t baseAddress) {
+    TStructure MemoryManager::ReadVirtualMemory(const uintptr_t baseAddress) const {
         std::vector<BYTE> byteSequence = ReadVirtualMemory(baseAddress, sizeof(TStructure));
         BYTE* bytePointer = &byteSequence[0];
         auto structure = reinterpret_cast<TStructure>(bytePointer);
@@ -168,7 +166,7 @@ namespace MemoryCommando::Memory {
     }
 
     template <typename TStructure>
-    TStructure MemoryManager::ReadVirtualMemory(const std::vector<uintptr_t>& pointers) {
+    TStructure MemoryManager::ReadVirtualMemory(const std::vector<uintptr_t>& pointers) const {
         const uintptr_t calculatedAddress = GetAddress(pointers);
         TStructure structure = ReadVirtualMemory<TStructure>(calculatedAddress);
 
@@ -176,7 +174,7 @@ namespace MemoryCommando::Memory {
     }
 
     template <typename TStructure>
-    TStructure MemoryManager::ReadVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets) {
+    TStructure MemoryManager::ReadVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets) const {
         const uintptr_t calculatedAddress = GetAddress(baseAddress, offsets);
         TStructure structure = ReadVirtualMemory<TStructure>(calculatedAddress);
 
@@ -184,7 +182,7 @@ namespace MemoryCommando::Memory {
     }
 
     template <typename TStructure>
-    TStructure MemoryManager::ReadVirtualMemory(const std::wstring& moduleName, const uintptr_t offset) {
+    TStructure MemoryManager::ReadVirtualMemory(const std::wstring& moduleName, const uintptr_t offset) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offset);
         TStructure structure = ReadVirtualMemory<TStructure>(calculatedAddress);
 
@@ -192,7 +190,7 @@ namespace MemoryCommando::Memory {
     }
 
     template <typename TStructure>
-    TStructure MemoryManager::ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets) {
+    TStructure MemoryManager::ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offsets);
         TStructure structure = ReadVirtualMemory<TStructure>(calculatedAddress);
 
@@ -200,7 +198,7 @@ namespace MemoryCommando::Memory {
     }
 
     template <typename TStructure>
-    void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const TStructure& structure) {
+    void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const TStructure& structure) const {
         const size_t structureSize = sizeof(TStructure);
         std::vector<BYTE> structureByteSequence{};
 
@@ -212,25 +210,25 @@ namespace MemoryCommando::Memory {
     }
 
     template <typename TStructure>
-    void MemoryManager::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const TStructure& structure) {
+    void MemoryManager::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const TStructure& structure) const {
         const uintptr_t calculatedAddress = GetAddress(pointers);
         WriteVirtualMemory(calculatedAddress, structure);
     }
 
     template <typename TStructure>
-    void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& pointers, const TStructure& structure) {
+    void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& pointers, const TStructure& structure) const {
         const uintptr_t calculatedAddress = GetAddress(baseAddress, pointers);
         WriteVirtualMemory(calculatedAddress, structure);
     }
 
     template <typename TStructure>
-    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const TStructure& structure) {
+    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const TStructure& structure) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offset);
         WriteVirtualMemory(calculatedAddress, structure);
     }
 
     template <typename TStructure>
-    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const TStructure& structure) {
+    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const TStructure& structure) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offsets);
         WriteVirtualMemory(calculatedAddress, structure);
     }
