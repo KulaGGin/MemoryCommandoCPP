@@ -59,14 +59,18 @@
     <ClCompile Include="Memory\BytePatternScanner.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp" />
     <ClCompile Include="Memory\External\MemoryManagerExternal.cpp">
       <Filter>Memory\External</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\MemoryScanner.cpp">
-      <Filter>Memory\External</Filter>
+    <ClCompile Include="Memory\MemoryManager.cpp">
+      <Filter>Memory</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\MemoryManager.cpp" />
+    <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp">
+      <Filter>Memory\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryScanner.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -133,14 +137,18 @@
     <ClInclude Include="Native\Enumerations\MemoryProtection.h">
       <Filter>Native\Enumerations</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\Internal\MemoryManagerInternal.h" />
     <ClInclude Include="Memory\External\MemoryManagerExternal.h">
       <Filter>Memory\External</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\MemoryScanner.h">
-      <Filter>Memory\External</Filter>
+    <ClInclude Include="Memory\MemoryManager.h">
+      <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\MemoryManager.h" />
+    <ClInclude Include="Memory\Internal\MemoryManagerInternal.h">
+      <Filter>Memory\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryScanner.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
