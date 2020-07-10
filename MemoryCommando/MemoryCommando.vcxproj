@@ -43,6 +43,7 @@
     <ClCompile Include="Exceptions\VirtualProtectExException.cpp" />
     <ClCompile Include="Exceptions\WinAPIException.cpp" />
     <ClCompile Include="Exceptions\WriteProcessMemoryException.cpp" />
+    <ClCompile Include="Memory\ScanHelperMethods.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exceptions\BaseException.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Exceptions\VirtualProtectExException.h" />
     <ClInclude Include="Exceptions\WinAPIException.h" />
     <ClInclude Include="Exceptions\WriteProcessMemoryException.h" />
+    <ClInclude Include="Memory\ScanHelperMethods.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -71,6 +71,9 @@
     <ClCompile Include="Memory\MemoryScanner.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
+    <ClCompile Include="Memory\ScanHelperMethods.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -147,6 +150,9 @@
       <Filter>Memory\Internal</Filter>
     </ClInclude>
     <ClInclude Include="Memory\MemoryScanner.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\ScanHelperMethods.h">
       <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
