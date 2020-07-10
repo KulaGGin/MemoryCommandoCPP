@@ -74,6 +74,7 @@
     <ClCompile Include="Memory\ScanHelperMethods.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
+    <ClCompile Include="HelperMethods.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Memory\ScanHelperMethods.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="HelperMethods.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
