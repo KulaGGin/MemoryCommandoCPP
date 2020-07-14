@@ -1,16 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="MemoryManagerExternalTests.cpp" />
-    <ClCompile Include="BytePatternScannerTests.cpp" />
-    <ClCompile Include="MemoryScannerTests.cpp" />
+    <ClCompile Include="Memory\Scan\BytePatternScannerTests.cpp">
+      <Filter>Memory\Scan</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Scan\MemoryScannerTests.cpp">
+      <Filter>Memory\Scan</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Scan\ScanHelperMethodsTests.cpp">
+      <Filter>Memory\Scan</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\External\MemoryManagerExternalTests.cpp">
+      <Filter>Memory\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryManagerTests.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="HelperMethodsTests.cpp" />
+    <ClCompile Include="Memory\Internal\MemoryManagerInternalTests.cpp">
+      <Filter>Memory\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryCommandoTestsHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MemoryManagerExternalTests.h" />
-    <ClInclude Include="BytePatternScannerTests.h" />
-    <ClInclude Include="MemoryScannerTests.h" />
+    <ClInclude Include="Memory\Scan\BytePatternScannerTests.h">
+      <Filter>Memory\Scan</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Scan\MemoryScannerTests.h">
+      <Filter>Memory\Scan</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Scan\ScanHelperMethodsTests.h">
+      <Filter>Memory\Scan</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\External\MemoryManagerExternalTests.h">
+      <Filter>Memory\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryManagerTests.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperMethodsTests.h" />
+    <ClInclude Include="Memory\Internal\MemoryManagerInternalTests.h">
+      <Filter>Memory\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryCommandoTestsHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{c23a2659-6674-435c-a0d6-d80cb5b26e23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Scan">
+      <UniqueIdentifier>{57107bc8-fcab-4e1b-a661-23aeb1425e96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\External">
+      <UniqueIdentifier>{0c022bc6-fd2f-480e-be0d-c4cb3edb7d70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Internal">
+      <UniqueIdentifier>{9753d1df-f40a-45f6-ae01-c49d528d3839}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

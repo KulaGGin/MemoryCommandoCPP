@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "windows.h"
 #include <TlHelp32.h>
 
@@ -12,7 +14,7 @@ namespace MemoryCommando {
         static std::vector<PROCESSENTRY32W> GetRunningProcesses();
         static PROCESSENTRY32W GetProcess(DWORD processId);
         static PROCESSENTRY32W GetProcess(HANDLE processHandle);
-        static PROCESSENTRY32W GetProcess(const std::wstring& processName, const size_t processNumber);
+        static PROCESSENTRY32W GetProcess(const std::wstring& processName, size_t processNumber = 1);
 
         static DWORD GetProcessId(HANDLE processHandle);
         static DWORD GetProcessId(const std::wstring& processName, size_t processNumber = 1);
@@ -39,8 +41,31 @@ namespace MemoryCommando {
         static size_t GetModuleSize(const std::wstring& moduleName, HANDLE processHandle);
         static size_t GetModuleSize(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber = 1);
 
-        template<typename Classname>
-        static std::vector<BYTE> ConvertObjectToBytes(Classname object);
+        template<typename Classname> static std::vector<BYTE> ConvertObjectToBytes(Classname object);
+        template<typename Classname> static Classname ConvertBytesToObject(const std::vector<BYTE>& bytes);
     };
-}
 
+    template <typename Classname>
+    std::vector<BYTE> HelperMethods::ConvertObjectToBytes(Classname object) {
+        const size_t objectSize = sizeof(Classname);
+        std::vector<BYTE> objectByteSequence{};
+        BYTE* objectBytePointer = reinterpret_cast<BYTE*>(&object);
+
+        for(BYTE* bytePointer = objectBytePointer; bytePointer < objectBytePointer + objectSize; ++bytePointer) {
+            objectByteSequence.push_back(*bytePointer);
+        }
+
+        return objectByteSequence;
+    }
+
+    template <typename Classname>
+    Classname HelperMethods::ConvertBytesToObject(const std::vector<BYTE>& bytes) {
+        auto objectPointer = std::make_unique<Classname>();
+
+        std::memcpy(objectPointer.get(), &bytes[0], sizeof Classname);
+
+        Classname object = *objectPointer;
+
+        return object;
+    }
+}

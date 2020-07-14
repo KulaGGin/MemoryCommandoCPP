@@ -56,9 +56,6 @@
     <ClCompile Include="Exceptions\WriteProcessMemoryException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\BytePatternScanner.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
     <ClCompile Include="Memory\External\MemoryManagerExternal.cpp">
       <Filter>Memory\External</Filter>
     </ClCompile>
@@ -68,13 +65,16 @@
     <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp">
       <Filter>Memory\Internal</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\MemoryScanner.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Memory\ScanHelperMethods.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
     <ClCompile Include="HelperMethods.cpp" />
+    <ClCompile Include="Memory\Scan\BytePatternScanner.cpp">
+      <Filter>Memory\Scan</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Scan\MemoryScanner.cpp">
+      <Filter>Memory\Scan</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Scan\ScanHelperMethods.cpp">
+      <Filter>Memory\Scan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -132,9 +132,6 @@
     <ClInclude Include="Exceptions\WriteProcessMemoryException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\BytePatternScanner.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
     <ClInclude Include="Native\Enumerations\ProcessAccess.h">
       <Filter>Native\Enumerations</Filter>
     </ClInclude>
@@ -150,13 +147,16 @@
     <ClInclude Include="Memory\Internal\MemoryManagerInternal.h">
       <Filter>Memory\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\MemoryScanner.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\ScanHelperMethods.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
     <ClInclude Include="HelperMethods.h" />
+    <ClInclude Include="Memory\Scan\BytePatternScanner.h">
+      <Filter>Memory\Scan</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Scan\MemoryScanner.h">
+      <Filter>Memory\Scan</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Scan\ScanHelperMethods.h">
+      <Filter>Memory\Scan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
@@ -176,6 +176,9 @@
     </Filter>
     <Filter Include="Memory\Internal">
       <UniqueIdentifier>{d7856151-2628-49ed-96b9-e4a9c3c99e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Scan">
+      <UniqueIdentifier>{50ba9094-27c6-4852-8cff-c4f8df442517}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

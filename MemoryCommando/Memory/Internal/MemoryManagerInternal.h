@@ -1,6 +1,10 @@
 #pragma once
 #include "../MemoryManager.h"
 
+namespace MemoryCommandoTests {
+    class MemoryManagerInternalTests;
+}
+
 namespace MemoryCommando::Memory::Internal {
     class MemoryManagerInternal final : public MemoryManager {
     public:
@@ -13,6 +17,8 @@ namespace MemoryCommando::Memory::Internal {
         MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress) const override;
         std::vector<BYTE> ReadVirtualMemory(uintptr_t address, size_t bytesNumber) const override;
         void WriteVirtualMemory(uintptr_t address, const std::vector<byte>& byteSequence) const override;
+
+        friend class MemoryCommandoTests::MemoryManagerInternalTests;
     };
 }
 

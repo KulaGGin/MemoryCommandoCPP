@@ -1,7 +1,7 @@
 #include "HelperMethods.h"
 
 
-
+#include <windows.h>
 #include <boost/algorithm/string/predicate.hpp>
 #include <stdexcept>
 #include <wil/resource.h>
@@ -13,21 +13,9 @@
 #include "Exceptions/Process32Exception.h"
 
 namespace MemoryCommando {
-    template <typename Classname>
-    std::vector<BYTE> HelperMethods::ConvertObjectToBytes(Classname object) {
-        const size_t objectSize = sizeof(Classname);
-        std::vector<BYTE> objectByteSequence{};
-
-        for(BYTE* bytePointer = &object; bytePointer < &object + objectSize; ++bytePointer) {
-            objectByteSequence.push_back(*bytePointer);
-        }
-
-        return objectByteSequence;
-    }
-
     SYSTEM_INFO HelperMethods::GetSystemInfo() {
         SYSTEM_INFO systemInfo;
-        ::GetSystemInfo(&systemInfo);
+        ::GetNativeSystemInfo(&systemInfo);
         return systemInfo;
     }
 
@@ -56,7 +44,7 @@ namespace MemoryCommando {
         return runningProcesses;
     }
 
-    PROCESSENTRY32W HelperMethods::GetProcess(DWORD processId) {
+    PROCESSENTRY32W HelperMethods::GetProcess(const DWORD processId) {
         std::vector<PROCESSENTRY32W> processes = GetRunningProcesses();
 
         for(auto currentProcess : processes) {
@@ -67,7 +55,7 @@ namespace MemoryCommando {
         throw std::runtime_error("Couldn't find a process with the specified processId in the process list.");
     }
 
-    PROCESSENTRY32W HelperMethods::GetProcess(HANDLE processHandle) {
+    PROCESSENTRY32W HelperMethods::GetProcess(const HANDLE processHandle) {
         const DWORD processId = GetProcessId(processHandle);
         const PROCESSENTRY32W process = GetProcess(processId);
 
@@ -91,7 +79,7 @@ namespace MemoryCommando {
         throw std::runtime_error("Couldn't find a process with the specified process name in the process list.");
     }
 
-    DWORD HelperMethods::GetProcessId(HANDLE processHandle) {
+    DWORD HelperMethods::GetProcessId(const HANDLE processHandle) {
         const DWORD processId = ::GetProcessId(processHandle);
 
         if(!processId)
@@ -100,14 +88,14 @@ namespace MemoryCommando {
         return processId;
     }
 
-    DWORD HelperMethods::GetProcessId(const std::wstring& processName, size_t processNumber) {
+    DWORD HelperMethods::GetProcessId(const std::wstring& processName, const size_t processNumber) {
         const PROCESSENTRY32W process = GetProcess(processName, processNumber);
         const DWORD processId = process.th32ProcessID;
 
         return processId;
     }
 
-    HANDLE HelperMethods::GetProcessHandle(DWORD processId, DWORD processAccess) {
+    HANDLE HelperMethods::GetProcessHandle(const DWORD processId, const DWORD processAccess) {
         const HANDLE processHandle = ::OpenProcess(processAccess, 0, processId);
 
         if(!processHandle)
@@ -116,14 +104,14 @@ namespace MemoryCommando {
         return processHandle;
     }
 
-    HANDLE HelperMethods::GetProcessHandle(const std::wstring& processName, size_t processNumber, DWORD processAccess) {
+    HANDLE HelperMethods::GetProcessHandle(const std::wstring& processName, const size_t processNumber, const DWORD processAccess) {
         const PROCESSENTRY32W process = GetProcess(processName, processNumber);
         const HANDLE processHandle = GetProcessHandle(process.th32ProcessID, processAccess);
 
         return processHandle;
     }
 
-    std::wstring HelperMethods::GetProcessName(HANDLE processHandle) {
+    std::wstring HelperMethods::GetProcessName(const HANDLE processHandle) {
         const auto process = GetProcess(processHandle);
         const std::wstring processName = process.szExeFile;
 
@@ -137,7 +125,7 @@ namespace MemoryCommando {
         return processName;
     }
 
-    std::vector<MODULEENTRY32W> HelperMethods::GetModules(DWORD processId) {
+    std::vector<MODULEENTRY32W> HelperMethods::GetModules(const DWORD processId) {
         std::vector<MODULEENTRY32W> modules{};
         MODULEENTRY32               module{};
         module.dwSize = sizeof(module);

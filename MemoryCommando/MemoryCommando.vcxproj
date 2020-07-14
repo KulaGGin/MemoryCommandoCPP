@@ -23,13 +23,13 @@
     <ClCompile Include="HelperMethods.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp" />
-    <ClCompile Include="Memory\BytePatternScanner.cpp" />
+    <ClCompile Include="Memory\Scan\BytePatternScanner.cpp" />
     <ClCompile Include="Exceptions\CreateToolhelp32SnapshotException.cpp" />
     <ClCompile Include="Exceptions\GetProcessIdException.cpp" />
     <ClCompile Include="Exceptions\GetProcessImageFileNameException.cpp" />
     <ClCompile Include="MemoryCommando.cpp" />
     <ClCompile Include="Memory\External\MemoryManagerExternal.cpp" />
-    <ClCompile Include="Memory\MemoryScanner.cpp" />
+    <ClCompile Include="Memory\Scan\MemoryScanner.cpp" />
     <ClCompile Include="Exceptions\Module32Exception.cpp" />
     <ClCompile Include="Exceptions\VirtualAllocException.cpp" />
     <ClCompile Include="Exceptions\VirtualFreeException.cpp" />
@@ -44,21 +44,21 @@
     <ClCompile Include="Exceptions\VirtualProtectExException.cpp" />
     <ClCompile Include="Exceptions\WinAPIException.cpp" />
     <ClCompile Include="Exceptions\WriteProcessMemoryException.cpp" />
-    <ClCompile Include="Memory\ScanHelperMethods.cpp" />
+    <ClCompile Include="Memory\Scan\ScanHelperMethods.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exceptions\BaseException.h" />
     <ClInclude Include="HelperMethods.h" />
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\Internal\MemoryManagerInternal.h" />
-    <ClInclude Include="Memory\BytePatternScanner.h" />
+    <ClInclude Include="Memory\Scan\BytePatternScanner.h" />
     <ClInclude Include="Exceptions\CreateToolhelp32SnapshotException.h" />
     <ClInclude Include="Exceptions\GetProcessIdException.h" />
     <ClInclude Include="Exceptions\GetProcessImageFileNameException.h" />
     <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="Memory\External\MemoryManagerExternal.h" />
     <ClInclude Include="Native\Enumerations\MemoryProtection.h" />
-    <ClInclude Include="Memory\MemoryScanner.h" />
+    <ClInclude Include="Memory\Scan\MemoryScanner.h" />
     <ClInclude Include="Exceptions\Module32Exception.h" />
     <ClInclude Include="Exceptions\VirtualAllocException.h" />
     <ClInclude Include="Exceptions\VirtualFreeException.h" />
@@ -74,7 +74,7 @@
     <ClInclude Include="Exceptions\VirtualProtectExException.h" />
     <ClInclude Include="Exceptions\WinAPIException.h" />
     <ClInclude Include="Exceptions\WriteProcessMemoryException.h" />
-    <ClInclude Include="Memory\ScanHelperMethods.h" />
+    <ClInclude Include="Memory\Scan\ScanHelperMethods.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -94,20 +94,20 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -133,9 +133,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -153,6 +155,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,6 +171,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;MEMORYCOMMANDERCPP_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -185,6 +189,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;MEMORYCOMMANDERCPP_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -204,6 +209,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;MEMORYCOMMANDERCPP_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

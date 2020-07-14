@@ -8,7 +8,7 @@
 
 
 #include "Memory/MemoryManager.h"
-#include "Memory/MemoryScanner.h"
+#include "Memory/Scan/MemoryScanner.h"
 
 
 namespace MemoryCommando {

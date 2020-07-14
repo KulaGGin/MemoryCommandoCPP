@@ -4,7 +4,6 @@
 #include <stdexcept>
 
 #include "../Exceptions/CreateToolhelp32SnapshotException.h"
-#include "../Exceptions/GetProcessIdException.h"
 #include "../Exceptions/Module32Exception.h"
 #include "../HelperMethods.h"
 

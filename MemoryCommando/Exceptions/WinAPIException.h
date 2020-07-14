@@ -5,7 +5,8 @@
 #include "BaseException.h"
 
 namespace MemoryCommando::Exceptions {
-    class WinAPIException : BaseException {
+    // todo inherit from WinAPIException public
+    class WinAPIException : public BaseException {
     protected:
         DWORD LastError;
         std::string ErrorMessage;

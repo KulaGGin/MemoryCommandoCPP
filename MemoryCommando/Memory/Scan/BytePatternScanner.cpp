@@ -20,7 +20,7 @@ namespace MemoryCommando::Memory {
 
             // Check the pattern at the current offset in the byte sequence
             // loop as long as we have a match between byte in the byte sequence and pattern byte
-            int filteredPatternIndex = indexedPattern.size(); // start checking the pattern from the end
+            size_t filteredPatternIndex = indexedPattern.size(); // start checking the pattern from the end
             while(true) {
                 filteredPatternIndex--;
                 const size_t fullPatternIndex = indexedPattern[filteredPatternIndex].first;
@@ -28,11 +28,12 @@ namespace MemoryCommando::Memory {
                 const BYTE patternByte = indexedPattern[filteredPatternIndex].second;
                 const BYTE byteSequenceByte = byteSequence[byteSequenceIndex];
 
+                // todo get rid of code dublication
                 if(patternByte != byteSequenceByte) { // on a mismatch
                     // Shift the pattern so that the bad byte in byte array aligns with the last occurrence of it in the pattern.
                     // The max function is used to  make sure that we get a positive shift.
                     // We may get a negative shift if the last occurrence of bad byte in the pattern is on the right side of the current  character.
-                    const auto byteShiftNumber = std::max(unsigned(1), fullPatternIndex - badByteTable[byteSequenceByte]);
+                    const auto byteShiftNumber = std::max(SSIZE_T(1), SSIZE_T(fullPatternIndex - badByteTable[byteSequenceByte]));
                     offsetIndex += byteShiftNumber;
                     break;
                 }
@@ -61,9 +62,9 @@ namespace MemoryCommando::Memory {
         return patternIndexes;
     }
 
-    std::vector<size_t> BytePatternScanner::Scan(const std::vector<BYTE>& byteSequence, const std::string& pattern) const {
+    std::vector<size_t> BytePatternScanner::Scan(const std::vector<BYTE>& byteSequence, const std::string& stringPattern) const {
         // getting pattern ready for scanning
-        const auto indexedPattern = ScanHelperMethods::GetIndexedPattern(pattern);
+        const auto indexedPattern = ScanHelperMethods::GetIndexedPattern(stringPattern);
 
         std::vector<size_t> patternIndexes = Scan(byteSequence, indexedPattern);
 

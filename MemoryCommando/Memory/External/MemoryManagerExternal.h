@@ -12,12 +12,11 @@ namespace MemoryCommandoTests {
 }
 
 namespace MemoryCommando::Memory::External {
-
     class MemoryManagerExternal final : public MemoryManager {
     public:
         MemoryManagerExternal() = delete;
         explicit MemoryManagerExternal(DWORD processId, DWORD processAccess = PROCESS_ALL_ACCESS);
-        explicit MemoryManagerExternal(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
+        MemoryManagerExternal(const std::wstring& processName, size_t processNumber = 1, DWORD processAccess = PROCESS_ALL_ACCESS);
 
         DWORD GetProcessId() const override;
         HANDLE GetProcessHandle() const override;
@@ -27,11 +26,9 @@ namespace MemoryCommando::Memory::External {
         MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress) const override;
         std::vector<BYTE> ReadVirtualMemory(uintptr_t address, size_t bytesNumber) const override;
         void WriteVirtualMemory(uintptr_t address, const std::vector<byte>& byteSequence) const override;
-
-
     private:
         friend class MemoryCommandoTests::MemoryManagerExternalTests;
 
-        HANDLE GetProcessHandle(DWORD processAccess = PROCESS_ALL_ACCESS);
+        HANDLE GetNewProcessHandle(DWORD processAccess = PROCESS_ALL_ACCESS) const;
     };
 }

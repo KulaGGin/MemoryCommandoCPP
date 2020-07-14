@@ -16,13 +16,13 @@ namespace MemoryCommando::Memory::External {
     MemoryManagerExternal::MemoryManagerExternal(const DWORD processId, const DWORD processAccess) {
         _processId = processId;
         _process = MemoryManager::GetProcess();
-        _processHandle = wil::unique_handle(GetProcessHandle(processAccess));
+        _processHandle = wil::unique_handle(GetNewProcessHandle(processAccess));
     }
 
     MemoryManagerExternal::MemoryManagerExternal(const std::wstring& processName, const size_t processNumber, const DWORD processAccess) {
         _process = HelperMethods::GetProcess(processName, processNumber);
         _processId = _process.th32ProcessID;
-        _processHandle = wil::unique_handle(GetProcessHandle(processAccess));
+        _processHandle = wil::unique_handle(GetNewProcessHandle(processAccess));
     }
 
     DWORD MemoryManagerExternal::GetProcessId() const {
@@ -33,7 +33,7 @@ namespace MemoryCommando::Memory::External {
         return _processHandle.get();
     }
 
-    HANDLE MemoryManagerExternal::GetProcessHandle(const DWORD processAccess) {
+    HANDLE MemoryManagerExternal::GetNewProcessHandle(const DWORD processAccess) const {
         const HANDLE processHandle = OpenProcess(processAccess, 0, _processId);
 
         if(!processHandle)

@@ -13,7 +13,7 @@ namespace MemoryCommando::Memory {
     public:
         std::vector<size_t> Scan(const std::vector<BYTE>& byteSequence, const std::vector<std::pair<size_t, BYTE>>& indexedPattern) const;
         std::vector<size_t> Scan(const std::vector<BYTE>& byteSequence, const std::vector<BYTE>& bytePattern) const;
-        std::vector<size_t> Scan(const std::vector<BYTE>& byteSequence, const std::string& pattern) const;
+        std::vector<size_t> Scan(const std::vector<BYTE>& byteSequence, const std::string& stringPattern) const;
     private:
         const unsigned _byteQuantity = MAXBYTE + 1;
 

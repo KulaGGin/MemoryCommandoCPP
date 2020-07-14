@@ -10,7 +10,7 @@
 namespace MemoryCommando {
     MemoryCommando::MemoryCommando() :
     _memoryManager(Internal::MemoryManagerInternal()),
-    _memoryScanner(_memoryScanner) {
+    _memoryScanner(_memoryManager) {
     }
 
     MemoryCommando::MemoryCommando(const DWORD processId) :
