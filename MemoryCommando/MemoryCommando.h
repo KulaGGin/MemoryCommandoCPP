@@ -13,7 +13,6 @@
 
 namespace MemoryCommando {
     using namespace Memory;
-    using namespace External;
     class MemoryCommando {
     public:
         MemoryCommando();
@@ -94,7 +93,7 @@ namespace MemoryCommando {
         template<typename Classname>
         std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const Classname& object) const;
     private:
-        const MemoryManager &_memoryManager;
+        const std::shared_ptr<const MemoryManager> _memoryManager;
         const MemoryScanner &_memoryScanner;
     };
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <windows.h>
 #include <processthreadsapi.h>
 #include <string>
@@ -22,7 +23,7 @@ namespace MemoryCommandoTests {
         std::wstring GetCurrentProcessName() const;
         PROCESS_INFORMATION GetTestedProcess();
         std::wstring GetSystemDirectoryPath() const;
-        MemoryManagerExternal& GetMemoryManagerExternal();
+        std::shared_ptr<const MemoryManagerExternal> GetMemoryManagerExternal() const;
         MemoryManagerInternal& GetMemoryManagerInternal();
     private:
         DWORD _currentProcessId;
@@ -31,7 +32,7 @@ namespace MemoryCommandoTests {
 
         PROCESS_INFORMATION _testedProcessInformation;
 
-        MemoryManagerExternal _memoryManagerExternal;
+        std::shared_ptr<const MemoryManagerExternal> _memoryManagerExternal;
         MemoryManagerInternal _memoryManagerInternal{};
 
         DWORD InitializeCurrentProcessId() const;

@@ -16,7 +16,7 @@ namespace MemoryCommandoTests {
 namespace MemoryCommando::Memory {
     class MemoryScanner {
     public:
-        MemoryScanner(const MemoryManager &memoryManager);
+        MemoryScanner(std::shared_ptr<const MemoryManager> memoryManager);
         std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::string& pattern) const;
         std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, const std::string& pattern) const;
         std::vector<uintptr_t> ScanVirtualMemory(const std::string& pattern) const;
@@ -41,7 +41,7 @@ namespace MemoryCommando::Memory {
         std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, Classname object) const;
 
     private:
-        const MemoryManager& _memoryManager;
+        std::shared_ptr<const MemoryManager> _memoryManager;
         const BytePatternScanner _bytePatternScanner{};
         const DWORD _memoryFilter = PAGE_NOACCESS | PAGE_GUARD;
         const std::vector<MemoryProtection> _memoryFilterList = { MemoryProtection::ZeroAccess, MemoryProtection::NoAccess, MemoryProtection::Guard };

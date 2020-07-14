@@ -12,7 +12,7 @@ namespace MemoryCommandoTests {
         _currentProcessHandle(InitializeCurrentProcessHandle()),
         _currentProcessName(InitializeCurrentProcessName()),
         _testedProcessInformation{ InitializeTestedProcess() },
-        _memoryManagerExternal(_testedProcessInformation.dwProcessId) {
+        _memoryManagerExternal{ std::make_shared<MemoryManagerExternal>(_testedProcessInformation.dwProcessId) } {
 
     }
 
@@ -58,7 +58,7 @@ namespace MemoryCommandoTests {
         return systemDirectoryPath;
     }
 
-    MemoryManagerExternal& MemoryCommandoTestsHelper::GetMemoryManagerExternal() {
+    std::shared_ptr<const MemoryManagerExternal> MemoryCommandoTestsHelper::GetMemoryManagerExternal() const {
         return _memoryManagerExternal;
     }
 

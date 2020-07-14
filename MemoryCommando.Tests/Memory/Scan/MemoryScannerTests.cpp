@@ -26,31 +26,33 @@ namespace MemoryCommandoTests {
     }
 
     void MemoryScannerTests::GetAccessibleMemoryRegions() {
-        const auto address = _memoryManager.AllocateVirtualMemory(0, 0x5000);
-        auto memoryRegions = _memoryScanner.GetAccessibleUsedMemoryRegions(address, address + 0x5000);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(0, 0x5000);
+        auto memoryRegions = _memoryScanner.GetAccessibleUsedMemoryRegions(allocatedAddress, allocatedAddress + 0x5000);
 
         if(memoryRegions.size() != 1)
             Assert::IsTrue(false);
-        if(uintptr_t(memoryRegions[0].BaseAddress) != address)
+        if(uintptr_t(memoryRegions[0].BaseAddress) != allocatedAddress)
             Assert::IsTrue(false);
         if(memoryRegions[0].RegionSize != 0x5000)
             Assert::IsTrue(false);
 
-        _memoryManager.ProtectVirtualMemory(address + 0x0000, 0x1000, PAGE_READONLY);
-        _memoryManager.ProtectVirtualMemory(address + 0x1000, 0x1000, PAGE_READWRITE);
-        _memoryManager.ProtectVirtualMemory(address + 0x2000, 0x1000, PAGE_EXECUTE);
+        _memoryManager->ProtectVirtualMemory(allocatedAddress + 0x0000, 0x1000, PAGE_READONLY);
+        _memoryManager->ProtectVirtualMemory(allocatedAddress + 0x1000, 0x1000, PAGE_READWRITE);
+        _memoryManager->ProtectVirtualMemory(allocatedAddress + 0x2000, 0x1000, PAGE_EXECUTE);
 
-        memoryRegions = _memoryScanner.GetAccessibleUsedMemoryRegions(address, address + 0x5000);
+        memoryRegions = _memoryScanner.GetAccessibleUsedMemoryRegions(allocatedAddress, allocatedAddress + 0x5000);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(memoryRegions.size() != 4)
             Assert::IsTrue(false);
-        if(uintptr_t(memoryRegions[0].BaseAddress) != address || memoryRegions[0].RegionSize != 0x1000)
+        if(uintptr_t(memoryRegions[0].BaseAddress) != allocatedAddress || memoryRegions[0].RegionSize != 0x1000)
             Assert::IsTrue(false);
-        if(uintptr_t(memoryRegions[1].BaseAddress) != address + 0x1000 || memoryRegions[1].RegionSize != 0x1000)
+        if(uintptr_t(memoryRegions[1].BaseAddress) != allocatedAddress + 0x1000 || memoryRegions[1].RegionSize != 0x1000)
             Assert::IsTrue(false);
-        if(uintptr_t(memoryRegions[2].BaseAddress) != address + 0x2000 || memoryRegions[2].RegionSize != 0x1000)
+        if(uintptr_t(memoryRegions[2].BaseAddress) != allocatedAddress + 0x2000 || memoryRegions[2].RegionSize != 0x1000)
             Assert::IsTrue(false);
-        if(uintptr_t(memoryRegions[3].BaseAddress) != address + 0x3000 || memoryRegions[3].RegionSize != 0x2000)
+        if(uintptr_t(memoryRegions[3].BaseAddress) != allocatedAddress + 0x3000 || memoryRegions[3].RegionSize != 0x2000)
             Assert::IsTrue(false);
 
         Assert::IsTrue(true);
@@ -58,13 +60,15 @@ namespace MemoryCommandoTests {
 
     void MemoryScannerTests::ScanStringStartEnd() {
         const std::vector<BYTE> byteArray{ 0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81 };
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(0, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, byteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(0, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, byteArray);
         
         const uintptr_t addressPastTheEnd = allocatedAddress + byteArray.size();
         const std::string pattern = "0x18 0x33 ?? 0xF0 0x18 0x33";
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(allocatedAddress - 4, addressPastTheEnd + 4, pattern);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -76,11 +80,13 @@ namespace MemoryCommandoTests {
 
     void MemoryScannerTests::ScanStringStart() {
         const std::vector<BYTE> byteArray{ 0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81 };
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(0, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, byteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(0, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, byteArray);
         const std::string pattern = "0x18 0x33 ?? 0xF0 0x18 0x33";
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(allocatedAddress - 4, pattern);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -91,11 +97,13 @@ namespace MemoryCommandoTests {
     }
 
     void MemoryScannerTests::ScanString() {
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(_memoryScanner._minimumApplicationAddress, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, _testByteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(_memoryScanner._minimumApplicationAddress, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, _testByteArray);
         const std::string pattern = "0x18 0x33 ?? 0xF0 0x18 0x33";
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(pattern);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -109,11 +117,13 @@ namespace MemoryCommandoTests {
         auto modules = HelperMethods::GetModules(_memoryCommandoTestsHelper.GetTestedProcess().dwProcessId);
         auto module = modules[0];
         const uintptr_t byteArrayAddress = uintptr_t(module.modBaseAddr + module.modBaseSize) - _testByteArray.size();
-        _memoryManager.ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
-        _memoryManager.WriteVirtualMemory(byteArrayAddress, _testByteArray);
+        _memoryManager->ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, _testByteArray);
 
         const std::string pattern = "0x18 0x33 ?? 0xF0 0x18 0x33";
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(module.szModule, pattern);
+
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, std::vector<BYTE>(_testByteArray.size(), BYTE(0x0)));
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -127,8 +137,8 @@ namespace MemoryCommandoTests {
         auto modules = HelperMethods::GetModules(_memoryCommandoTestsHelper.GetTestedProcess().dwProcessId);
         auto module = modules[0];
         const uintptr_t byteArrayAddress = uintptr_t(module.modBaseAddr + module.modBaseSize) - _testByteArray.size();
-        _memoryManager.ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
-        _memoryManager.WriteVirtualMemory(byteArrayAddress, _testByteArray);
+        _memoryManager->ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, _testByteArray);
 
         std::vector<std::wstring> moduleNames;
         moduleNames.reserve(modules.size());
@@ -138,6 +148,8 @@ namespace MemoryCommandoTests {
 
         const std::string pattern = "0x18 0x33 ?? 0xF0 0x18 0x33";
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(moduleNames, pattern);
+
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, std::vector<BYTE>(_testByteArray.size(), BYTE(0x0)));
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -149,14 +161,16 @@ namespace MemoryCommandoTests {
 
     void MemoryScannerTests::ScanBytePatternStartEnd() {
         const std::vector<BYTE> byteArray{ 0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81 };
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(0, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, byteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(0, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, byteArray);
 
         const uintptr_t addressPastTheEnd = allocatedAddress + byteArray.size();
 
         const auto pattern = std::vector<BYTE>{ 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33 };
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(allocatedAddress - 4, addressPastTheEnd + 4, pattern);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -168,12 +182,14 @@ namespace MemoryCommandoTests {
 
     void MemoryScannerTests::ScanBytePatternStart() {
         const std::vector<BYTE> byteArray{ 0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81 };
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(0, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, byteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(0, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, byteArray);
 
         const auto pattern = std::vector<BYTE>{ 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33 };
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(allocatedAddress - 4, pattern);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -184,12 +200,14 @@ namespace MemoryCommandoTests {
     }
 
     void MemoryScannerTests::ScanBytePattern() {
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(_memoryScanner._minimumApplicationAddress, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, _testByteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(_memoryScanner._minimumApplicationAddress, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, _testByteArray);
 
         const auto pattern = std::vector<BYTE>{ 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33 };
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(pattern);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -203,11 +221,13 @@ namespace MemoryCommandoTests {
         auto modules = HelperMethods::GetModules(_memoryCommandoTestsHelper.GetTestedProcess().dwProcessId);
         auto module = modules[0];
         const uintptr_t byteArrayAddress = uintptr_t(module.modBaseAddr + module.modBaseSize) - _testByteArray.size();
-        _memoryManager.ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
-        _memoryManager.WriteVirtualMemory(byteArrayAddress, _testByteArray);
+        _memoryManager->ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, _testByteArray);
 
         const auto pattern = std::vector<BYTE>{ 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33 };
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(module.szModule, pattern);
+
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, std::vector<BYTE>(_testByteArray.size(), BYTE(0x0)));
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -221,8 +241,8 @@ namespace MemoryCommandoTests {
         auto modules = HelperMethods::GetModules(_memoryCommandoTestsHelper.GetTestedProcess().dwProcessId);
         auto module = modules[0];
         const uintptr_t byteArrayAddress = uintptr_t(module.modBaseAddr + module.modBaseSize) - _testByteArray.size();
-        _memoryManager.ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
-        _memoryManager.WriteVirtualMemory(byteArrayAddress, _testByteArray);
+        _memoryManager->ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, _testByteArray);
 
         std::vector<std::wstring> moduleNames;
         moduleNames.reserve(modules.size());
@@ -232,6 +252,8 @@ namespace MemoryCommandoTests {
 
         const auto pattern = std::vector<BYTE>{ 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33 };
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(moduleNames, pattern);
+
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, std::vector<BYTE>(_testByteArray.size(), BYTE(0x0)));
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -243,8 +265,8 @@ namespace MemoryCommandoTests {
 
     void MemoryScannerTests::ScanObjectStartEnd() {
         const std::vector<BYTE> byteArray{ 0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81 };
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(0, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, byteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(0, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, byteArray);
 
         const uintptr_t addressPastTheEnd = allocatedAddress + byteArray.size();
 
@@ -253,6 +275,8 @@ namespace MemoryCommandoTests {
         std::memcpy(&object, &bytePattern[0], bytePattern.size());
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(allocatedAddress - 4, addressPastTheEnd + 4, object);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -264,14 +288,16 @@ namespace MemoryCommandoTests {
 
     void MemoryScannerTests::ScanObjectStart() {
         const std::vector<BYTE> byteArray{ 0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81 };
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(0, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, byteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(0, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, byteArray);
 
         UINT64 object{};
         const auto bytePattern = std::vector<BYTE>{ 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0 };
         std::memcpy(&object, &bytePattern[0], bytePattern.size());
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(allocatedAddress - 4, object);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -282,14 +308,16 @@ namespace MemoryCommandoTests {
     }
 
     void MemoryScannerTests::ScanObject() {
-        const auto allocatedAddress = _memoryManager.AllocateVirtualMemory(_memoryScanner._minimumApplicationAddress, 0x1000);
-        _memoryManager.WriteVirtualMemory(allocatedAddress, _testByteArray);
+        const auto allocatedAddress = _memoryManager->AllocateVirtualMemory(_memoryScanner._minimumApplicationAddress, 0x1000);
+        _memoryManager->WriteVirtualMemory(allocatedAddress, _testByteArray);
 
         UINT64 object{};
         const auto bytePattern = std::vector<BYTE>{ 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0 };
         std::memcpy(&object, &bytePattern[0], bytePattern.size());
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(object);
+
+        _memoryManager->FreeVirtualMemory(allocatedAddress);
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -303,14 +331,16 @@ namespace MemoryCommandoTests {
         auto modules = HelperMethods::GetModules(_memoryCommandoTestsHelper.GetTestedProcess().dwProcessId);
         auto module = modules[0];
         const uintptr_t byteArrayAddress = uintptr_t(module.modBaseAddr + module.modBaseSize) - _testByteArray.size();
-        _memoryManager.ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
-        _memoryManager.WriteVirtualMemory(byteArrayAddress, _testByteArray);
+        _memoryManager->ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, _testByteArray);
 
         UINT64 object{};
         const auto bytePattern = std::vector<BYTE>{ 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0 };
         std::memcpy(&object, &bytePattern[0], bytePattern.size());
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(module.szModule, object);
+
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, std::vector<BYTE>(_testByteArray.size(), BYTE(0x0)));
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
@@ -324,8 +354,8 @@ namespace MemoryCommandoTests {
         auto modules = HelperMethods::GetModules(_memoryCommandoTestsHelper.GetTestedProcess().dwProcessId);
         auto module = modules[0];
         const uintptr_t byteArrayAddress = uintptr_t(module.modBaseAddr + module.modBaseSize) - _testByteArray.size();
-        _memoryManager.ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
-        _memoryManager.WriteVirtualMemory(byteArrayAddress, _testByteArray);
+        _memoryManager->ProtectVirtualMemory(uintptr_t(module.modBaseAddr), uintptr_t(module.modBaseSize), PAGE_EXECUTE_READWRITE);
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, _testByteArray);
 
         std::vector<std::wstring> moduleNames;
         moduleNames.reserve(modules.size());
@@ -338,6 +368,8 @@ namespace MemoryCommandoTests {
         std::memcpy(&object, &bytePattern[0], bytePattern.size());
 
         std::vector<uintptr_t> patternAddresses = _memoryScanner.ScanVirtualMemory(moduleNames, object);
+
+        _memoryManager->WriteVirtualMemory(byteArrayAddress, std::vector<BYTE>(_testByteArray.size(), BYTE(0x0)));
 
         if(patternAddresses.size() != 2)
             Assert::IsTrue(false);
