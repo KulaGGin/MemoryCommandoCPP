@@ -170,6 +170,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MemoryCommandoTests.cpp" />
     <ClCompile Include="Memory\CodeInjectorTests.cpp" />
     <ClCompile Include="HelperMethodsTests.cpp" />
     <ClCompile Include="MemoryCommandoTestsHelper.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Memory\Scan\ScanHelperMethodsTests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MemoryCommandoTests.h" />
     <ClInclude Include="Memory\CodeInjectorTests.h" />
     <ClInclude Include="HelperMethodsTests.h" />
     <ClInclude Include="MemoryCommandoTestsHelper.h" />
