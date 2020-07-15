@@ -22,7 +22,7 @@ namespace MemoryCommando {
 
         void AddNops(std::vector<BYTE>& machineCode, size_t neededLength) const;
 
-        std::vector<BYTE> GetTrampolineMachineCode(uintptr_t originalAddress, size_t originalInstructionLength, uintptr_t jumpAddress) const;
+        std::vector<BYTE> GetTrampolineMachineCode(uintptr_t originalAddress, uintptr_t jumpAddress) const;
     };
 }
 

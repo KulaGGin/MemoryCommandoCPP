@@ -18,17 +18,13 @@ namespace MemoryCommando {
         _memoryManager->WriteVirtualMemory(codeCaveAddress, machineCode);
 
         // Create injection trampoline
-        std::vector<BYTE> injectionTrampolineMachineCode{ _relativeJumpCode };
-        std::vector<BYTE> jumpOffsetBytes = HelperMethods::ConvertObjectToBytes(ptrdiff_t(codeCaveAddress - injectionAddress + _relativeJumpSize));
-        injectionTrampolineMachineCode.insert(injectionTrampolineMachineCode.end(), jumpOffsetBytes.begin(), jumpOffsetBytes.end());
+        std::vector<BYTE> injectionTrampolineMachineCode = GetTrampolineMachineCode(injectionAddress, codeCaveAddress);
         AddNops(injectionTrampolineMachineCode, instructionLength);
 
         // Calculate trampoline back to the address after original jump
-        std::vector<BYTE> codeCaveTrampolineMachineCode{ _relativeJumpCode };
         const uintptr_t afterInjectionInstructionAddress = injectionAddress + instructionLength;
         const uintptr_t afterCodeCaveAddress = codeCaveAddress + machineCode.size();
-        std::vector<BYTE> codeCaveTrampolineOffsetBytes = HelperMethods::ConvertObjectToBytes(ptrdiff_t(afterInjectionInstructionAddress - afterCodeCaveAddress + _relativeJumpSize));
-        codeCaveTrampolineMachineCode.insert(codeCaveTrampolineMachineCode.end(), codeCaveTrampolineOffsetBytes.begin(), codeCaveTrampolineOffsetBytes.end());
+        const std::vector<BYTE> codeCaveTrampolineMachineCode = GetTrampolineMachineCode(afterCodeCaveAddress, afterInjectionInstructionAddress);
 
         // Write trampoline in the code cave back to the original code after original jump at the injection address
         _memoryManager->WriteVirtualMemory(afterCodeCaveAddress, codeCaveTrampolineMachineCode);
@@ -43,11 +39,10 @@ namespace MemoryCommando {
         }
     }
 
-    std::vector<BYTE> CodeInjector::GetTrampolineMachineCode(const uintptr_t originalAddress, const size_t originalInstructionLength, const uintptr_t jumpAddress) const {
+    std::vector<BYTE> CodeInjector::GetTrampolineMachineCode(const uintptr_t originalAddress, const uintptr_t jumpAddress) const {
         std::vector<BYTE> injectionTrampolineMachineCode{ _relativeJumpCode };
-        std::vector<BYTE> jumpOffsetBytes = HelperMethods::ConvertObjectToBytes(ptrdiff_t(jumpAddress - originalAddress + _relativeJumpSize));
+        std::vector<BYTE> jumpOffsetBytes = HelperMethods::ConvertObjectToBytes(ptrdiff_t(jumpAddress - (originalAddress + _relativeJumpSize)));
         injectionTrampolineMachineCode.insert(injectionTrampolineMachineCode.end(), jumpOffsetBytes.begin(), jumpOffsetBytes.end());
-        AddNops(injectionTrampolineMachineCode, originalInstructionLength);
 
         return injectionTrampolineMachineCode;
     }
