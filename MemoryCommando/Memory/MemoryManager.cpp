@@ -102,22 +102,22 @@ namespace MemoryCommando::Memory {
         return byteSequence;
     }
 
-    void MemoryManager::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const std::vector<byte>& byteSequence) const {
+    void MemoryManager::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const std::vector<BYTE>& byteSequence) const {
         const uintptr_t calculatedAddress = GetAddress(pointers);
         WriteVirtualMemory(calculatedAddress, byteSequence);
     }
 
-    void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) const {
+    void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const std::vector<BYTE>& byteSequence) const {
         const uintptr_t calculatedAddress = GetAddress(baseAddress, offsets);
         WriteVirtualMemory(calculatedAddress, byteSequence);
     }
 
-    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const std::vector<byte>& byteSequence) const {
+    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const std::vector<BYTE>& byteSequence) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offset);
         WriteVirtualMemory(calculatedAddress, byteSequence);
     }
 
-    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) const {
+    void MemoryManager::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const std::vector<BYTE>& byteSequence) const {
         const uintptr_t calculatedAddress = GetAddress(moduleName, offsets);
         WriteVirtualMemory(calculatedAddress, byteSequence);
     }

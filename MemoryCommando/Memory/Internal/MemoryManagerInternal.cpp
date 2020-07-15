@@ -73,7 +73,7 @@ namespace MemoryCommando::Memory::Internal {
         return bytesSequence;
     }
 
-    void MemoryManagerInternal::WriteVirtualMemory(const uintptr_t address, const std::vector<byte>& byteSequence) const {
+    void MemoryManagerInternal::WriteVirtualMemory(const uintptr_t address, const std::vector<BYTE>& byteSequence) const {
         std::memcpy(LPVOID(address), &byteSequence[0], byteSequence.size());
     }
 }

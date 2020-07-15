@@ -1,11 +1,10 @@
 #pragma once
-#include <memory>
 #include <windows.h>
+
+#include <memory>
 #include <vector>
 
 #include <TlHelp32.h>
-
-
 
 #include "Memory/MemoryManager.h"
 #include "Memory/Scan/MemoryScanner.h"
@@ -41,11 +40,11 @@ namespace MemoryCommando {
         std::vector<BYTE> ReadVirtualMemory(const std::wstring & moduleName, const std::vector<uintptr_t> & offsets, size_t bytesNumber) const;
         // todo ReadVirtualMemory from array of bytes and offset
 
-        void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<byte> & byteSequence) const;
-        void WriteVirtualMemory(const std::vector<uintptr_t> & pointers, const std::vector<byte> & byteSequence) const;
-        void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t> & offsets, const std::vector<byte> & byteSequence) const;
-        void WriteVirtualMemory(const std::wstring & moduleName, uintptr_t offset, const std::vector<byte> & byteSequence) const;
-        void WriteVirtualMemory(const std::wstring & moduleName, const std::vector<uintptr_t> & offsets, const std::vector<byte> & byteSequence) const;
+        void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<BYTE> & byteSequence) const;
+        void WriteVirtualMemory(const std::vector<uintptr_t> & pointers, const std::vector<BYTE> & byteSequence) const;
+        void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t> & offsets, const std::vector<BYTE> & byteSequence) const;
+        void WriteVirtualMemory(const std::wstring & moduleName, uintptr_t offset, const std::vector<BYTE> & byteSequence) const;
+        void WriteVirtualMemory(const std::wstring & moduleName, const std::vector<uintptr_t> & offsets, const std::vector<BYTE> & byteSequence) const;
         // todo WriteVirtualMemory from array of bytes and offset
 
         uintptr_t GetAddress(const std::vector<uintptr_t> & pointers) const;

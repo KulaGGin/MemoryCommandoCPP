@@ -25,7 +25,7 @@ namespace MemoryCommando::Memory::External {
         void ProtectVirtualMemory(uintptr_t baseAddress, size_t protectionSize, DWORD protectionType = PAGE_EXECUTE_READWRITE) const override;
         MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress) const override;
         std::vector<BYTE> ReadVirtualMemory(uintptr_t address, size_t bytesNumber) const override;
-        void WriteVirtualMemory(uintptr_t address, const std::vector<byte>& byteSequence) const override;
+        void WriteVirtualMemory(uintptr_t address, const std::vector<BYTE>& byteSequence) const override;
     private:
         friend class MemoryCommandoTests::MemoryManagerExternalTests;
 

@@ -40,11 +40,11 @@ namespace MemoryCommando::Memory {
         virtual std::vector<BYTE> ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, size_t bytesNumber) const;
         // todo ReadVirtualMemory from array of bytes and offset
 
-        virtual void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<byte>& byteSequence) const = 0;
-        virtual void WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const std::vector<byte>& byteSequence) const;
-        virtual void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) const;
-        virtual void WriteVirtualMemory(const std::wstring& moduleName, uintptr_t offset, const std::vector<byte>& byteSequence) const;
-        virtual void WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) const;
+        virtual void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<BYTE>& byteSequence) const = 0;
+        virtual void WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const std::vector<BYTE>& byteSequence) const;
+        virtual void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const std::vector<BYTE>& byteSequence) const;
+        virtual void WriteVirtualMemory(const std::wstring& moduleName, uintptr_t offset, const std::vector<BYTE>& byteSequence) const;
+        virtual void WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const std::vector<BYTE>& byteSequence) const;
         // todo WriteVirtualMemory from array of bytes and offset
 
         virtual uintptr_t GetAddress(const std::vector<uintptr_t>& pointers) const;

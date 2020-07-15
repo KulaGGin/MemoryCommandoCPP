@@ -93,23 +93,23 @@ namespace MemoryCommando {
         return _memoryManager->ReadVirtualMemory(moduleName, offsets, bytesNumber);
     }
 
-    void MemoryCommando::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<byte>& byteSequence) const {
+    void MemoryCommando::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<BYTE>& byteSequence) const {
         _memoryManager->WriteVirtualMemory(baseAddress, byteSequence);
     }
 
-    void MemoryCommando::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const std::vector<byte>& byteSequence) const {
+    void MemoryCommando::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const std::vector<BYTE>& byteSequence) const {
         _memoryManager->WriteVirtualMemory(pointers, byteSequence);
     }
 
-    void MemoryCommando::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) const {
+    void MemoryCommando::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const std::vector<BYTE>& byteSequence) const {
         _memoryManager->WriteVirtualMemory(baseAddress, offsets, byteSequence);
     }
 
-    void MemoryCommando::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const std::vector<byte>& byteSequence) const {
+    void MemoryCommando::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const std::vector<BYTE>& byteSequence) const {
         _memoryManager->WriteVirtualMemory(moduleName, offset, byteSequence);
     }
 
-    void MemoryCommando::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const std::vector<byte>& byteSequence) const {
+    void MemoryCommando::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const std::vector<BYTE>& byteSequence) const {
         _memoryManager->WriteVirtualMemory(moduleName, offsets, byteSequence);
     }
 

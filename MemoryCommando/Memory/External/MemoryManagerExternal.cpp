@@ -94,7 +94,7 @@ namespace MemoryCommando::Memory::External {
         return byteSequence;
     }
 
-    void MemoryManagerExternal::WriteVirtualMemory(const uintptr_t address, const std::vector<byte>& byteSequence) const {
+    void MemoryManagerExternal::WriteVirtualMemory(const uintptr_t address, const std::vector<BYTE>& byteSequence) const {
         const BYTE* firstBytePointer = &byteSequence[0];
         SIZE_T bytesWritten;
 
