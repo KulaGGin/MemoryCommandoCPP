@@ -28,6 +28,7 @@ namespace MemoryCommando::Memory {
         virtual HANDLE GetProcessHandle() const = 0;
 
         virtual uintptr_t AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType = MEM_RESERVE | MEM_COMMIT, DWORD protectionType = PAGE_EXECUTE_READWRITE) const = 0;
+        virtual uintptr_t AllocateVirtualMemory(uintptr_t allocationSize) const;
         virtual void FreeVirtualMemory(uintptr_t baseAddress, DWORD freeType = MEM_RELEASE, size_t size = 0) const = 0;
         virtual void ProtectVirtualMemory(uintptr_t baseAddress, size_t protectionSize, DWORD protectionType = PAGE_EXECUTE_READWRITE) const = 0;
         virtual MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress) const = 0;

@@ -68,6 +68,12 @@ namespace MemoryCommando::Memory {
         return _processId;
     }
 
+    uintptr_t MemoryManager::AllocateVirtualMemory(const uintptr_t allocationSize) const {
+        const uintptr_t allocatedAddress = AllocateVirtualMemory(0, allocationSize);
+
+        return allocatedAddress;
+    }
+
     std::vector<BYTE> MemoryManager::ReadVirtualMemory(const std::vector<uintptr_t>& pointers, const size_t bytesNumber) const {
         const uintptr_t calculatedAddress = GetAddress(pointers);
         std::vector<BYTE> byteSequence = ReadVirtualMemory(calculatedAddress, bytesNumber);
