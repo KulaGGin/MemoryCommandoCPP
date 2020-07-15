@@ -7,9 +7,9 @@
 
 namespace MemoryCommando {
     using namespace Memory;
-    class DetourCreator {
+    class CodeInjector {
     public:
-        DetourCreator(std::shared_ptr<const MemoryManager> memoryManager);
+        CodeInjector(std::shared_ptr<const MemoryManager> memoryManager);
     private:
         const size_t _relativeJumpSize = 5;
         const BYTE _relativeJumpCode = 0xE9;

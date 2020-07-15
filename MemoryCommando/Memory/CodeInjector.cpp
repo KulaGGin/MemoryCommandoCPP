@@ -1,15 +1,15 @@
-#include "DetourCreator.h"
+#include "CodeInjector.h"
 
 #include <utility>
 
 namespace MemoryCommando {
 
-    DetourCreator::DetourCreator(std::shared_ptr<const MemoryManager> memoryManager) :
+    CodeInjector::CodeInjector(std::shared_ptr<const MemoryManager> memoryManager) :
         _pageSize(HelperMethods::GetSystemInfo().dwPageSize),
         _memoryManager{ std::move(memoryManager) } {
     }
 
-    void DetourCreator::InjectCode(const uintptr_t injectionAddress, const size_t instructionLength, const std::vector<BYTE>& machineCode) const {
+    void CodeInjector::InjectCode(const uintptr_t injectionAddress, const size_t instructionLength, const std::vector<BYTE>& machineCode) const {
         // Allocate memory
         const size_t pageNumber = machineCode.size() / _pageSize + 1;
         const size_t allocationSize = pageNumber * _pageSize;
@@ -37,13 +37,13 @@ namespace MemoryCommando {
         _memoryManager->WriteVirtualMemory(injectionAddress, injectionTrampolineMachineCode);
     }
 
-    void DetourCreator::AddNops(std::vector<BYTE>& machineCode, const size_t neededLength) const {
+    void CodeInjector::AddNops(std::vector<BYTE>& machineCode, const size_t neededLength) const {
         for(size_t length = machineCode.size(); length < neededLength; ++length) {
             machineCode.push_back(_nopCode);
         }
     }
 
-    std::vector<BYTE> DetourCreator::GetTrampolineMachineCode(const uintptr_t originalAddress, const size_t originalInstructionLength, const uintptr_t jumpAddress) const {
+    std::vector<BYTE> CodeInjector::GetTrampolineMachineCode(const uintptr_t originalAddress, const size_t originalInstructionLength, const uintptr_t jumpAddress) const {
         std::vector<BYTE> injectionTrampolineMachineCode{ _relativeJumpCode };
         std::vector<BYTE> jumpOffsetBytes = HelperMethods::ConvertObjectToBytes(ptrdiff_t(jumpAddress - originalAddress + _relativeJumpSize));
         injectionTrampolineMachineCode.insert(injectionTrampolineMachineCode.end(), jumpOffsetBytes.begin(), jumpOffsetBytes.end());

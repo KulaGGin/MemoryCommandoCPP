@@ -75,7 +75,7 @@
     <ClCompile Include="Memory\Scan\ScanHelperMethods.cpp">
       <Filter>Memory\Scan</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\DetourCreator.cpp">
+    <ClCompile Include="Memory\CodeInjector.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
@@ -160,7 +160,7 @@
     <ClInclude Include="Memory\Scan\ScanHelperMethods.h">
       <Filter>Memory\Scan</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\DetourCreator.h">
+    <ClInclude Include="Memory\CodeInjector.h">
       <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
