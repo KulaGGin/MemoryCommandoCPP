@@ -119,10 +119,9 @@ namespace MemoryCommando::Memory {
     void MemoryManager::WriteVirtualMemory(const uintptr_t baseAddress, const TStructure& structure) const {
         const size_t structureSize = sizeof(TStructure);
         std::vector<BYTE> structureByteSequence{};
+        structureByteSequence.resize(sizeof TStructure);
 
-        for(BYTE* bytePointer = &structure; bytePointer < &structure + structureSize; ++bytePointer) {
-            structureByteSequence.push_back(*bytePointer);
-        }
+        std::memcpy(&structureByteSequence[0], &structure, sizeof TStructure);
 
         WriteVirtualMemory(baseAddress, structureByteSequence);
     }
