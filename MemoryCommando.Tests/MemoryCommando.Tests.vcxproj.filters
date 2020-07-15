@@ -21,6 +21,9 @@
       <Filter>Memory\Internal</Filter>
     </ClCompile>
     <ClCompile Include="MemoryCommandoTestsHelper.cpp" />
+    <ClCompile Include="Memory\CodeInjectorTests.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memory\Scan\BytePatternScannerTests.h">
@@ -43,6 +46,9 @@
       <Filter>Memory\Internal</Filter>
     </ClInclude>
     <ClInclude Include="MemoryCommandoTestsHelper.h" />
+    <ClInclude Include="Memory\CodeInjectorTests.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
