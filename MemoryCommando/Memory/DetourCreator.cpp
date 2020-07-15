@@ -42,4 +42,13 @@ namespace MemoryCommando {
             machineCode.push_back(_nopCode);
         }
     }
+
+    std::vector<BYTE> DetourCreator::GetTrampolineMachineCode(const uintptr_t originalAddress, const size_t originalInstructionLength, const uintptr_t jumpAddress) const {
+        std::vector<BYTE> injectionTrampolineMachineCode{ _relativeJumpCode };
+        std::vector<BYTE> jumpOffsetBytes = HelperMethods::ConvertObjectToBytes(ptrdiff_t(jumpAddress - originalAddress + _relativeJumpSize));
+        injectionTrampolineMachineCode.insert(injectionTrampolineMachineCode.end(), jumpOffsetBytes.begin(), jumpOffsetBytes.end());
+        AddNops(injectionTrampolineMachineCode, originalInstructionLength);
+
+        return injectionTrampolineMachineCode;
+    }
 }

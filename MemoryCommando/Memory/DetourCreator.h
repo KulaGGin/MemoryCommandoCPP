@@ -21,6 +21,8 @@ namespace MemoryCommando {
         void InjectCode(uintptr_t injectionAddress, size_t instructionLength, const std::vector<BYTE>& machineCode) const;
 
         void AddNops(std::vector<BYTE>& machineCode, size_t neededLength) const;
+
+        std::vector<BYTE> GetTrampolineMachineCode(uintptr_t originalAddress, size_t originalInstructionLength, uintptr_t jumpAddress) const;
     };
 }
 
