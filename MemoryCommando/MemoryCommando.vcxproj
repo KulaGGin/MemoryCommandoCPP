@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Memory\DetourCreator.cpp" />
     <ClCompile Include="Exceptions\BaseException.cpp" />
     <ClCompile Include="HelperMethods.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
@@ -47,6 +48,7 @@
     <ClCompile Include="Memory\Scan\ScanHelperMethods.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Memory\DetourCreator.h" />
     <ClInclude Include="Exceptions\BaseException.h" />
     <ClInclude Include="HelperMethods.h" />
     <ClInclude Include="Memory\MemoryManager.h" />
