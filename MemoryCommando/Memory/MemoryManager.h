@@ -78,8 +78,8 @@ namespace MemoryCommando::Memory {
     template <typename TStructure>
     TStructure MemoryManager::ReadVirtualMemory(const uintptr_t baseAddress) const {
         std::vector<BYTE> byteSequence = ReadVirtualMemory(baseAddress, sizeof(TStructure));
-        BYTE* bytePointer = &byteSequence[0];
-        auto structure = reinterpret_cast<TStructure>(bytePointer);
+        TStructure* bytePointer = static_cast<TStructure*>(static_cast<void*>(&byteSequence[0]));
+        TStructure structure = *bytePointer;
         return structure;
     }
 
