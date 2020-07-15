@@ -129,56 +129,6 @@ namespace MemoryCommando {
         return _memoryManager->GetAddress(moduleName, offsets);
     }
 
-    template <typename TStructure>
-    TStructure MemoryCommando::ReadVirtualMemory(const uintptr_t baseAddress) const {
-        return _memoryManager->ReadVirtualMemory<TStructure>(baseAddress);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryCommando::ReadVirtualMemory(const std::vector<uintptr_t>& pointers) const {
-        return _memoryManager->ReadVirtualMemory<TStructure>(pointers);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryCommando::ReadVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets) const {
-        return _memoryManager->ReadVirtualMemory<TStructure>(baseAddress, offsets);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryCommando::ReadVirtualMemory(const std::wstring& moduleName, const uintptr_t offset) const {
-        return _memoryManager->ReadVirtualMemory<TStructure>(moduleName, offset);
-    }
-
-    template <typename TStructure>
-    TStructure MemoryCommando::ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets) const {
-        return _memoryManager->ReadVirtualMemory<TStructure>(moduleName, offsets);
-    }
-
-    template <typename TStructure>
-    void MemoryCommando::WriteVirtualMemory(const uintptr_t baseAddress, const TStructure& structure) const {
-        return _memoryManager->WriteVirtualMemory<TStructure>(baseAddress, structure);
-    }
-
-    template <typename TStructure>
-    void MemoryCommando::WriteVirtualMemory(const std::vector<uintptr_t>& pointers, const TStructure& structure) const {
-        return _memoryManager->WriteVirtualMemory<TStructure>(pointers, structure);
-    }
-
-    template <typename TStructure>
-    void MemoryCommando::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const TStructure& structure) const {
-        return _memoryManager->WriteVirtualMemory<TStructure>(baseAddress, offsets, structure);
-    }
-
-    template <typename TStructure>
-    void MemoryCommando::WriteVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const TStructure& structure) const {
-        return _memoryManager->WriteVirtualMemory<TStructure>(moduleName, offset, structure);
-    }
-
-    template <typename TStructure>
-    void MemoryCommando::WriteVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const TStructure& structure) const {
-        return _memoryManager->WriteVirtualMemory<TStructure>(moduleName, offsets, structure);
-    }
-
     std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const uintptr_t scanStartAddress, const uintptr_t scanEndAddress, const std::string& bytePattern) const {
         return _memoryScanner.ScanVirtualMemory(scanStartAddress, scanEndAddress, bytePattern);
     }
@@ -217,30 +167,5 @@ namespace MemoryCommando {
 
     std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::vector<BYTE>& bytePattern) const {
         return _memoryScanner.ScanVirtualMemory(moduleNames, bytePattern);
-    }
-
-    template <typename Classname>
-    std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const uintptr_t scanStartAddress, const uintptr_t scanEndAddress, const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(scanStartAddress, scanEndAddress, object);
-    }
-
-    template <typename Classname>
-    std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const uintptr_t scanStartAddress, const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(scanStartAddress, object);
-    }
-
-    template <typename Classname>
-    std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(object);
-    }
-
-    template <typename Classname>
-    std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const std::wstring& moduleName, const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(moduleName, object);
-    }
-
-    template <typename Classname>
-    std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(moduleNames, object);
     }
 }
