@@ -9,8 +9,8 @@
 #include "ScanHelperMethods.h"
 
 namespace MemoryCommando::Memory {
-    MemoryScanner::MemoryScanner(std::shared_ptr<const MemoryManager> memoryManager) :
-        _memoryManager{ std::move(memoryManager) },
+    MemoryScanner::MemoryScanner(const std::shared_ptr<const MemoryManager>& memoryManager) :
+        _memoryManager{ memoryManager },
     _minimumApplicationAddress{uintptr_t(HelperMethods::GetSystemInfo().lpMinimumApplicationAddress)},
     _maximumApplicationAddress{ uintptr_t(HelperMethods::GetSystemInfo().lpMaximumApplicationAddress) }{
     }
