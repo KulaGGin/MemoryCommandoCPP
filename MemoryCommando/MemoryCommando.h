@@ -93,7 +93,7 @@ namespace MemoryCommando {
         std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const Classname& object) const;
     private:
         const std::shared_ptr<const MemoryManager> _memoryManager;
-        const MemoryScanner &_memoryScanner;
+        const MemoryScanner _memoryScanner;
     };
 
     template <typename TStructure>
