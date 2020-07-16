@@ -16,7 +16,7 @@ namespace MemoryCommando {
     public:
         MemoryCommando();
         MemoryCommando(DWORD processId);
-        MemoryCommando(const std::wstring& processName, size_t processNumber);
+        MemoryCommando(const std::wstring& processName, size_t processNumber = 1);
 
         PROCESSENTRY32W GetProcess() const;
         std::wstring GetProcessName() const;
