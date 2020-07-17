@@ -10,6 +10,9 @@ namespace MemoryCommando {
     class CodeInjector {
     public:
         CodeInjector(std::shared_ptr<const MemoryManager> memoryManager);
+        uintptr_t InjectCode(uintptr_t injectionAddress, size_t originalInstructionLength, const std::vector<BYTE>& injectionMachineCode) const;
+        std::vector<BYTE> GetTrampolineMachineCode(uintptr_t originalAddress, uintptr_t jumpAddress) const;
+        void AppendTrampolineMachineCode(std::vector<BYTE> &machineCode, uintptr_t originalAddress, uintptr_t jumpAddress) const;
     private:
         const size_t _relativeJumpSize = 5;
         const BYTE _relativeJumpCode = 0xE9;
@@ -18,11 +21,7 @@ namespace MemoryCommando {
 
         const std::shared_ptr<const MemoryManager> _memoryManager;
 
-        void InjectCode(uintptr_t injectionAddress, size_t instructionLength, const std::vector<BYTE>& machineCode) const;
-
         void AddNops(std::vector<BYTE>& machineCode, size_t neededLength) const;
-
-        std::vector<BYTE> GetTrampolineMachineCode(uintptr_t originalAddress, uintptr_t jumpAddress) const;
     };
 }
 

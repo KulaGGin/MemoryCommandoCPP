@@ -9,21 +9,21 @@ namespace MemoryCommando {
         _memoryManager{ std::move(memoryManager) } {
     }
 
-    void CodeInjector::InjectCode(const uintptr_t injectionAddress, const size_t instructionLength, const std::vector<BYTE>& machineCode) const {
+    uintptr_t CodeInjector::InjectCode(const uintptr_t injectionAddress, const size_t originalInstructionLength, const std::vector<BYTE>& injectionMachineCode) const {
         // Allocate memory
-        const size_t pageNumber = machineCode.size() / _pageSize + 1;
+        const size_t pageNumber = injectionMachineCode.size() / _pageSize + 1;
         const size_t allocationSize = pageNumber * _pageSize;
         const uintptr_t codeCaveAddress = _memoryManager->AllocateVirtualMemory(allocationSize);
 
-        _memoryManager->WriteVirtualMemory(codeCaveAddress, machineCode);
+        _memoryManager->WriteVirtualMemory(codeCaveAddress, injectionMachineCode);
 
         // Create injection trampoline
         std::vector<BYTE> injectionTrampolineMachineCode = GetTrampolineMachineCode(injectionAddress, codeCaveAddress);
-        AddNops(injectionTrampolineMachineCode, instructionLength);
+        AddNops(injectionTrampolineMachineCode, originalInstructionLength);
 
         // Calculate trampoline back to the address after original jump
-        const uintptr_t afterInjectionInstructionAddress = injectionAddress + instructionLength;
-        const uintptr_t afterCodeCaveAddress = codeCaveAddress + machineCode.size();
+        const uintptr_t afterInjectionInstructionAddress = injectionAddress + originalInstructionLength;
+        const uintptr_t afterCodeCaveAddress = codeCaveAddress + injectionMachineCode.size();
         const std::vector<BYTE> codeCaveTrampolineMachineCode = GetTrampolineMachineCode(afterCodeCaveAddress, afterInjectionInstructionAddress);
 
         // Write trampoline in the code cave back to the original code after original jump at the injection address
@@ -31,6 +31,8 @@ namespace MemoryCommando {
 
         // Write trampoline in the original code(at the injection address) to the code cave
         _memoryManager->WriteVirtualMemory(injectionAddress, injectionTrampolineMachineCode);
+
+        return codeCaveAddress;
     }
 
     void CodeInjector::AddNops(std::vector<BYTE>& machineCode, const size_t neededLength) const {
@@ -46,4 +48,11 @@ namespace MemoryCommando {
 
         return injectionTrampolineMachineCode;
     }
+
+    void CodeInjector::AppendTrampolineMachineCode(std::vector<BYTE>& machineCode, uintptr_t originalAddress, uintptr_t jumpAddress) const {
+        std::vector<BYTE> trampolineMachineCode = GetTrampolineMachineCode(originalAddress, jumpAddress);
+        machineCode.insert(machineCode.end(), trampolineMachineCode.begin(), trampolineMachineCode.end());
+    }
+
+
 }
