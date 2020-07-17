@@ -6,6 +6,8 @@
 
 #include <TlHelp32.h>
 
+
+#include "Memory/CodeInjector.h"
 #include "Memory/MemoryManager.h"
 #include "Memory/Scan/MemoryScanner.h"
 
@@ -91,9 +93,15 @@ namespace MemoryCommando {
         std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const Classname& object) const;
         template<typename Classname>
         std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const Classname& object) const;
+
+        uintptr_t InjectCode(uintptr_t injectionAddress, size_t instructionLength, const std::vector<BYTE>& machineCode) const;
+        std::vector<BYTE> GetTrampolineMachineCode(uintptr_t originalAddress, uintptr_t jumpAddress) const;
+        void AppendTrampolineMachineCode(std::vector<BYTE>& machineCode, uintptr_t originalAddress, uintptr_t jumpAddress) const;
+
     private:
         const std::shared_ptr<const MemoryManager> _memoryManager;
         const MemoryScanner _memoryScanner;
+        const CodeInjector _codeInjector;
     };
 
     template <typename TStructure>

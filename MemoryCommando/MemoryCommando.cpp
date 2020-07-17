@@ -10,19 +10,23 @@
 namespace MemoryCommando {
     using namespace Internal;
     using namespace External;
+
     MemoryCommando::MemoryCommando() :
-    _memoryManager(std::make_shared<MemoryManagerInternal>()),
-    _memoryScanner(_memoryManager) {
+        _memoryManager(std::make_shared<MemoryManagerInternal>()),
+        _memoryScanner(_memoryManager),
+        _codeInjector(_memoryManager) {
     }
 
     MemoryCommando::MemoryCommando(const DWORD processId) :
         _memoryManager{ std::make_shared<MemoryManagerExternal>(processId) },
-        _memoryScanner(_memoryManager) {
-        }
+        _memoryScanner(_memoryManager),
+        _codeInjector(_memoryManager) {
+    }
 
     MemoryCommando::MemoryCommando(const std::wstring& processName, const size_t processNumber) :
         _memoryManager{ std::make_shared<MemoryManagerExternal>(processName, processNumber) },
-        _memoryScanner(_memoryManager){
+        _memoryScanner(_memoryManager),
+        _codeInjector(_memoryManager) {
     }
 
     PROCESSENTRY32W MemoryCommando::GetProcess() const {
@@ -167,5 +171,17 @@ namespace MemoryCommando {
 
     std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::vector<BYTE>& bytePattern) const {
         return _memoryScanner.ScanVirtualMemory(moduleNames, bytePattern);
+    }
+
+    uintptr_t MemoryCommando::InjectCode(const uintptr_t injectionAddress, const size_t instructionLength, const std::vector<BYTE>& machineCode) const {
+        return _codeInjector.InjectCode(injectionAddress, instructionLength, machineCode);
+    }
+
+    std::vector<BYTE> MemoryCommando::GetTrampolineMachineCode(const uintptr_t originalAddress, const uintptr_t jumpAddress) const {
+        return _codeInjector.GetTrampolineMachineCode(originalAddress, jumpAddress);
+    }
+
+    void MemoryCommando::AppendTrampolineMachineCode(std::vector<BYTE>& machineCode, uintptr_t originalAddress, uintptr_t jumpAddress) const {
+        _codeInjector.AppendTrampolineMachineCode(machineCode, originalAddress, jumpAddress);
     }
 }
