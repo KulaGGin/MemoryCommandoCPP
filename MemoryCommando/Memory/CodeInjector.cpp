@@ -43,7 +43,7 @@ namespace MemoryCommando {
 
     std::vector<BYTE> CodeInjector::GetTrampolineMachineCode(const uintptr_t originalAddress, const uintptr_t jumpAddress) const {
         std::vector<BYTE> injectionTrampolineMachineCode{ _relativeJumpCode };
-        std::vector<BYTE> jumpOffsetBytes = HelperMethods::ConvertObjectToBytes(ptrdiff_t(jumpAddress - (originalAddress + _relativeJumpSize)));
+        std::vector<BYTE> jumpOffsetBytes = HelperMethods::ConvertObjectToBytes(__int32(jumpAddress - (originalAddress + _relativeJumpSize)));
         injectionTrampolineMachineCode.insert(injectionTrampolineMachineCode.end(), jumpOffsetBytes.begin(), jumpOffsetBytes.end());
 
         return injectionTrampolineMachineCode;
