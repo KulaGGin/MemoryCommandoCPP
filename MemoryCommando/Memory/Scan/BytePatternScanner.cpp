@@ -11,7 +11,7 @@ namespace MemoryCommando::Memory {
     std::vector<size_t> BytePatternScanner::Scan(const std::vector<BYTE>& byteSequence, const std::vector<std::pair<size_t, BYTE>>& indexedPattern) const {
         std::vector<size_t> patternIndexes{};
 
-        auto badByteTable = GenerateBadByteTable(indexedPattern);
+        std::vector<size_t> badByteTable = GenerateBadByteTable(indexedPattern);
         const auto lastByteIndex = indexedPattern[indexedPattern.size() - 1].first;
 
         // loop until pattern will overflow over the end of byte sequence.
@@ -28,7 +28,7 @@ namespace MemoryCommando::Memory {
                 const BYTE patternByte = indexedPattern[filteredPatternIndex].second;
                 const BYTE byteSequenceByte = byteSequence[byteSequenceIndex];
 
-                // todo get rid of code dublication
+                // todo get rid of code duplication
                 if(patternByte != byteSequenceByte) { // on a mismatch
                     // Shift the pattern so that the bad byte in byte array aligns with the last occurrence of it in the pattern.
                     // The max function is used to  make sure that we get a positive shift.
@@ -71,22 +71,23 @@ namespace MemoryCommando::Memory {
         return patternIndexes;
     }
 
-    std::map<int, size_t> BytePatternScanner::GenerateBadByteTable(const std::vector<std::pair<size_t, BYTE>>& indexedPattern) const {
-        std::map<int, size_t> badByteTable{};
+    std::vector<size_t> BytePatternScanner::GenerateBadByteTable(const std::vector<std::pair<size_t, BYTE>>& indexedPattern) const {
+        std::vector<size_t> badByteTable{};
         auto lastConsecutiveIterator = indexedPattern.begin();
 
         //Get last consecutive byte item from the end
-        for(auto currentIterator = indexedPattern.rbegin(); currentIterator != indexedPattern.rend()-1; ++currentIterator) {
-                if(currentIterator->first - (currentIterator+1)->first != 1) {
-                    lastConsecutiveIterator = (currentIterator+1).base();
-                    break;
-                }
+                //Get last consecutive byte item from the end
+        for(auto currentIterator = indexedPattern.rbegin(); currentIterator != indexedPattern.rend() - 1; ++currentIterator) {
+            if(currentIterator->first - (currentIterator + 1)->first != 1) {
+                lastConsecutiveIterator = (currentIterator + 1).base();
+                break;
+            }
         }
 
         // Initialize all occurrences as last wildcard index
         // lastWildcardIndex value is used to calculate the value by which to shift the pattern by default
         for(size_t index = 0; index < _byteQuantity; ++index) {
-            badByteTable.insert(std::pair(index, lastConsecutiveIterator->first-1));
+            badByteTable.push_back(lastConsecutiveIterator->first - 1);
         }
 
         // process only bytes that are after the last wildcard index because minimum index we will use to shift the pattern is wildcard index
@@ -100,6 +101,4 @@ namespace MemoryCommando::Memory {
 
         return badByteTable;
     }
-
-
 }
