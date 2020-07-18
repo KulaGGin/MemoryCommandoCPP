@@ -9,7 +9,7 @@ namespace MemoryCommando::Exceptions {
     }
 
     const char* CreateToolhelp32SnapshotException::what() const {
-        return ErrorMessage.c_str();
+        return _errorMessage.c_str();
     }
 
     DWORD CreateToolhelp32SnapshotException::GetError() const {

@@ -7,9 +7,11 @@
 namespace MemoryCommando::Exceptions {
     // todo inherit from WinAPIException public
     class WinAPIException : public BaseException {
+    public:
+        DWORD GetErrorCode();
     protected:
-        DWORD LastError;
-        std::string ErrorMessage;
+        DWORD _lastErrorCode;
+        std::string _errorMessage;
     public:
         WinAPIException(std::string errorMessage, DWORD lastError);
     };
