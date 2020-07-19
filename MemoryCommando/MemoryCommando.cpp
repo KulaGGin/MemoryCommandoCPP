@@ -4,6 +4,8 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+
+#include "Exceptions/VirtualAllocException.h"
 #include "Memory/Internal/MemoryManagerInternal.h"
 
 // todo stop using new keyword and switch to std::make_unique instead
@@ -63,6 +65,33 @@ namespace MemoryCommando {
 
     uintptr_t MemoryCommando::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) const {
         return _memoryManager->AllocateVirtualMemory(baseAddress, allocationSize, allocationType, protectionType);
+    }
+
+    uintptr_t MemoryCommando::AllocateVirtualMemoryNear(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType, DWORD protectionType) const {
+        uintptr_t allocationAddress = baseAddress;
+
+        while(true) {
+            const auto memoryRegion = QueryVirtualMemory(allocationAddress);
+
+            if(!(memoryRegion.State == MEM_FREE)) {
+                allocationAddress = uintptr_t(memoryRegion.BaseAddress) + memoryRegion.RegionSize;
+                continue;
+            }
+            try {
+                allocationAddress = AllocateVirtualMemory(allocationAddress, allocationSize, allocationType, protectionType);
+            }
+            catch(Exceptions::VirtualAllocException& exception) {
+                if(exception.GetErrorCode() == ERROR_INVALID_ADDRESS) {
+                    allocationAddress += uintptr_t(memoryRegion.BaseAddress) + memoryRegion.RegionSize;
+                    continue;
+                }
+                throw;
+            }
+
+            break;
+        }
+
+        return allocationAddress;
     }
 
     void MemoryCommando::FreeVirtualMemory(const uintptr_t baseAddress, const DWORD freeType, const size_t size) const {
