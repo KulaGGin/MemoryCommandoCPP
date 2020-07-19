@@ -83,4 +83,7 @@ namespace MemoryCommandoTests {
 
         Assert::IsTrue(true);
     }
+
+    void BytePatternScannerTests::BigPatternScan() {
+    }
 }

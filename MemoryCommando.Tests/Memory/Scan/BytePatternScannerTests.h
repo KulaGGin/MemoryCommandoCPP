@@ -15,7 +15,7 @@ namespace MemoryCommandoTests {
         TEST_METHOD(ScanIndexedBytePattern);
         TEST_METHOD(ScanBytePattern);
         TEST_METHOD(ScanStringPattern);
-
+        TEST_METHOD(BigPatternScan);
     private:
         BytePatternScanner _bytePatternScanner;
     };
