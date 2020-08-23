@@ -3,7 +3,7 @@
 
 
 namespace MemoryCommando::Exceptions {
-    class WriteProcessMemoryException : WinAPIException {
+    class WriteProcessMemoryException : public WinAPIException {
     public:
         WriteProcessMemoryException(const std::string& errorMessage, DWORD lastError);
     };

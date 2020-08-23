@@ -5,7 +5,6 @@
 #include "BaseException.h"
 
 namespace MemoryCommando::Exceptions {
-    // todo inherit from WinAPIException public
     class WinAPIException : public BaseException {
     public:
         DWORD GetErrorCode();

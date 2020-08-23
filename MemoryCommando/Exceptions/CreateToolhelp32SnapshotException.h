@@ -5,7 +5,7 @@
 #include "WinAPIException.h"
 
 namespace MemoryCommando::Exceptions {
-    class CreateToolhelp32SnapshotException : WinAPIException {
+    class CreateToolhelp32SnapshotException : public WinAPIException {
     private:
         DWORD _lastError;
     public:
