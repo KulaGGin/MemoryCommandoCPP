@@ -8,15 +8,16 @@ TEST(TestCaseName, TestName) {
 
 
 namespace MemoryCommandoCPPTests {
-    class MemoryCommandoTests: public ::testing::Test {
+    class MemoryCommandoInternalTest: public ::testing::Test {
     protected:
         void SetUp() override {
-
+            MemoryCommando::MemoryCommando memoryCommando{};
         }
 
         void TearDown() override {
         
         }
-
+    public:
+        //TEST_F(MemoryCommandoInternalTest, ReadVirtualMemoryArrayOfBytes);
     };
 }

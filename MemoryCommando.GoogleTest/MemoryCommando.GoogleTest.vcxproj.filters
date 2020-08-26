@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="MemoryCommandoTest.cpp">
+    <ClCompile Include="MemoryCommandoInternalTest.cpp">
       <Filter>MemoryCommandoTests</Filter>
     </ClCompile>
   </ItemGroup>
