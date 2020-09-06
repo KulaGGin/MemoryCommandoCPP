@@ -106,7 +106,7 @@ namespace MemoryCommandoTests {
     }
 
     std::wstring MemoryManagerInternalTests::GetCurrentProcessName() {
-        const std::unique_ptr<CHAR[]> fileNamePointer(new CHAR[MAX_PATH]);
+        const auto fileNamePointer = std::make_unique<CHAR[]>(MAX_PATH);
 
         GetModuleBaseNameA(_currentProcessHandle, nullptr, fileNamePointer.get(), MAX_PATH * sizeof(CHAR));
         std::wstring processName = boost::locale::conv::utf_to_utf<WCHAR>(fileNamePointer.get());
