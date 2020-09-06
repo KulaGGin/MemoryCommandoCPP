@@ -36,11 +36,12 @@ namespace MemoryCommando {
         void ProtectVirtualMemory(uintptr_t baseAddress, size_t protectionSize, DWORD protectionType = PAGE_EXECUTE_READWRITE) const;
         MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress) const;
 
-        std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, size_t bytesNumber) const;
-        std::vector<BYTE> ReadVirtualMemory(const std::vector<uintptr_t> & pointers, size_t bytesNumber) const;
-        std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t> & offsets, int bytesNumber) const;
-        std::vector<BYTE> ReadVirtualMemory(const std::wstring & moduleName, uintptr_t offset, size_t bytesNumber) const;
-        std::vector<BYTE> ReadVirtualMemory(const std::wstring & moduleName, const std::vector<uintptr_t> & offsets, size_t bytesNumber) const;
+        std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, size_t readBytesNumber) const;
+        std::vector<BYTE> ReadVirtualMemory(const std::vector<uintptr_t>& pointers, size_t readBytesNumber) const;
+        std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, int readBytesNumber) const;
+        std::vector<BYTE> ReadVirtualMemory(const std::wstring & moduleName, uintptr_t offset, size_t readBytesNumber) const;
+        std::vector<BYTE> ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, size_t readBytesNumber) const;
+        // std::vector<BYTE> ReadVirtualMemory(const std::wstring& bytePattern, const std::vector<uintptr_t>& offsets, size_t readBytesNumber, size_t resultNumber = 0) const;
         // todo ReadVirtualMemory from array of bytes and offset
 
         void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<BYTE> & byteSequence) const;

@@ -106,24 +106,24 @@ namespace MemoryCommando {
         return _memoryManager->QueryVirtualMemory(baseAddress);
     }
 
-    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const uintptr_t baseAddress, const size_t bytesNumber) const {
-        return _memoryManager->ReadVirtualMemory(baseAddress, bytesNumber);
+    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const uintptr_t baseAddress, const size_t readBytesNumber) const {
+        return _memoryManager->ReadVirtualMemory(baseAddress, readBytesNumber);
     }
 
-    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const std::vector<uintptr_t>& pointers, const size_t bytesNumber) const {
-        return _memoryManager->ReadVirtualMemory(pointers, bytesNumber);
+    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const std::vector<uintptr_t>& pointers, const size_t readBytesNumber) const {
+        return _memoryManager->ReadVirtualMemory(pointers, readBytesNumber);
     }
 
-    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const int bytesNumber) const {
-        return _memoryManager->ReadVirtualMemory(baseAddress, offsets, bytesNumber);
+    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const uintptr_t baseAddress, const std::vector<uintptr_t>& offsets, const int readBytesNumber) const {
+        return _memoryManager->ReadVirtualMemory(baseAddress, offsets, readBytesNumber);
     }
 
-    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const size_t bytesNumber) const {
-        return _memoryManager->ReadVirtualMemory(moduleName, offset, bytesNumber);
+    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const std::wstring& moduleName, const uintptr_t offset, const size_t readBytesNumber) const {
+        return _memoryManager->ReadVirtualMemory(moduleName, offset, readBytesNumber);
     }
 
-    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const size_t bytesNumber) const {
-        return _memoryManager->ReadVirtualMemory(moduleName, offsets, bytesNumber);
+    std::vector<BYTE> MemoryCommando::ReadVirtualMemory(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets, const size_t readBytesNumber) const {
+        return _memoryManager->ReadVirtualMemory(moduleName, offsets, readBytesNumber);
     }
 
     void MemoryCommando::WriteVirtualMemory(const uintptr_t baseAddress, const std::vector<BYTE>& byteSequence) const {
