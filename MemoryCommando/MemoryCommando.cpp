@@ -206,11 +206,11 @@ namespace MemoryCommando {
         return _codeInjector.InjectCode(injectionAddress, instructionLength, machineCode);
     }
 
-    std::vector<BYTE> MemoryCommando::GetTrampolineMachineCode(const uintptr_t originalAddress, const uintptr_t jumpAddress) const {
-        return _codeInjector.GetTrampolineMachineCode(originalAddress, jumpAddress);
+    std::vector<BYTE> MemoryCommando::GetJumpMachineCode(const uintptr_t originalAddress, const uintptr_t jumpAddress) const {
+        return _codeInjector.GetJumpMachineCode(originalAddress, jumpAddress);
     }
 
-    void MemoryCommando::AppendTrampolineMachineCode(std::vector<BYTE>& machineCode, uintptr_t originalAddress, uintptr_t jumpAddress) const {
-        _codeInjector.AppendTrampolineMachineCode(machineCode, originalAddress, jumpAddress);
+    void MemoryCommando::AppendJumpMachineCode(std::vector<BYTE>& machineCode, uintptr_t originalAddress, uintptr_t jumpAddress) const {
+        _codeInjector.AppendJumpMachineCode(machineCode, originalAddress, jumpAddress);
     }
 }
