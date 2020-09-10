@@ -82,7 +82,7 @@ namespace MemoryCommando::Memory::External {
     }
 
     std::vector<BYTE> MemoryManagerExternal::ReadVirtualMemory(const uintptr_t address, const size_t bytesNumber) const {
-        const std::unique_ptr<BYTE[]> byteBuffer(new BYTE[bytesNumber]);
+        const auto byteBuffer = std::make_unique<BYTE[]>(bytesNumber);
         SIZE_T bytesReadNumber;
         const bool didReadMemory = ReadProcessMemory(_processHandle.get(), LPCVOID(address), byteBuffer.get(), bytesNumber, &bytesReadNumber);
 

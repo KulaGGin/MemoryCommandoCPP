@@ -3,7 +3,7 @@
 #include <string>
 
 namespace MemoryCommando::Exceptions {
-    class BaseException : std::exception {
+    class BaseException : public std::exception {
     protected:
         std::string _errorMessage;
     public:
@@ -11,4 +11,3 @@ namespace MemoryCommando::Exceptions {
         std::string GetErrorMessage() const;
     };
 }
-

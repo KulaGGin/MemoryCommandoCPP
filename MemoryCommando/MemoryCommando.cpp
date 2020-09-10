@@ -8,7 +8,6 @@
 #include "Exceptions/VirtualAllocException.h"
 #include "Memory/Internal/MemoryManagerInternal.h"
 
-// todo stop using new keyword and switch to std::make_unique instead
 namespace MemoryCommando {
     using namespace Internal;
     using namespace External;

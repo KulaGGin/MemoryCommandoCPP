@@ -2,7 +2,7 @@
 #include "WinAPIException.h"
 
 namespace MemoryCommando::Exceptions {
-    class VirtualFreeException : MemoryCommando::Exceptions::WinAPIException {
+    class VirtualFreeException : public WinAPIException {
     public:
         VirtualFreeException(const std::string& errorMessage, DWORD lastError);
     };

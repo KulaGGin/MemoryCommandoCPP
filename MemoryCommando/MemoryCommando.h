@@ -41,36 +41,29 @@ namespace MemoryCommando {
         std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t> & offsets, int bytesNumber) const;
         std::vector<BYTE> ReadVirtualMemory(const std::wstring & moduleName, uintptr_t offset, size_t bytesNumber) const;
         std::vector<BYTE> ReadVirtualMemory(const std::wstring & moduleName, const std::vector<uintptr_t> & offsets, size_t bytesNumber) const;
-        // todo ReadVirtualMemory from array of bytes and offset
 
         void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<BYTE> & byteSequence) const;
         void WriteVirtualMemory(const std::vector<uintptr_t> & pointers, const std::vector<BYTE> & byteSequence) const;
         void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t> & offsets, const std::vector<BYTE> & byteSequence) const;
         void WriteVirtualMemory(const std::wstring & moduleName, uintptr_t offset, const std::vector<BYTE> & byteSequence) const;
         void WriteVirtualMemory(const std::wstring & moduleName, const std::vector<uintptr_t> & offsets, const std::vector<BYTE> & byteSequence) const;
-        // todo WriteVirtualMemory from array of bytes and offset
 
         uintptr_t GetAddress(const std::vector<uintptr_t> & pointers) const;
         uintptr_t GetAddress(uintptr_t baseAddress, const std::vector<uintptr_t>& offsets) const;
         uintptr_t GetAddress(const std::wstring & moduleName, uintptr_t offset) const;
         uintptr_t GetAddress(const std::wstring& moduleName, std::vector<uintptr_t>& offsets) const;
-        // todo GetAddress from array of bytes and offset but add it to the MemoryCommander probably.
 
         template<typename TStructure> TStructure ReadVirtualMemory(uintptr_t baseAddress) const;
         template<typename TStructure> TStructure ReadVirtualMemory(const std::vector<uintptr_t> & pointers) const;
         template<typename TStructure> TStructure ReadVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t> & offsets) const;
         template<typename TStructure> TStructure ReadVirtualMemory(const std::wstring & moduleName, uintptr_t offset) const;
         template<typename TStructure> TStructure ReadVirtualMemory(const std::wstring & moduleName, const std::vector<uintptr_t> & offsets) const;
-        // todo ReadVirtualMemory from array of bytes and offset
 
         template<typename TStructure> void WriteVirtualMemory(uintptr_t baseAddress, const TStructure & structure) const;
         template<typename TStructure> void WriteVirtualMemory(const std::vector<uintptr_t> & pointers, const TStructure & structure) const;
         template<typename TStructure> void WriteVirtualMemory(uintptr_t baseAddress, const std::vector<uintptr_t> & offsets, const TStructure & structure) const;
         template<typename TStructure> void WriteVirtualMemory(const std::wstring & moduleName, uintptr_t offset, const TStructure & structure) const;
         template<typename TStructure> void WriteVirtualMemory(const std::wstring & moduleName, const std::vector<uintptr_t> & offsets, const TStructure & structure) const;
-        // todo WriteVirtualMemory from array of bytes and offset
-
-        // todo Commit, Reserve, Free memory functions that auto free memory on object destruction.
 
         std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::string& bytePattern) const;
         std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, const std::string& bytePattern) const;
