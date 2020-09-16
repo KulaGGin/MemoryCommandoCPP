@@ -1,8 +1,8 @@
 // ReSharper disable CppMemberFunctionMayBeConst
 #include "MemoryManagerTests.h"
 
-#include <boost/locale/encoding_utf.hpp>
-#include <boost/algorithm/string.hpp>
+
+#include <codecvt>
 #include <Psapi.h>
 
 #include "MemoryCommando/Memory/External/MemoryManagerExternal.h"
@@ -25,10 +25,12 @@ namespace MemoryCommandoTests {
     }
 
     std::wstring MemoryManagerTests::GetCurrentProcessName() {
-        const auto fileNamePointer = std::make_unique<CHAR[]>(MAX_PATH);
+        const auto processNamePointer = std::make_unique<CHAR[]>(MAX_PATH);
 
-        GetModuleBaseNameA(_currentProcessHandle, nullptr, fileNamePointer.get(), MAX_PATH * sizeof(CHAR));
-        std::wstring processName = boost::locale::conv::utf_to_utf<WCHAR>(fileNamePointer.get());
+        GetModuleBaseNameA(_currentProcessHandle, nullptr, processNamePointer.get(), MAX_PATH * sizeof(CHAR));
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> stringToWStringConverter;
+        std::wstring processName = stringToWStringConverter.from_bytes(processNamePointer.get());
+
         return processName;
     }
 

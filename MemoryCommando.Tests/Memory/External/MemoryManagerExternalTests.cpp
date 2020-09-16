@@ -10,9 +10,6 @@
 
 #include <Psapi.h>
 
-#include <boost/locale/encoding_utf.hpp>
-#include <boost/algorithm/string.hpp>
-
 #include "MemoryCommando/HelperMethods.h"
 
 #include "MemoryCommando/Exceptions/ReadProcessMemoryException.h"
@@ -21,6 +18,7 @@
 #include "MemoryCommando/Exceptions/VirtualQueryExException.h"
 #include "MemoryCommando/Exceptions/WriteProcessMemoryException.h"
 
+#include <codecvt>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -153,10 +151,11 @@ namespace MemoryCommandoTests {
     }
 
     std::wstring MemoryManagerExternalTests::GetCurrentProcessName() {
-        const auto fileNamePointer = std::make_unique<CHAR[]>(MAX_PATH);
+        const auto processNamePointer = std::make_unique<CHAR[]>(MAX_PATH);
         
-        GetModuleBaseNameA(_currentProcessHandle, nullptr, fileNamePointer.get(), MAX_PATH * sizeof(CHAR));
-        std::wstring processName = boost::locale::conv::utf_to_utf<WCHAR>(fileNamePointer.get());
+        GetModuleBaseNameA(_currentProcessHandle, nullptr, processNamePointer.get(), MAX_PATH * sizeof(CHAR));
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> stringToWStringConverter;
+        std::wstring processName = stringToWStringConverter.from_bytes(processNamePointer.get());
 
         return processName;
     }
