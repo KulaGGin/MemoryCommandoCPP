@@ -1,9 +1,6 @@
 // ReSharper disable CppMemberFunctionMayBeConst
 #include "MemoryScannerTests.h"
 
-#include <boost/locale/encoding_utf.hpp>
-
-
 #include "Exceptions/VirtualQueryExException.h"
 #include "Exceptions/WinAPIException.h"
 
