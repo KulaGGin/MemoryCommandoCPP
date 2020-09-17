@@ -1,5 +1,6 @@
 #pragma once
 
+#include <codecvt>
 #include <memory>
 #include <windows.h>
 #include <processthreadsapi.h>

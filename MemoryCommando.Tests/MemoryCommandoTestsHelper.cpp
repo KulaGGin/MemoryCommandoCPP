@@ -1,6 +1,7 @@
 #include "MemoryCommandoTestsHelper.h"
 
-#include <boost/locale/encoding_utf.hpp>
+
+#include <codecvt>
 #include <Psapi.h>
 #include <Shlobj.h>
 #include <Shlobj_core.h>
@@ -53,7 +54,8 @@ namespace MemoryCommandoTests {
 
         SHGetSpecialFolderPathA(nullptr, LPSTR(systemDirectoryPathBuffer.get()), csidl, false);
 
-        const std::wstring systemDirectoryPath = boost::locale::conv::utf_to_utf<WCHAR>(systemDirectoryPathBuffer.get());
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> stringToWStringConverter;
+        std::wstring systemDirectoryPath = stringToWStringConverter.from_bytes(systemDirectoryPathBuffer.get());
 
         return systemDirectoryPath;
     }
@@ -80,7 +82,8 @@ namespace MemoryCommandoTests {
         const auto fileNamePointer = std::make_unique<CHAR[]>(MAX_PATH);
 
         GetModuleBaseNameA(_currentProcessHandle.get(), nullptr, fileNamePointer.get(), MAX_PATH * sizeof(CHAR));
-        std::wstring processName = boost::locale::conv::utf_to_utf<WCHAR>(fileNamePointer.get());
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> stringToWStringConverter;
+        std::wstring processName = stringToWStringConverter.from_bytes(fileNamePointer.get());
 
         return processName;
     }
