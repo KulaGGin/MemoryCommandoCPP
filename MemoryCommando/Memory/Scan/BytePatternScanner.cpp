@@ -1,7 +1,6 @@
 #define NOMINMAX
 
 #include "BytePatternScanner.h"
-#include <boost/algorithm/string.hpp>
 #include <map>
 #include <algorithm>
 #include "ScanHelperMethods.h"
