@@ -3,7 +3,6 @@
 
 #include <minwindef.h>
 #include <vector>
-#include <boost/algorithm/string.hpp>
 
 #include "MemoryCommando/Memory/Scan/BytePatternScanner.h"
 #include "MemoryCommando/Memory/Scan/ScanHelperMethods.h"
