@@ -1,6 +1,6 @@
 #include "MemoryManager.h"
 
-#include <boost/algorithm/string/predicate.hpp>
+
 #include <stdexcept>
 
 #include "../Exceptions/CreateToolhelp32SnapshotException.h"
@@ -19,7 +19,7 @@ namespace MemoryCommando::Memory {
 
     std::vector<MODULEENTRY32W> MemoryManager::GetModules() const {
         std::vector<MODULEENTRY32W> modules{};
-        MODULEENTRY32               module{};
+        MODULEENTRY32W               module{};
         module.dwSize = sizeof module ;
 
         const auto modulesSnapshot = wil::unique_tool_help_snapshot(CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, _processId));
@@ -46,7 +46,7 @@ namespace MemoryCommando::Memory {
         std::vector<MODULEENTRY32W> modules = GetModules();
 
         for(auto currentModule : modules) {
-            if(boost::algorithm::iequals(moduleName, currentModule.szModule))
+            if(moduleName.compare(std::wstring(currentModule.szModule)) == 0)
                 return currentModule;
         }
 
@@ -159,7 +159,4 @@ namespace MemoryCommando::Memory {
 
         return calculatedAddress;
     }
-
-
-
 }
