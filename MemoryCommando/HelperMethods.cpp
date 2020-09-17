@@ -1,6 +1,8 @@
 #include "HelperMethods.h"
 
 
+
+#include <sstream>
 #include <windows.h>
 #include <stdexcept>
 #include <wil/resource.h>
@@ -216,5 +218,17 @@ namespace MemoryCommando {
     size_t HelperMethods::GetModuleSize(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
         const auto module = GetModule(moduleName, processName, processNumber);
         return size_t(module.modBaseSize);
+    }
+
+    std::vector<std::string> HelperMethods::SplitString(const std::string& string, const char delimiter) {
+        std::vector<std::string> tokens;
+        std::string              token;
+        std::istringstream       tokenStream(string);
+
+        while(std::getline(tokenStream, token, delimiter)) {
+            tokens.push_back(token);
+        }
+
+        return tokens;
     }
 }

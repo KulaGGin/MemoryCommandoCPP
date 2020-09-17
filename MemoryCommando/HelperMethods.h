@@ -43,6 +43,8 @@ namespace MemoryCommando {
 
         template<typename Classname> static std::vector<BYTE> ConvertObjectToBytes(Classname object);
         template<typename Classname> static Classname ConvertBytesToObject(const std::vector<BYTE>& bytes);
+
+        static std::vector<std::string> SplitString(const std::string& string, char delimiter);
     };
 
     template <typename Classname>
