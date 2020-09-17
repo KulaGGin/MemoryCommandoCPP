@@ -2,7 +2,6 @@
 
 
 #include <windows.h>
-#include <boost/algorithm/string/predicate.hpp>
 #include <stdexcept>
 #include <wil/resource.h>
 
@@ -67,7 +66,7 @@ namespace MemoryCommando {
 
         size_t foundProcessNumber = 0;
         for(auto currentProcess : processes) {
-            if(boost::iequals(processName, currentProcess.szExeFile)) {
+            if(processName.compare(std::wstring(currentProcess.szExeFile)) == 0) {
                 foundProcessNumber++;
 
                 if(foundProcessNumber >= processNumber) {
@@ -168,7 +167,7 @@ namespace MemoryCommando {
         std::vector<MODULEENTRY32W> modules = GetModules(processId);
 
         for(auto currentModule : modules) {
-            if(boost::algorithm::iequals(moduleName, currentModule.szModule))
+            if(moduleName.compare(std::wstring(currentModule.szModule)) == 0)
                 return currentModule;
         }
 
