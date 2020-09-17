@@ -162,7 +162,7 @@ namespace MemoryCommando::Memory {
             try {
                 memoryRegion = _memoryManager->QueryVirtualMemory(queryAddress);
             }
-            catch(const Exceptions::WinAPIException& exception) {
+            catch(const Exceptions::WinAPIException&) {
                 queryAddress += 0x1000;
                 continue;
             }
