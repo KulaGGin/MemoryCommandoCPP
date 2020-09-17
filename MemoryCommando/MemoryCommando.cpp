@@ -2,9 +2,6 @@
 
 #include <stdexcept>
 
-#include <boost/algorithm/string/predicate.hpp>
-
-
 #include "Exceptions/VirtualAllocException.h"
 #include "Memory/Internal/MemoryManagerInternal.h"
 
