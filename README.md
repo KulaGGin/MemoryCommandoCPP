@@ -8,13 +8,13 @@ Introduction
 
 I created this project because I wanted an easy to use library, which would work
 on x86 and x64 processes, support memory scanning, and for which I wouldn’t have
-to manually calculate module’s base address. Couldn’t find one on the Internet,
-so I wrote my own.
+to manually calculate addresses myself, such as module’s base address. Couldn’t
+find one on the Internet, so I wrote my own.
 
 Features
 --------
 
-Works on internal and external virtual process memory.  
+Works on internal and external virtual process’ memory.  
 Works on x86 and x64 system architectures and for x86 and x64 processes.  
 Supports scanning for arrays of bytes and structures.  
 Quality of life method overloads which read, edit or scan memory based on just
@@ -26,14 +26,6 @@ Dependencies
 
 [Windows Implementation Libraries (WIL)](https://github.com/microsoft/wil). You
 can get this one from NuGet.
-
-[Boost](https://www.boost.org/). You can find Boost in NuGet as well but NuGet’s
-version won’t work in this project. NuGet’s version is a header-only version.
-This project requires compiled version with headers that are missing in NuGet’s
-version. The simplest way to get Boost is to install it using vcpkg package
-manager. If you intend to use this library for x86 processes, you need to
-install x86-version of Boost: vcpkg install boost . For x64, you need to install
-x64 version respectively: vcpkg install boost:x64-windows.
 
 Using the library
 -----------------
