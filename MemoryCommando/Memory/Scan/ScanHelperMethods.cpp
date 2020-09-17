@@ -1,6 +1,6 @@
 #include "ScanHelperMethods.h"
 
-#include <boost/algorithm/string.hpp>
+#include "HelperMethods.h"
 
 namespace MemoryCommando::Memory {
     std::vector<std::pair<size_t, BYTE>> ScanHelperMethods::GetIndexedPattern(const std::vector<std::string>& pattern) {
@@ -18,8 +18,7 @@ namespace MemoryCommando::Memory {
     }
 
     std::vector<std::pair<size_t, BYTE>> ScanHelperMethods::GetIndexedPattern(const std::string& pattern) {
-        std::vector<std::string> patternSplitVector;
-        boost::split(patternSplitVector, pattern, boost::is_any_of(" "));
+        const std::vector<std::string> patternSplitVector = HelperMethods::SplitString(pattern, ' ');
 
         std::vector<std::pair<size_t, BYTE>> indexedPattern = GetIndexedPattern(patternSplitVector);
 
