@@ -7,7 +7,8 @@
 
 #include <string>
 #include <vector>
-#include <boost/algorithm/string.hpp>
+
+#include "HelperMethods.h"
 
 
 namespace MemoryCommandoTests {
@@ -16,8 +17,8 @@ namespace MemoryCommandoTests {
 
     void ScanHelperMethodsTests::GetIndexedPatternString() {
         std::string patternString = "01 ?? D0 43 ?? 50 AB ?? CD";
-        std::vector<std::string> patternStringSequence;
-        boost::split(patternStringSequence, patternString, boost::is_any_of(" "));
+
+        std::vector<std::string> patternStringSequence = MemoryCommando::HelperMethods::SplitString(patternString, ' ');
         auto indexedPattern = ScanHelperMethods::GetIndexedPattern(patternString);
 
         for(const auto& pair : indexedPattern) {
@@ -30,8 +31,8 @@ namespace MemoryCommandoTests {
 
     void ScanHelperMethodsTests::GetIndexedPatternStringBytes() {
         std::string patternString = "01 ?? D0 43 ?? 50 AB ?? CD";
-        std::vector<std::string> patternStringBytes;
-        boost::split(patternStringBytes, patternString, boost::is_any_of(" "));
+
+        std::vector<std::string> patternStringBytes = MemoryCommando::HelperMethods::SplitString(patternString, ' ');
         auto indexedPattern = ScanHelperMethods::GetIndexedPattern(patternStringBytes);
 
         for(const auto& pair : indexedPattern) {
