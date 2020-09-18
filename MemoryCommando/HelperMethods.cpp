@@ -68,7 +68,7 @@ namespace MemoryCommando {
 
         size_t foundProcessNumber = 0;
         for(auto currentProcess : processes) {
-            if(processName.compare(std::wstring(currentProcess.szExeFile)) == 0) {
+            if(_wcsicmp(processName.c_str(), currentProcess.szExeFile) == 0) {
                 foundProcessNumber++;
 
                 if(foundProcessNumber >= processNumber) {
@@ -169,7 +169,7 @@ namespace MemoryCommando {
         std::vector<MODULEENTRY32W> modules = GetModules(processId);
 
         for(auto currentModule : modules) {
-            if(moduleName.compare(std::wstring(currentModule.szModule)) == 0)
+            if(_wcsicmp(moduleName.c_str(), currentModule.szModule) == 0)
                 return currentModule;
         }
 

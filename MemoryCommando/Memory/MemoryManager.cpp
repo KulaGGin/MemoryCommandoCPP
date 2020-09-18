@@ -1,6 +1,8 @@
 #include "MemoryManager.h"
 
 
+
+#include <algorithm>
 #include <stdexcept>
 
 #include "../Exceptions/CreateToolhelp32SnapshotException.h"
@@ -46,7 +48,9 @@ namespace MemoryCommando::Memory {
         std::vector<MODULEENTRY32W> modules = GetModules();
 
         for(auto currentModule : modules) {
-            if(moduleName.compare(std::wstring(currentModule.szModule)) == 0)
+            auto currentModuleName = std::wstring(currentModule.szModule);
+
+            if(_wcsicmp(moduleName.c_str(), currentModule.szModule) == 0)
                 return currentModule;
         }
 
