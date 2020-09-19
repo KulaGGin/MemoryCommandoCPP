@@ -138,7 +138,7 @@ namespace MemoryCommando::Memory {
             ++pointerIterator;
         }
 
-        const uintptr_t endAddress = address + *pointers.end() - 1;
+        const uintptr_t endAddress = address + *(pointers.end() - 1);
 
         return endAddress;
     }
