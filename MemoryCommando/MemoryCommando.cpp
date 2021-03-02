@@ -39,12 +39,24 @@ namespace MemoryCommando {
         return _memoryManager->GetModules();
     }
 
+    MODULEENTRY32W MemoryCommando::GetModule(const size_t& moduleIndex) const {
+        return _memoryManager->GetModule(moduleIndex);
+    }
+
     MODULEENTRY32W MemoryCommando::GetModule(const std::wstring& moduleName) const {
         return _memoryManager->GetModule(moduleName);
     }
 
+    uintptr_t MemoryCommando::GetModuleBaseAddress(const size_t& moduleIndex) const {
+        return _memoryManager->GetModuleBaseAddress(moduleIndex);
+    }
+
     uintptr_t MemoryCommando::GetModuleBaseAddress(const std::wstring& moduleName) const {
         return _memoryManager->GetModuleBaseAddress(moduleName);
+    }
+
+    size_t MemoryCommando::GetModuleSize(const size_t& moduleIndex) const {
+        return _memoryManager->GetModuleSize(moduleIndex);
     }
 
     size_t MemoryCommando::GetModuleSize(const std::wstring& moduleName) const {

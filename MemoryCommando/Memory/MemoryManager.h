@@ -20,8 +20,11 @@ namespace MemoryCommando::Memory {
         virtual PROCESSENTRY32W GetProcess() const;
         virtual std::wstring GetProcessName() const;
         virtual std::vector<MODULEENTRY32W> GetModules() const;
+        virtual MODULEENTRY32W GetModule(size_t moduleIndex) const;
         virtual MODULEENTRY32W GetModule(const std::wstring& moduleName) const;
+        virtual uintptr_t GetModuleBaseAddress(int moduleIndex) const;
         virtual uintptr_t GetModuleBaseAddress(const std::wstring& moduleName) const;
+        virtual size_t GetModuleSize(const size_t& moduleIndex) const;
         virtual size_t GetModuleSize(const std::wstring& moduleName) const;
 
         virtual DWORD GetProcessId() const = 0;

@@ -53,9 +53,9 @@ namespace MemoryCommando::Memory {
     }
 
     std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(const std::wstring& moduleName, const std::vector<std::pair<size_t, BYTE>>& indexedPattern) const {
-        MODULEENTRY32W module = _memoryManager->GetModule(moduleName);
-        const uintptr_t scanStartAddress = uintptr_t(module.modBaseAddr);
-        const uintptr_t scanEndAddress = uintptr_t(module.modBaseAddr + module.modBaseSize);
+        MODULEENTRY32W moduleInst = _memoryManager->GetModule(moduleName);
+        const uintptr_t scanStartAddress = uintptr_t(moduleInst.modBaseAddr);
+        const uintptr_t scanEndAddress = uintptr_t(moduleInst.modBaseAddr + moduleInst.modBaseSize);
 
         return ScanVirtualMemory(scanStartAddress, scanEndAddress, indexedPattern);
     }
@@ -63,8 +63,8 @@ namespace MemoryCommando::Memory {
     std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::vector<std::pair<size_t, BYTE>>& indexedPattern) const {
         std::vector<uintptr_t> scanResults;
 
-        for(const auto& module : moduleNames) {
-            std::vector<uintptr_t> moduleResults = ScanVirtualMemory(module, indexedPattern);
+        for(const auto& currentModule : moduleNames) {
+            std::vector<uintptr_t> moduleResults = ScanVirtualMemory(currentModule, indexedPattern);
             scanResults.insert(scanResults.end(), moduleResults.begin(), moduleResults.end());
         }
 
@@ -178,8 +178,8 @@ namespace MemoryCommando::Memory {
     }
 
     bool MemoryScanner::CanAccessMemoryRegion(const MEMORY_BASIC_INFORMATION memoryRegion) const {
-        const bool canAccess = std::all_of(_memoryFilterList.begin(), _memoryFilterList.end(),
-                                           [memoryRegion](MemoryProtection memoryProtection) { return !(memoryRegion.Protect == DWORD(memoryProtection) || memoryRegion.Protect & DWORD(memoryProtection)); });
+        const bool canAccess = std::ranges::all_of(_memoryFilterList,
+                                                   [memoryRegion](MemoryProtection memoryProtection) { return !(memoryRegion.Protect == DWORD(memoryProtection) || memoryRegion.Protect & DWORD(memoryProtection)); });
 
         return canAccess;
     }

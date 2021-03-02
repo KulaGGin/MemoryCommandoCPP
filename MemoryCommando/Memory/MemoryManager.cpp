@@ -21,27 +21,36 @@ namespace MemoryCommando::Memory {
 
     std::vector<MODULEENTRY32W> MemoryManager::GetModules() const {
         std::vector<MODULEENTRY32W> modules{};
-        MODULEENTRY32W               module{};
-        module.dwSize = sizeof module ;
+        MODULEENTRY32W moduleInst{};
+        moduleInst.dwSize = sizeof moduleInst ;
 
         const auto modulesSnapshot = wil::unique_tool_help_snapshot(CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, _processId));
 
         if(!modulesSnapshot)
             throw Exceptions::CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot of modules.", GetLastError());
 
-        bool copiedToBuffer = Module32First(modulesSnapshot.get(), &module);
+        bool copiedToBuffer = Module32First(modulesSnapshot.get(), &moduleInst);
         if(!copiedToBuffer)
             throw Exceptions::Module32Exception("Module32First failed to fill the buffer.", GetLastError());
 
         do {
-            modules.push_back(module);
-            copiedToBuffer = Module32Next(modulesSnapshot.get(), &module);
+            modules.push_back(moduleInst);
+            copiedToBuffer = Module32Next(modulesSnapshot.get(), &moduleInst);
         } while(copiedToBuffer);
 
         if(GetLastError() != ERROR_NO_MORE_FILES)
             throw Exceptions::Module32Exception("Module32Next failed to fill the buffer.", GetLastError());
 
         return modules;
+    }
+
+    MODULEENTRY32W MemoryManager::GetModule(const size_t moduleIndex) const {
+        const std::vector<MODULEENTRY32W> modules = GetModules();
+
+        if(moduleIndex >= modules.size())
+            throw std::runtime_error("Specified module index is too big. Process doesn't have enough modules loaded");
+
+        return modules[moduleIndex];
     }
 
     MODULEENTRY32W MemoryManager::GetModule(const std::wstring& moduleName) const {
@@ -57,15 +66,28 @@ namespace MemoryCommando::Memory {
         throw std::runtime_error("Couldn't find a module with the specified name in the modules list.");
     }
 
-    uintptr_t MemoryManager::GetModuleBaseAddress(const std::wstring& moduleName) const {
-        auto module = GetModule(moduleName);
+    uintptr_t MemoryManager::GetModuleBaseAddress(const int moduleIndex) const {
+        auto moduleInst = GetModule(moduleIndex);
 
-        return uintptr_t(module.modBaseAddr);
+        return uintptr_t(moduleInst.modBaseAddr);
+    }
+
+    uintptr_t MemoryManager::GetModuleBaseAddress(const std::wstring& moduleName) const {
+        auto moduleInst = GetModule(moduleName);
+
+        return uintptr_t(moduleInst.modBaseAddr);
+    }
+
+    size_t MemoryManager::GetModuleSize(const size_t& moduleIndex) const {
+        const auto moduleInst = GetModule(moduleIndex);
+
+        return size_t(moduleInst.modBaseSize);
     }
 
     size_t MemoryManager::GetModuleSize(const std::wstring& moduleName) const {
-        const auto module = GetModule(moduleName);
-        return size_t(module.modBaseSize);
+        const auto moduleInst = GetModule(moduleName);
+
+        return size_t(moduleInst.modBaseSize);
     }
 
     DWORD MemoryManager::GetProcessId() const {

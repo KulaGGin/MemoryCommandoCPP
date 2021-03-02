@@ -67,7 +67,7 @@ namespace MemoryCommando {
         auto processes = GetRunningProcesses();
 
         size_t foundProcessNumber = 0;
-        for(auto currentProcess : processes) {
+        for(const auto& currentProcess : processes) {
             if(_wcsicmp(processName.c_str(), currentProcess.szExeFile) == 0) {
                 foundProcessNumber++;
 
@@ -112,37 +112,37 @@ namespace MemoryCommando {
         return processHandle;
     }
 
-    std::wstring HelperMethods::GetProcessName(const HANDLE processHandle) {
+    std::wstring HelperMethods::GetProcessName(HANDLE processHandle) {
         const auto process = GetProcess(processHandle);
-        const std::wstring processName = process.szExeFile;
+        std::wstring processName = process.szExeFile;
 
         return processName;
     }
 
     std::wstring HelperMethods::GetProcessName(DWORD processId) {
         const auto process = GetProcess(processId);
-        const std::wstring processName = process.szExeFile;
+        std::wstring processName = process.szExeFile;
 
         return processName;
     }
 
     std::vector<MODULEENTRY32W> HelperMethods::GetModules(const DWORD processId) {
         std::vector<MODULEENTRY32W> modules{};
-        MODULEENTRY32               module{};
-        module.dwSize = sizeof(module);
+        MODULEENTRY32 moduleInst{};
+        moduleInst.dwSize = sizeof(moduleInst);
 
         const auto modulesSnapshot = wil::unique_tool_help_snapshot(CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, processId));
 
         if(!modulesSnapshot)
             throw Exceptions::CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot of modules.", GetLastError());
 
-        bool copiedToBuffer = Module32First(modulesSnapshot.get(), &module);
+        bool copiedToBuffer = Module32First(modulesSnapshot.get(), &moduleInst);
         if(!copiedToBuffer)
             throw Exceptions::Module32Exception("Module32First failed to fill the buffer.", GetLastError());
 
         do {
-            modules.push_back(module);
-            copiedToBuffer = Module32Next(modulesSnapshot.get(), &module);
+            modules.push_back(moduleInst);
+            copiedToBuffer = Module32Next(modulesSnapshot.get(), &moduleInst);
         } while(copiedToBuffer);
 
         if(GetLastError() != ERROR_NO_MORE_FILES)
@@ -153,14 +153,14 @@ namespace MemoryCommando {
 
     std::vector<MODULEENTRY32W> HelperMethods::GetModules(HANDLE processHandle) {
         const auto processId = GetProcessId(processHandle);
-        const auto modules = GetModules(processId);
+        auto modules = GetModules(processId);
 
         return modules;
     }
 
     std::vector<MODULEENTRY32W> HelperMethods::GetModules(const std::wstring& processName, size_t processNumber) {
         const auto processId = GetProcessId(processName, processNumber);
-        const auto modules = GetModules(processId);
+        auto modules = GetModules(processId);
 
         return modules;
     }
@@ -168,7 +168,7 @@ namespace MemoryCommando {
     MODULEENTRY32W HelperMethods::GetModule(const std::wstring& moduleName, DWORD processId) {
         std::vector<MODULEENTRY32W> modules = GetModules(processId);
 
-        for(auto currentModule : modules) {
+        for(const auto& currentModule : modules) {
             if(_wcsicmp(moduleName.c_str(), currentModule.szModule) == 0)
                 return currentModule;
         }
@@ -178,52 +178,52 @@ namespace MemoryCommando {
 
     MODULEENTRY32W HelperMethods::GetModule(const std::wstring& moduleName, HANDLE processHandle) {
         const auto processId = GetProcessId(processHandle);
-        const auto module = GetModule(moduleName, processId);
+        const auto moduleInst = GetModule(moduleName, processId);
 
-        return module;
+        return moduleInst;
     }
 
     MODULEENTRY32W HelperMethods::GetModule(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
         const auto processId = GetProcessId(processName, processNumber);
-        const auto module = GetModule(moduleName, processId);
+        const auto moduleInst = GetModule(moduleName, processId);
 
-        return module;
+        return moduleInst;
     }
 
     uintptr_t HelperMethods::GetModuleBaseAddress(const std::wstring& moduleName, DWORD processId) {
-        auto module = GetModule(moduleName, processId);
-        return uintptr_t(module.modBaseAddr);
+        auto moduleInst = GetModule(moduleName, processId);
+        return uintptr_t(moduleInst.modBaseAddr);
     }
 
     uintptr_t HelperMethods::GetModuleBaseAddress(const std::wstring& moduleName, HANDLE processHandle) {
-        const auto module = GetModule(moduleName, processHandle);
-        return uintptr_t(module.modBaseAddr);
+        const auto moduleInst = GetModule(moduleName, processHandle);
+        return uintptr_t(moduleInst.modBaseAddr);
     }
 
     uintptr_t HelperMethods::GetModuleBaseAddress(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
-        const auto module = GetModule(moduleName, processName, processNumber);
-        return uintptr_t(module.modBaseAddr);
+        const auto moduleInst = GetModule(moduleName, processName, processNumber);
+        return uintptr_t(moduleInst.modBaseAddr);
     }
 
     size_t HelperMethods::GetModuleSize(const std::wstring& moduleName, DWORD processId) {
-        const auto module = GetModule(moduleName, processId);
-        return size_t(module.modBaseSize);
+        const auto moduleInst = GetModule(moduleName, processId);
+        return size_t(moduleInst.modBaseSize);
     }
 
     size_t HelperMethods::GetModuleSize(const std::wstring& moduleName, HANDLE processHandle) {
-        const auto module = GetModule(moduleName, processHandle);
-        return size_t(module.modBaseSize);
+        const auto moduleInst = GetModule(moduleName, processHandle);
+        return size_t(moduleInst.modBaseSize);
     }
 
     size_t HelperMethods::GetModuleSize(const std::wstring& moduleName, const std::wstring& processName, size_t processNumber) {
-        const auto module = GetModule(moduleName, processName, processNumber);
-        return size_t(module.modBaseSize);
+        const auto moduleInst = GetModule(moduleName, processName, processNumber);
+        return size_t(moduleInst.modBaseSize);
     }
 
     std::vector<std::string> HelperMethods::SplitString(const std::string& string, const char delimiter) {
         std::vector<std::string> tokens;
-        std::string              token;
-        std::istringstream       tokenStream(string);
+        std::string token;
+        std::istringstream tokenStream(string);
 
         while(std::getline(tokenStream, token, delimiter)) {
             tokens.push_back(token);
