@@ -181,10 +181,10 @@ namespace MemoryCommandoTests {
     void HelperMethodsTests::GetModuleByProcessId() {
         try {
             auto modules = HelperMethods::GetModules(_currentProcessId);
-            auto module = HelperMethods::GetModule(_currentProcessName, _currentProcessId);
-            if(module.szModule != _currentProcessName)
+            auto moduleInstance = HelperMethods::GetModule(_currentProcessName, _currentProcessId);
+            if(moduleInstance.szModule != _currentProcessName)
                 Assert::IsTrue(false);
-            if(module.modBaseAddr != modules[0].modBaseAddr)
+            if(moduleInstance.modBaseAddr != modules[0].modBaseAddr)
                 Assert::IsTrue(false);
         }
         catch(WinAPIException&) {
@@ -195,10 +195,10 @@ namespace MemoryCommandoTests {
     void HelperMethodsTests::GetModuleByProcessHandle() {
         try {
             auto modules = HelperMethods::GetModules(_currentProcessId);
-            auto module = HelperMethods::GetModule(_currentProcessName, _currentProcessHandle);
-            if(module.szModule != _currentProcessName)
+            auto moduleInstance = HelperMethods::GetModule(_currentProcessName, _currentProcessHandle);
+            if(moduleInstance.szModule != _currentProcessName)
                 Assert::IsTrue(false);
-            if(module.modBaseAddr != modules[0].modBaseAddr)
+            if(moduleInstance.modBaseAddr != modules[0].modBaseAddr)
                 Assert::IsTrue(false);
         }
         catch(WinAPIException&) {
@@ -209,10 +209,10 @@ namespace MemoryCommandoTests {
     void HelperMethodsTests::GetModuleByProcessName() {
         try {
             auto modules = HelperMethods::GetModules(_currentProcessId);
-            auto module = HelperMethods::GetModule(_currentProcessName, _currentProcessName);
-            if(module.szModule != _currentProcessName)
+            auto moduleInstance = HelperMethods::GetModule(_currentProcessName, _currentProcessName);
+            if(moduleInstance.szModule != _currentProcessName)
                 Assert::IsTrue(false);
-            if(module.modBaseAddr != modules[0].modBaseAddr)
+            if(moduleInstance.modBaseAddr != modules[0].modBaseAddr)
                 Assert::IsTrue(false);
         }
         catch(WinAPIException&) {

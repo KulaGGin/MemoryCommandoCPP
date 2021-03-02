@@ -53,9 +53,6 @@
     <ClInclude Include="MemoryCommandoTests.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Memory">
       <UniqueIdentifier>{c23a2659-6674-435c-a0d6-d80cb5b26e23}</UniqueIdentifier>
     </Filter>
@@ -68,5 +65,8 @@
     <Filter Include="Memory\Internal">
       <UniqueIdentifier>{9753d1df-f40a-45f6-ae01-c49d528d3839}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

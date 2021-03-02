@@ -2,6 +2,7 @@
 
 #include "MemoryCommando.h"
 
+
 namespace MemoryCommandoTests {
     void MemoryCommandoTests::Constructor() {
         MemoryCommando::MemoryCommando memoryCommando{};
