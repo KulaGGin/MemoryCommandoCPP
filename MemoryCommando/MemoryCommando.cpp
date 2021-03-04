@@ -166,7 +166,7 @@ namespace MemoryCommando {
         return _memoryManager->GetAddress(moduleName, offset);
     }
 
-    uintptr_t MemoryCommando::GetAddress(const std::wstring& moduleName, std::vector<uintptr_t>& offsets) const {
+    uintptr_t MemoryCommando::GetAddress(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets) const {
         return _memoryManager->GetAddress(moduleName, offsets);
     }
 

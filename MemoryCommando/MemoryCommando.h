@@ -54,7 +54,7 @@ namespace MemoryCommando {
         uintptr_t GetAddress(const std::vector<uintptr_t> & pointers) const;
         uintptr_t GetAddress(uintptr_t baseAddress, const std::vector<uintptr_t>& offsets) const;
         uintptr_t GetAddress(const std::wstring & moduleName, uintptr_t offset) const;
-        uintptr_t GetAddress(const std::wstring& moduleName, std::vector<uintptr_t>& offsets) const;
+        uintptr_t GetAddress(const std::wstring& moduleName, const std::vector<uintptr_t>& offsets) const;
 
         template<typename TStructure> TStructure ReadVirtualMemory(uintptr_t baseAddress) const;
         template<typename TStructure> TStructure ReadVirtualMemory(const std::vector<uintptr_t> & pointers) const;
