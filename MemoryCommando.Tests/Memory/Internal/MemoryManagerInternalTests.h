@@ -10,6 +10,7 @@ namespace MemoryCommandoTests {
     using namespace Microsoft::VisualStudio::CppUnitTestFramework;
     TEST_CLASS(MemoryManagerInternalTests) {
     public:
+
         MemoryManagerInternalTests();
         TEST_METHOD(Constructor);
         TEST_METHOD(GetProcessId);
