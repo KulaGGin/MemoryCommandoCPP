@@ -32,10 +32,12 @@ namespace MemoryCommando::Memory::Internal {
         if(freeType == MEM_RELEASE && size != 0)
             throw std::invalid_argument("When freeType is MEM_RELEASE, size must be 0.");
 
-        const bool didFree = VirtualFree(LPVOID(address), size, freeType);
+        const bool didFree = VirtualFree(reinterpret_cast<LPVOID>(address), size, freeType);
 
-        if(!didFree)
-            throw Exceptions::VirtualFreeException("VirtualFree couldn't free memory with error code " + std::to_string(GetLastError()) + ".", GetLastError());
+        if(!didFree) {
+            std::string exceptionMessage = "VirtualFree couldn't free memory with error code " + std::to_string(GetLastError()) + ".";
+            throw Exceptions::VirtualFreeException(exceptionMessage, GetLastError(), address, freeType, size);
+        }
     }
 
     void MemoryManagerInternal::ProtectVirtualMemory(const uintptr_t baseAddress, const size_t protectionSize, const DWORD protectionType) const {
