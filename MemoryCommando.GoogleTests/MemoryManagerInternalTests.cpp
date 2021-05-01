@@ -1,8 +1,20 @@
 #include "gtest/gtest.h"
 
+#include <Windows.h>
+
 #include "Memory/Internal/MemoryManagerInternal.h"
 
-TEST(TestCaseName, TestName) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
+namespace MemoryCommando::GoogleTests {
+    using namespace Memory::Internal;
+
+    class MemoryManagerInternalTests : public ::testing::Test {
+    public:
+        MemoryManagerInternal MemoryManagerInternal{};
+    };
+
+    TEST_F(MemoryManagerInternalTests, CanCreateMemoryManagerInternal) {
+        
+    }
+
 }
+
