@@ -94,6 +94,10 @@ namespace MemoryCommando::Memory {
         return _processId;
     }
 
+    HANDLE MemoryManager::GetProcessHandle() const {
+        return _processHandle.get();
+    }
+
     uintptr_t MemoryManager::AllocateVirtualMemory(const uintptr_t allocationSize) const {
         const uintptr_t allocatedAddress = AllocateVirtualMemory(0, allocationSize);
 

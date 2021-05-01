@@ -22,5 +22,13 @@ namespace MemoryCommando::GoogleTests {
         EXPECT_EQ(currentProcessID, MemoryManagerInternal.GetProcessId());
     }
 
+    TEST_F(MemoryManagerInternalTests, GetCorrectProcessHandle) {
+        HANDLE currentProcessHandle = GetCurrentProcess();
+        HANDLE memoryManagerProcessHandle = MemoryManagerInternal.GetProcessHandle();
+
+        EXPECT_EQ(currentProcessHandle, memoryManagerProcessHandle);
+    }
+
+
 }
 

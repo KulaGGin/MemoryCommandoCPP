@@ -28,7 +28,7 @@ namespace MemoryCommando::Memory {
         virtual size_t GetModuleSize(const std::wstring& moduleName) const;
 
         virtual DWORD GetProcessId() const;
-        virtual HANDLE GetProcessHandle() const = 0;
+        virtual HANDLE GetProcessHandle() const;
 
         virtual uintptr_t AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType = MEM_RESERVE | MEM_COMMIT, DWORD protectionType = PAGE_EXECUTE_READWRITE) const = 0;
         virtual uintptr_t AllocateVirtualMemory(uintptr_t allocationSize) const;

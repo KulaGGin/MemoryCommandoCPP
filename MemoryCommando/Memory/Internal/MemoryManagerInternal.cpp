@@ -14,13 +14,9 @@
 namespace MemoryCommando::Memory::Internal {
 
     MemoryManagerInternal::MemoryManagerInternal() {
-        _processHandle = wil::unique_handle(MemoryManagerInternal::GetProcessHandle());
         _processId = GetCurrentProcessId();
+        _processHandle = wil::unique_handle(GetCurrentProcess());
         _process = MemoryManager::GetProcess();
-    }
-
-    HANDLE MemoryManagerInternal::GetProcessHandle() const {
-        return GetCurrentProcess();
     }
 
     uintptr_t MemoryManagerInternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) const {
