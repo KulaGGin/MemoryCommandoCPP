@@ -20,12 +20,12 @@ namespace MemoryCommando::Memory::Internal {
     }
 
     uintptr_t MemoryManagerInternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) const {
-        LPVOID allocationAddress = VirtualAlloc(LPVOID(baseAddress), allocationSize, allocationType, protectionType);
+        LPVOID allocationAddress = VirtualAlloc(reinterpret_cast<LPVOID>(baseAddress), allocationSize, allocationType, protectionType);
 
         if(!allocationAddress)
-            throw Exceptions::VirtualAllocException("VirtualAlloc couldn't allocate memory with error code " + std::to_string(GetLastError()) + ".", GetLastError());
+            throw Exceptions::VirtualAllocException("VirtualAlloc couldn't allocate memory with error code " + std::to_string(GetLastError()) + ".", GetLastError(), baseAddress, allocationSize, allocationType, protectionType);
 
-        return uintptr_t(allocationAddress);
+        return reinterpret_cast<uintptr_t>(allocationAddress);
     }
 
     void MemoryManagerInternal::FreeVirtualMemory(const uintptr_t address, const DWORD freeType, const size_t size) const {
