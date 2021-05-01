@@ -12,10 +12,6 @@ namespace MemoryCommando::GoogleTests {
         MemoryManagerInternal MemoryManagerInternal{};
     };
 
-    TEST_F(MemoryManagerInternalTests, CanCreateMemoryManagerInternal) {
-        
-    }
-
     TEST_F(MemoryManagerInternalTests, GetsCorrectProcessID) {
         auto currentProcessID = GetCurrentProcessId();
 
