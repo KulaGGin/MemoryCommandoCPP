@@ -9,7 +9,6 @@ namespace MemoryCommando::Memory::Internal {
     class MemoryManagerInternal final : public MemoryManager {
     public:
         MemoryManagerInternal();
-        DWORD GetProcessId() const override;
         HANDLE GetProcessHandle() const override;
         uintptr_t AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType = MEM_RESERVE | MEM_COMMIT, DWORD protectionType = PAGE_EXECUTE_READWRITE) const override;
         void FreeVirtualMemory(uintptr_t address, DWORD freeType = MEM_RELEASE, size_t size = 0) const override;

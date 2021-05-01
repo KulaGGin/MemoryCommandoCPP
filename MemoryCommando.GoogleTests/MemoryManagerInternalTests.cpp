@@ -16,5 +16,11 @@ namespace MemoryCommando::GoogleTests {
         
     }
 
+    TEST_F(MemoryManagerInternalTests, GetsCorrectProcessID) {
+        auto currentProcessID = GetCurrentProcessId();
+
+        EXPECT_EQ(currentProcessID, MemoryManagerInternal.GetProcessId());
+    }
+
 }
 
