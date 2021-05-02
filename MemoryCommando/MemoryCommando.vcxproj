@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Exceptions\BadReadPointerException.cpp" />
     <ClCompile Include="Memory\CodeInjector.cpp" />
     <ClCompile Include="Exceptions\BaseException.cpp" />
     <ClCompile Include="HelperMethods.cpp" />
@@ -48,6 +49,7 @@
     <ClCompile Include="Memory\Scan\ScanHelperMethods.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Exceptions\BadReadPointerException.h" />
     <ClInclude Include="Memory\CodeInjector.h" />
     <ClInclude Include="Exceptions\BaseException.h" />
     <ClInclude Include="HelperMethods.h" />

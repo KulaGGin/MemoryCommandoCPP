@@ -10,6 +10,7 @@
 #include "../../Exceptions/VirtualFreeException.h"
 #include "../../Exceptions/VirtualProtectException.h"
 #include "../../Exceptions/VirtualQueryException.h"
+#include "Exceptions/BadReadPointerException.h"
 
 namespace MemoryCommando::Memory::Internal {
 
@@ -63,14 +64,22 @@ namespace MemoryCommando::Memory::Internal {
     }
 
     std::vector<BYTE> MemoryManagerInternal::ReadVirtualMemory(const uintptr_t address, const size_t bytesNumber) const {
+
+        bool isAddressReadable = IsBadReadPtr(reinterpret_cast<void*>(address), bytesNumber);
+
+        if(isAddressReadable) {
+            auto exceptionMessage = "Won't be able to read address" + std::to_string(address) + " because IsBadReadPtr returned: " + std::to_string(isAddressReadable) + ".";
+            throw Exceptions::BadReadPointerException(exceptionMessage, address);
+        }
+
         std::vector<BYTE> bytesSequence;
         bytesSequence.resize(bytesNumber, 0);
-        std::memcpy(&bytesSequence[0], LPVOID(address), bytesNumber);
+        std::memcpy(&bytesSequence[0], reinterpret_cast<LPVOID>(address), bytesNumber);
 
         return bytesSequence;
     }
 
     void MemoryManagerInternal::WriteVirtualMemory(const uintptr_t address, const std::vector<BYTE>& byteSequence) const {
-        std::memcpy(LPVOID(address), &byteSequence[0], byteSequence.size());
+        std::memcpy(reinterpret_cast<LPVOID>(address), &byteSequence[0], byteSequence.size());
     }
 }

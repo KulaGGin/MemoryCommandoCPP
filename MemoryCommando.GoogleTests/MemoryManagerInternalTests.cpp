@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 
+#include "Exceptions/BadReadPointerException.h"
 #include "Exceptions/VirtualAllocException.h"
 #include "Exceptions/VirtualFreeException.h"
 #include "Exceptions/VirtualProtectException.h"
@@ -160,6 +161,38 @@ namespace MemoryCommando::GoogleTests {
         EXPECT_EQ(memoryBasicInformation.AllocationProtect, wantedProtection);
         EXPECT_EQ(memoryBasicInformation.Protect, wantedProtection);
         EXPECT_TRUE(memoryBasicInformation.State & MEM_COMMIT);
+    }
+
+    TEST_F(MemoryManagerInternalTests, ReadVirtualMemory_ReadsMemoryAppropriatelyIfGivenNormalAddress) {
+        int integer = 12345;
+        byte* integerBytes = reinterpret_cast<byte*>(&integer);
+        auto readBytes = MemoryManagerInternal.ReadVirtualMemory(reinterpret_cast<uintptr_t>(&integer), sizeof integer );
+
+        EXPECT_EQ(readBytes.size(), sizeof integer);
+
+        EXPECT_EQ(readBytes[0], integerBytes[0]);
+        EXPECT_EQ(readBytes[1], integerBytes[1]);
+        EXPECT_EQ(readBytes[2], integerBytes[2]);
+        EXPECT_EQ(readBytes[3], integerBytes[3]);
+    }
+
+    TEST_F(MemoryManagerInternalTests, ReadVirtualMemory_ThrowsIfGivenBadAddress) {
+        uintptr_t allocationAddress = MemoryManagerInternal.AllocateVirtualMemory(0, 0x1000, PAGE_NOACCESS);
+
+        try {
+            std::vector<BYTE> readBytes = MemoryManagerInternal.ReadVirtualMemory(allocationAddress, 0x4);
+        }
+        catch(Exceptions::BadReadPointerException badReadPointerException) {
+            EXPECT_EQ(badReadPointerException.Address, allocationAddress);
+        }
+        try {
+            std::vector<BYTE> readBytes = MemoryManagerInternal.ReadVirtualMemory(-1, 0x4);
+        }
+        catch(Exceptions::BadReadPointerException badReadPointerException) {
+            EXPECT_EQ(badReadPointerException.Address, -1);
+        }
+    }
+        }
     }
 }
 

@@ -78,6 +78,9 @@
     <ClCompile Include="Memory\CodeInjector.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
+    <ClCompile Include="Exceptions\BadReadPointerException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -162,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="Memory\CodeInjector.h">
       <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions\BadReadPointerException.h">
+      <Filter>Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
