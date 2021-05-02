@@ -29,13 +29,13 @@ namespace MemoryCommando::Memory {
         if(!modulesSnapshot)
             throw Exceptions::CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot of modules.", GetLastError());
 
-        bool copiedToBuffer = Module32First(modulesSnapshot.get(), &moduleInst);
+        bool copiedToBuffer = Module32FirstW(modulesSnapshot.get(), &moduleInst);
         if(!copiedToBuffer)
             throw Exceptions::Module32Exception("Module32First failed to fill the buffer.", GetLastError());
 
         do {
             modules.push_back(moduleInst);
-            copiedToBuffer = Module32Next(modulesSnapshot.get(), &moduleInst);
+            copiedToBuffer = Module32NextW(modulesSnapshot.get(), &moduleInst);
         } while(copiedToBuffer);
 
         if(GetLastError() != ERROR_NO_MORE_FILES)

@@ -178,8 +178,8 @@ namespace MemoryCommando::Memory {
     }
 
     bool MemoryScanner::CanAccessMemoryRegion(const MEMORY_BASIC_INFORMATION memoryRegion) const {
-        const bool canAccess = std::ranges::all_of(_memoryFilterList,
-                                                   [memoryRegion](MemoryProtection memoryProtection) { return !(memoryRegion.Protect == DWORD(memoryProtection) || memoryRegion.Protect & DWORD(memoryProtection)); });
+        const bool canAccess = std::all_of(_memoryFilterList.begin(), _memoryFilterList.end(),
+            [memoryRegion](MemoryProtection memoryProtection) { return !(memoryRegion.Protect == DWORD(memoryProtection) || memoryRegion.Protect & DWORD(memoryProtection)); });
 
         return canAccess;
     }

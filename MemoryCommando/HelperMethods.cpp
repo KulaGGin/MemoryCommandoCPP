@@ -22,7 +22,7 @@ namespace MemoryCommando {
 
     std::vector<PROCESSENTRY32W> HelperMethods::GetRunningProcesses() {
         std::vector<PROCESSENTRY32W> runningProcesses{};
-        PROCESSENTRY32 process{};
+        PROCESSENTRY32W process{};
         process.dwSize = sizeof(process);
 
         const wil::unique_tool_help_snapshot processesSnapshot{ CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
@@ -30,13 +30,13 @@ namespace MemoryCommando {
         if(!processesSnapshot)
             throw Exceptions::CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot.", GetLastError());
 
-        bool copiedToBuffer = Process32First(processesSnapshot.get(), &process);
+        bool copiedToBuffer = Process32FirstW(processesSnapshot.get(), &process);
         if(!copiedToBuffer)
             throw Exceptions::Process32Exception("Process32First failed to fill the buffer.", GetLastError());
 
         do {
             runningProcesses.push_back(process);
-            copiedToBuffer = Process32Next(processesSnapshot.get(), &process);
+            copiedToBuffer = Process32NextW(processesSnapshot.get(), &process);
         } while(copiedToBuffer);
 
         if(!copiedToBuffer && GetLastError() != ERROR_NO_MORE_FILES)
@@ -128,7 +128,7 @@ namespace MemoryCommando {
 
     std::vector<MODULEENTRY32W> HelperMethods::GetModules(const DWORD processId) {
         std::vector<MODULEENTRY32W> modules{};
-        MODULEENTRY32 moduleInst{};
+        MODULEENTRY32W moduleInst{};
         moduleInst.dwSize = sizeof(moduleInst);
 
         const auto modulesSnapshot = wil::unique_tool_help_snapshot(CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, processId));
@@ -136,13 +136,13 @@ namespace MemoryCommando {
         if(!modulesSnapshot)
             throw Exceptions::CreateToolhelp32SnapshotException("CreateToolhelp32Snapshot failed to create a snapshot of modules.", GetLastError());
 
-        bool copiedToBuffer = Module32First(modulesSnapshot.get(), &moduleInst);
+        bool copiedToBuffer = Module32FirstW(modulesSnapshot.get(), &moduleInst);
         if(!copiedToBuffer)
             throw Exceptions::Module32Exception("Module32First failed to fill the buffer.", GetLastError());
 
         do {
             modules.push_back(moduleInst);
-            copiedToBuffer = Module32Next(modulesSnapshot.get(), &moduleInst);
+            copiedToBuffer = Module32NextW(modulesSnapshot.get(), &moduleInst);
         } while(copiedToBuffer);
 
         if(GetLastError() != ERROR_NO_MORE_FILES)
