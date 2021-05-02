@@ -4,6 +4,7 @@
 
 #include "Exceptions/VirtualAllocException.h"
 #include "Exceptions/VirtualFreeException.h"
+#include "Exceptions/VirtualProtectException.h"
 #include "Memory/Internal/MemoryManagerInternal.h"
 
 namespace MemoryCommando::GoogleTests {
@@ -94,5 +95,39 @@ namespace MemoryCommando::GoogleTests {
         }
     }
 
+    TEST_F(MemoryManagerInternalTests, ProtectMemory_ThrowsWhenGivenTooBigAddress) {
+        uintptr_t wantedProtectionAddress = -1ull;
+        size_t wantedSize = 0x2000;
+        auto protectionType = PAGE_EXECUTE;
+        try {
+            MemoryManagerInternal.ProtectVirtualMemory(wantedProtectionAddress, wantedSize, protectionType);
+            FAIL();
+        }
+        catch(Exceptions::VirtualProtectException virtualProtectException) {
+            EXPECT_EQ(virtualProtectException.Address, wantedProtectionAddress);
+            EXPECT_EQ(virtualProtectException.ProtectionSize, wantedSize);
+            EXPECT_EQ(virtualProtectException.ProtectionType, protectionType);
+        }
+    }
+
+    TEST_F(MemoryManagerInternalTests, ProtectMemory_ProtectsWhenGivenProperArguments) {
+        size_t allocationSize = 0x2000;
+        uintptr_t allocationAddress = MemoryManagerInternal.AllocateVirtualMemory(0, allocationSize);
+        EXPECT_FALSE(IsBadReadPtr(reinterpret_cast<void*>(allocationAddress), allocationSize));
+
+        uintptr_t wantedProtectionAddress = allocationAddress;
+        size_t wantedSize = 0x2000;
+        int protectionType = PAGE_EXECUTE;
+
+        MemoryManagerInternal.ProtectVirtualMemory(wantedProtectionAddress, wantedSize, protectionType);
+
+        MEMORY_BASIC_INFORMATION memoryBasicInformation{};
+        size_t memoryBasicInformationSize = sizeof memoryBasicInformation;
+        auto numberOfBytesWritten = VirtualQuery(reinterpret_cast<LPCVOID>(allocationAddress), &memoryBasicInformation, memoryBasicInformationSize);
+
+        EXPECT_EQ(numberOfBytesWritten, memoryBasicInformationSize) << "VirtualQuery didn't write number of bytes equal to the size of MEMORY_BASIC_INFORMATION struct";
+
+        EXPECT_EQ(memoryBasicInformation.Protect, PAGE_EXECUTE);
+    }
 }
 

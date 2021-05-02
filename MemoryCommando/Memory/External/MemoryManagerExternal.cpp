@@ -62,9 +62,9 @@ namespace MemoryCommando::Memory::External {
             throw Exceptions::VirtualFreeExException("VirtualFreeEx couldn't free memory with error code " + std::to_string(GetLastError()) + ".", GetLastError());
     }
 
-    void MemoryManagerExternal::ProtectVirtualMemory(const uintptr_t baseAddress, const size_t protectionSize, const DWORD protectionType) const {
+    void MemoryManagerExternal::ProtectVirtualMemory(const uintptr_t address, const size_t protectionSize, const DWORD protectionType) const {
         DWORD oldProtection;
-        const bool didProtect = VirtualProtectEx(_processHandle.get(), LPVOID(baseAddress), protectionSize, protectionType, &oldProtection);
+        const bool didProtect = VirtualProtectEx(_processHandle.get(), LPVOID(address), protectionSize, protectionType, &oldProtection);
 
         if(!didProtect)
             throw Exceptions::VirtualProtectExException("VirtualProtectEx failed to protect memory with the error code " + std::to_string(GetLastError()) + ".", GetLastError());

@@ -40,12 +40,15 @@ namespace MemoryCommando::Memory::Internal {
         }
     }
 
-    void MemoryManagerInternal::ProtectVirtualMemory(const uintptr_t baseAddress, const size_t protectionSize, const DWORD protectionType) const {
+    void MemoryManagerInternal::ProtectVirtualMemory(const uintptr_t address, const size_t protectionSize, const DWORD protectionType) const {
         DWORD oldProtection;
-        const bool didProtect = VirtualProtect(LPVOID(baseAddress), protectionSize, protectionType, &oldProtection);
 
-        if(!didProtect)
-            throw Exceptions::VirtualProtectException("VirtualProtect failed to protect memory with the error code " + std::to_string(GetLastError()) + ".", GetLastError());
+        const bool didProtect = VirtualProtect(reinterpret_cast<LPVOID>(address), protectionSize, protectionType, &oldProtection);
+
+        if(!didProtect) {
+            std::string exceptionMessage = "VirtualProtect failed to protect memory with the error code " + std::to_string(GetLastError()) + ".";
+            throw Exceptions::VirtualProtectException(exceptionMessage, GetLastError(), address, protectionSize, protectionType);
+        }
     }
 
     MEMORY_BASIC_INFORMATION MemoryManagerInternal::QueryVirtualMemory(const uintptr_t baseAddress) const {
