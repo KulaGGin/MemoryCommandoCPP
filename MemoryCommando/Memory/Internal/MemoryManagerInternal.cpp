@@ -51,13 +51,13 @@ namespace MemoryCommando::Memory::Internal {
         }
     }
 
-    MEMORY_BASIC_INFORMATION MemoryManagerInternal::QueryVirtualMemory(const uintptr_t baseAddress) const {
+    MEMORY_BASIC_INFORMATION MemoryManagerInternal::QueryVirtualMemory(const uintptr_t address) const {
         MEMORY_BASIC_INFORMATION memoryBasicInformation{};
 
-        const SIZE_T bytesReturned = VirtualQuery(LPVOID(baseAddress), &memoryBasicInformation, sizeof memoryBasicInformation);
+        const SIZE_T bytesReturned = VirtualQuery(reinterpret_cast<LPVOID>(address), &memoryBasicInformation, sizeof memoryBasicInformation);
 
         if(!bytesReturned)
-            throw Exceptions::VirtualQueryException("VirtualQuery couldn't query memory and failed with error code " + std::to_string(GetLastError()), GetLastError());
+            throw Exceptions::VirtualQueryException("VirtualQuery couldn't query memory and failed with error code " + std::to_string(GetLastError()), GetLastError(), address);
 
         return memoryBasicInformation;
     }

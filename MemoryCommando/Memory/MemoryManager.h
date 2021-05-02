@@ -34,7 +34,7 @@ namespace MemoryCommando::Memory {
         virtual uintptr_t AllocateVirtualMemory(uintptr_t allocationSize) const;
         virtual void FreeVirtualMemory(uintptr_t baseAddress, DWORD freeType = MEM_RELEASE, size_t size = 0) const = 0;
         virtual void ProtectVirtualMemory(uintptr_t address, size_t protectionSize, DWORD protectionType = PAGE_EXECUTE_READWRITE) const = 0;
-        virtual MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t baseAddress) const = 0;
+        virtual MEMORY_BASIC_INFORMATION QueryVirtualMemory(uintptr_t Address) const = 0;
 
         virtual std::vector<BYTE> ReadVirtualMemory(uintptr_t baseAddress, size_t bytesNumber) const = 0;
         virtual std::vector<BYTE> ReadVirtualMemory(const std::vector<uintptr_t>& pointers, size_t bytesNumber) const;

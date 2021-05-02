@@ -5,6 +5,7 @@
 #include "Exceptions/VirtualAllocException.h"
 #include "Exceptions/VirtualFreeException.h"
 #include "Exceptions/VirtualProtectException.h"
+#include "Exceptions/VirtualQueryException.h"
 #include "Memory/Internal/MemoryManagerInternal.h"
 
 namespace MemoryCommando::GoogleTests {
@@ -128,6 +129,37 @@ namespace MemoryCommando::GoogleTests {
         EXPECT_EQ(numberOfBytesWritten, memoryBasicInformationSize) << "VirtualQuery didn't write number of bytes equal to the size of MEMORY_BASIC_INFORMATION struct";
 
         EXPECT_EQ(memoryBasicInformation.Protect, PAGE_EXECUTE);
+    }
+
+    TEST_F(MemoryManagerInternalTests, QueryVirtualMemory_ThrowsWhenTryingToQueryTooBigAddress) {
+        uintptr_t wantedQueryAddress = -1ull;
+
+        try {
+            [[maybe_unused]] MEMORY_BASIC_INFORMATION memoryBasicInformation =
+                MemoryManagerInternal.QueryVirtualMemory(wantedQueryAddress);
+            FAIL();
+        }
+        catch(Exceptions::VirtualQueryException virtualQueryException) {
+            EXPECT_EQ(virtualQueryException.Address, wantedQueryAddress);
+        }
+    }
+
+    TEST_F(MemoryManagerInternalTests, QueryVirtualMemory_QueriesWhenGivenNormalAddress) {
+        auto wantedAllocationSize = 0x10000;
+        auto wantedAllocationType = MEM_COMMIT;
+        auto wantedProtection = PAGE_READONLY;
+
+        uintptr_t allocationAddress = MemoryManagerInternal.AllocateVirtualMemory(0, wantedAllocationSize, wantedAllocationType, wantedProtection);
+
+        uintptr_t wantedQueryAddress = allocationAddress;
+
+        MEMORY_BASIC_INFORMATION memoryBasicInformation = MemoryManagerInternal.QueryVirtualMemory(wantedQueryAddress);
+
+        EXPECT_EQ(memoryBasicInformation.BaseAddress, reinterpret_cast<PVOID>(allocationAddress));
+        EXPECT_EQ(memoryBasicInformation.RegionSize, wantedAllocationSize);
+        EXPECT_EQ(memoryBasicInformation.AllocationProtect, wantedProtection);
+        EXPECT_EQ(memoryBasicInformation.Protect, wantedProtection);
+        EXPECT_TRUE(memoryBasicInformation.State & MEM_COMMIT);
     }
 }
 

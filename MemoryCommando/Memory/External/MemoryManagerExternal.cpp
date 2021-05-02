@@ -70,10 +70,10 @@ namespace MemoryCommando::Memory::External {
             throw Exceptions::VirtualProtectExException("VirtualProtectEx failed to protect memory with the error code " + std::to_string(GetLastError()) + ".", GetLastError());
     }
 
-    MEMORY_BASIC_INFORMATION MemoryManagerExternal::QueryVirtualMemory(const uintptr_t baseAddress) const {
+    MEMORY_BASIC_INFORMATION MemoryManagerExternal::QueryVirtualMemory(const uintptr_t Address) const {
         MEMORY_BASIC_INFORMATION memoryBasicInformation{};
 
-        const SIZE_T bytesReturned = VirtualQueryEx(_processHandle.get(), LPVOID(baseAddress), &memoryBasicInformation, sizeof memoryBasicInformation);
+        const SIZE_T bytesReturned = VirtualQueryEx(_processHandle.get(), LPVOID(Address), &memoryBasicInformation, sizeof memoryBasicInformation);
 
         if(!bytesReturned)
             throw Exceptions::VirtualQueryExException("VirtualQueryEx couldn't query memory and failed with error code " + std::to_string(GetLastError()), GetLastError());
