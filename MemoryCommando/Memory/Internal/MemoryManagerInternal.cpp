@@ -19,7 +19,7 @@ namespace MemoryCommando::Memory::Internal {
         _process = MemoryManager::GetProcess();
     }
 
-    uintptr_t MemoryManagerInternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) const {
+    uintptr_t MemoryManagerInternal::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD protectionType, const DWORD allocationType) const {
         LPVOID allocationAddress = VirtualAlloc(reinterpret_cast<LPVOID>(baseAddress), allocationSize, allocationType, protectionType);
 
         if(!allocationAddress)

@@ -41,7 +41,7 @@ namespace MemoryCommando::GoogleTests {
         int wantedProtectionType = PAGE_READONLY;
 
         try {
-            uintptr_t allocatedAddress = MemoryManagerInternal.AllocateVirtualMemory(wantedAllocationAddress, wantedAllocationSize, wantedAllocationType, wantedProtectionType);
+            uintptr_t allocatedAddress = MemoryManagerInternal.AllocateVirtualMemory(wantedAllocationAddress, wantedAllocationSize, wantedProtectionType, wantedAllocationType);
             FAIL(); // Test will fail if the line above executes successfully and doesn't throw an exception.
         }
         catch(Exceptions::VirtualAllocException virtualAllocException) {
@@ -149,7 +149,7 @@ namespace MemoryCommando::GoogleTests {
         auto wantedAllocationType = MEM_COMMIT;
         auto wantedProtection = PAGE_READONLY;
 
-        uintptr_t allocationAddress = MemoryManagerInternal.AllocateVirtualMemory(0, wantedAllocationSize, wantedAllocationType, wantedProtection);
+        uintptr_t allocationAddress = MemoryManagerInternal.AllocateVirtualMemory(0, wantedAllocationSize, wantedProtection, wantedAllocationType);
 
         uintptr_t wantedQueryAddress = allocationAddress;
 

@@ -33,7 +33,7 @@ namespace MemoryCommando {
         DWORD GetProcessId() const;
         HANDLE GetProcessHandle() const;
 
-        uintptr_t AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType = MEM_RESERVE | MEM_COMMIT, DWORD protectionType = PAGE_EXECUTE_READWRITE) const;
+        uintptr_t AllocateVirtualMemory(uintptr_t baseAddress, size_t allocationSize, DWORD protectionType = PAGE_EXECUTE_READWRITE, DWORD allocationType = MEM_RESERVE | MEM_COMMIT) const;
         uintptr_t AllocateVirtualMemoryNear(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType = MEM_RESERVE | MEM_COMMIT, DWORD protectionType = PAGE_EXECUTE_READWRITE) const;
         void FreeVirtualMemory(uintptr_t baseAddress, DWORD freeType = MEM_RELEASE, size_t size = 0) const;
         void ProtectVirtualMemory(uintptr_t baseAddress, size_t protectionSize, DWORD protectionType = PAGE_EXECUTE_READWRITE) const;

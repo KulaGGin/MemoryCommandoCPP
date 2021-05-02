@@ -71,8 +71,8 @@ namespace MemoryCommando {
         return _memoryManager->GetProcessHandle();
     }
 
-    uintptr_t MemoryCommando::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD allocationType, const DWORD protectionType) const {
-        return _memoryManager->AllocateVirtualMemory(baseAddress, allocationSize, allocationType, protectionType);
+    uintptr_t MemoryCommando::AllocateVirtualMemory(const uintptr_t baseAddress, const size_t allocationSize, const DWORD protectionType, const DWORD allocationType) const {
+        return _memoryManager->AllocateVirtualMemory(baseAddress, allocationSize, protectionType, allocationType);
     }
 
     uintptr_t MemoryCommando::AllocateVirtualMemoryNear(uintptr_t baseAddress, size_t allocationSize, DWORD allocationType, DWORD protectionType) const {
