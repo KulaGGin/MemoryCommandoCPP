@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 
+#include "BadWritePointerException.h"
 #include "Exceptions/BadReadPointerException.h"
 #include "Exceptions/VirtualAllocException.h"
 #include "Exceptions/VirtualFreeException.h"
@@ -192,6 +193,42 @@ namespace MemoryCommando::GoogleTests {
             EXPECT_EQ(badReadPointerException.Address, -1);
         }
     }
+
+    TEST_F(MemoryManagerInternalTests, WriteVirtualMemory_WritesMemoryAppropriatelyIfGivenNormalAddress) {
+        uintptr_t allocationAddress = MemoryManagerInternal.AllocateVirtualMemory(0, 0x1000);
+        int integer = 12345;
+        std::vector<BYTE> integerBytesSequence(sizeof integer);
+
+        std::memcpy(&integerBytesSequence[0], &integer, sizeof integer);
+
+        
+        MemoryManagerInternal.WriteVirtualMemory(allocationAddress, integerBytesSequence);
+
+        byte* writtenIntegerBytes = reinterpret_cast<byte*>(allocationAddress);
+        for(size_t byteIndex = 0; byteIndex < sizeof integer; ++byteIndex) {
+            EXPECT_EQ(integerBytesSequence[byteIndex], writtenIntegerBytes[byteIndex]);
+        }
+    }
+
+    TEST_F(MemoryManagerInternalTests, WriteVirtualMemory_ThrowsIfGivenBadAddress) {
+        uintptr_t allocationAddress = MemoryManagerInternal.AllocateVirtualMemory(0, 0x1000, PAGE_NOACCESS);
+        int integer = 12345;
+        std::vector<BYTE> integerBytesSequence(sizeof integer);
+        std::memcpy(&integerBytesSequence[0], &integer, sizeof integer);
+
+        try {
+            MemoryManagerInternal.WriteVirtualMemory(allocationAddress, integerBytesSequence);
+            FAIL();
+        }
+        catch(Exceptions::BadWritePointerException badWritePointerException) {
+            EXPECT_EQ(badWritePointerException.Address, allocationAddress);
+        }
+        try {
+            MemoryManagerInternal.WriteVirtualMemory(-1, integerBytesSequence);
+            FAIL();
+        }
+        catch(Exceptions::BadWritePointerException badWritePointerException) {
+            EXPECT_EQ(badWritePointerException.Address, -1);
         }
     }
 }

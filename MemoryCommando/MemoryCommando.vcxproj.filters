@@ -81,6 +81,7 @@
     <ClCompile Include="Exceptions\BadReadPointerException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
+    <ClCompile Include="BadWritePointerException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Exceptions\BadReadPointerException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="BadWritePointerException.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">

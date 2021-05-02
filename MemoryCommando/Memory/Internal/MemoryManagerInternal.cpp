@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 
-
+#include "BadWritePointerException.h"
 #include "../../Exceptions/CreateToolhelp32SnapshotException.h"
 #include "../../Exceptions/Module32Exception.h"
 #include "../../Exceptions/VirtualAllocException.h"
@@ -65,10 +65,10 @@ namespace MemoryCommando::Memory::Internal {
 
     std::vector<BYTE> MemoryManagerInternal::ReadVirtualMemory(const uintptr_t address, const size_t bytesNumber) const {
 
-        bool isAddressReadable = IsBadReadPtr(reinterpret_cast<void*>(address), bytesNumber);
+        bool isAddressReadable = !IsBadReadPtr(reinterpret_cast<void*>(address), bytesNumber);
 
-        if(isAddressReadable) {
-            auto exceptionMessage = "Won't be able to read address" + std::to_string(address) + " because IsBadReadPtr returned: " + std::to_string(isAddressReadable) + ".";
+        if(!isAddressReadable) {
+            auto exceptionMessage = "Won't be able to read address " + std::to_string(address) + " because IsBadReadPtr returned: " + std::to_string(isAddressReadable) + ".";
             throw Exceptions::BadReadPointerException(exceptionMessage, address);
         }
 
@@ -80,6 +80,13 @@ namespace MemoryCommando::Memory::Internal {
     }
 
     void MemoryManagerInternal::WriteVirtualMemory(const uintptr_t address, const std::vector<BYTE>& byteSequence) const {
+        bool isAddressWritable = !IsBadWritePtr(reinterpret_cast<void*>(address), byteSequence.size());
+
+        if(!isAddressWritable) {
+            auto exceptionMessage = "Won't be able to write byte sequence of size" + std::to_string(byteSequence.size()) + " at address " + std::to_string(address) + " because IsBadReadPtr returned: " + std::to_string(isAddressWritable) + ".";
+            throw Exceptions::BadWritePointerException(exceptionMessage, address);
+        }
+
         std::memcpy(reinterpret_cast<LPVOID>(address), &byteSequence[0], byteSequence.size());
     }
 }
