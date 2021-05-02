@@ -13,7 +13,7 @@
 namespace MemoryCommando::GoogleTests {
     using namespace Memory::Internal;
 
-    class MemoryManagerInternalTests : public ::testing::Test {
+    class MemoryManagerInternalTests : public testing::Test {
     public:
         MemoryManagerInternal MemoryManagerInternal{};
     };
@@ -43,7 +43,7 @@ namespace MemoryCommando::GoogleTests {
         int wantedProtectionType = PAGE_READONLY;
 
         try {
-            uintptr_t allocatedAddress = MemoryManagerInternal.AllocateVirtualMemory(wantedAllocationAddress, wantedAllocationSize, wantedProtectionType, wantedAllocationType);
+            [[maybe_unused]] uintptr_t allocatedAddress = MemoryManagerInternal.AllocateVirtualMemory(wantedAllocationAddress, wantedAllocationSize, wantedProtectionType, wantedAllocationType);
             FAIL(); // Test will fail if the line above executes successfully and doesn't throw an exception.
         }
         catch(Exceptions::VirtualAllocException virtualAllocException) {
@@ -200,7 +200,6 @@ namespace MemoryCommando::GoogleTests {
         std::vector<BYTE> integerBytesSequence(sizeof integer);
 
         std::memcpy(&integerBytesSequence[0], &integer, sizeof integer);
-
         
         MemoryManagerInternal.WriteVirtualMemory(allocationAddress, integerBytesSequence);
 
