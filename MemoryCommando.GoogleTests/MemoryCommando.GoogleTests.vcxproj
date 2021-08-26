@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="MemoryManagerInternalTests.cpp" />
+    <ClCompile Include="MemoryScanner\BadByteHeuristicTests.cpp" />
     <ClCompile Include="MemoryScanner\BytePatternTests.cpp" />
     <ClCompile Include="MemoryScanner\PatternConverterTests.cpp" />
   </ItemGroup>
