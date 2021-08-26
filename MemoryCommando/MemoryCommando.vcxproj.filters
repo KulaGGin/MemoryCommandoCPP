@@ -83,6 +83,7 @@
     </ClCompile>
     <ClCompile Include="BadWritePointerException.cpp" />
     <ClCompile Include="Memory\Scan\PatternScanner\PatternConverter.cpp" />
+    <ClCompile Include="Memory\Scan\PatternScanner\BytePattern.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -173,6 +174,7 @@
     </ClInclude>
     <ClInclude Include="BadWritePointerException.h" />
     <ClInclude Include="Memory\Scan\PatternScanner\PatternConverter.h" />
+    <ClInclude Include="Memory\Scan\PatternScanner\BytePattern.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">

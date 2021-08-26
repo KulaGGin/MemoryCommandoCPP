@@ -47,6 +47,7 @@
     <ClCompile Include="Exceptions\VirtualProtectExException.cpp" />
     <ClCompile Include="Exceptions\WinAPIException.cpp" />
     <ClCompile Include="Exceptions\WriteProcessMemoryException.cpp" />
+    <ClCompile Include="Memory\Scan\PatternScanner\BytePattern.cpp" />
     <ClCompile Include="Memory\Scan\PatternScanner\PatternConverter.cpp" />
     <ClCompile Include="Memory\Scan\ScanHelperMethods.cpp" />
   </ItemGroup>
@@ -64,6 +65,7 @@
     <ClInclude Include="Exceptions\GetProcessImageFileNameException.h" />
     <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="Memory\External\MemoryManagerExternal.h" />
+    <ClInclude Include="Memory\Scan\PatternScanner\BytePattern.h" />
     <ClInclude Include="Memory\Scan\PatternScanner\PatternConverter.h" />
     <ClInclude Include="Native\Enumerations\MemoryProtection.h" />
     <ClInclude Include="Memory\Scan\MemoryScanner.h" />
