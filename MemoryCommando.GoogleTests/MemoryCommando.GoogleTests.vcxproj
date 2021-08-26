@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="MemoryManagerInternalTests.cpp" />
+    <ClCompile Include="MemoryScanner\PatternConverterTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MemoryCommando\MemoryCommando.vcxproj">
