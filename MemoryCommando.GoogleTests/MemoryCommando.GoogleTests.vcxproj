@@ -48,6 +48,7 @@
     <ClCompile Include="MemoryManagerInternalTests.cpp" />
     <ClCompile Include="MemoryScanner\BadByteHeuristicTests.cpp" />
     <ClCompile Include="MemoryScanner\BytePatternTests.cpp" />
+    <ClCompile Include="MemoryScanner\MemoryScannerTests.cpp" />
     <ClCompile Include="MemoryScanner\PatternConverterTests.cpp" />
     <ClCompile Include="MemoryScanner\PatternScannerTests.cpp" />
   </ItemGroup>
