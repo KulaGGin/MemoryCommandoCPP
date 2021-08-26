@@ -90,7 +90,7 @@ namespace MemoryCommando {
             }
             catch(Exceptions::VirtualAllocException& exception) {
                 if(exception.GetErrorCode() == ERROR_INVALID_ADDRESS) {
-                    allocationAddress += uintptr_t(memoryRegion.BaseAddress) + memoryRegion.RegionSize;
+                    allocationAddress = uintptr_t(memoryRegion.BaseAddress) + memoryRegion.RegionSize;
                     continue;
                 }
                 throw;
