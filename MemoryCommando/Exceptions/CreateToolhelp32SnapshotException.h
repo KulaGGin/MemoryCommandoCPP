@@ -6,8 +6,6 @@
 
 namespace MemoryCommando::Exceptions {
     class CreateToolhelp32SnapshotException : public WinAPIException {
-    private:
-        DWORD _lastError;
     public:
         CreateToolhelp32SnapshotException(std::string errorMessage, DWORD lastError);
         const char* what() const override;

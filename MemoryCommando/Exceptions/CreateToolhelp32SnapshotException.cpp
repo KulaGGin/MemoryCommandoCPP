@@ -13,6 +13,6 @@ namespace MemoryCommando::Exceptions {
     }
 
     DWORD CreateToolhelp32SnapshotException::GetError() const {
-        return _lastError;
+        return _lastErrorCode;
     }
 }
