@@ -3,9 +3,7 @@
 #include <utility>
 
 namespace MemoryCommando::Exceptions {
-
-    CreateToolhelp32SnapshotException::CreateToolhelp32SnapshotException(std::string errorMessage, DWORD lastError)
-    : WinAPIException(errorMessage, lastError) {
+    CreateToolhelp32SnapshotException::CreateToolhelp32SnapshotException(std::string errorMessage, DWORD lastError): WinAPIException(std::move(errorMessage), lastError) {
     }
 
     const char* CreateToolhelp32SnapshotException::what() const {
