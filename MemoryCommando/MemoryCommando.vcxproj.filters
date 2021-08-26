@@ -85,6 +85,7 @@
     <ClCompile Include="Memory\Scan\PatternScanner\PatternConverter.cpp" />
     <ClCompile Include="Memory\Scan\PatternScanner\BytePattern.cpp" />
     <ClCompile Include="Memory\Scan\PatternScanner\BadByteHeuristic.cpp" />
+    <ClCompile Include="Memory\Scan\PatternScanner\PatternScanner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Memory\Scan\PatternScanner\PatternConverter.h" />
     <ClInclude Include="Memory\Scan\PatternScanner\BytePattern.h" />
     <ClInclude Include="Memory\Scan\PatternScanner\BadByteHeuristic.h" />
+    <ClInclude Include="Memory\Scan\PatternScanner\PatternScanner.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
