@@ -3,7 +3,7 @@
 
 #include "gtest/gtest.h"
 
-#include "Memory/Scan/PatternScanner/PatternConverter.h"
+#include "Memory/Scan/PatternConverter.h"
 
 namespace MemoryCommando::Memory {
     TEST(PatternConverter, ConvertsStringPatternToByteSequence) {

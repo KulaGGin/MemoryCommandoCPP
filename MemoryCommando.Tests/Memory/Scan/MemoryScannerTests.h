@@ -3,7 +3,7 @@
 
 
 #include "MemoryCommando/Memory/External/MemoryManagerExternal.h"
-#include "MemoryCommando/Memory/Scan/MemoryScanner.h"
+#include "MemoryCommando/Memory/Scan/PatternScannerOld/MemoryScanner.h"
 #include "MemoryCommandoTestsHelper.h"
 
 namespace MemoryCommandoTests {

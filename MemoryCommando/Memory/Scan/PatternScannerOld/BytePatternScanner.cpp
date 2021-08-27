@@ -3,7 +3,7 @@
 #include "BytePatternScanner.h"
 #include <map>
 #include <algorithm>
-#include "ScanHelperMethods.h"
+#include "../ScanHelperMethods.h"
 
 namespace MemoryCommando::Memory {
 

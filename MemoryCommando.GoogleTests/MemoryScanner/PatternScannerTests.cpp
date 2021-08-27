@@ -1,7 +1,7 @@
 #include <activation.h>
 
 #include "gtest/gtest.h"
-#include "Memory/Scan/PatternScanner/PatternScanner.h"
+#include "Memory/Scan/PatternScanner.h"
 
 namespace MemoryCommando::Memory {
     TEST(PatternScanner, CanBeInitialized) {

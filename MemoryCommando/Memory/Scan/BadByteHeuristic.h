@@ -5,7 +5,7 @@
 #include <vector>
 #include <gtest/gtest_prod.h>
 
-#include "Memory/Scan/PatternScanner/BytePattern.h"
+#include "Memory/Scan/BytePattern.h"
 
 namespace MemoryCommando::Memory {
     class BadByteHeuristic {

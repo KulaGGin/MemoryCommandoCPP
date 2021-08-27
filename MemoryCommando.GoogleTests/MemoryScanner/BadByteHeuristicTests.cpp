@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "Memory/Scan/PatternScanner/BadByteHeuristic.h"
-#include "Memory/Scan/PatternScanner/BytePattern.h"
+#include "Memory/Scan/BadByteHeuristic.h"
+#include "Memory/Scan/BytePattern.h"
 
 
 namespace MemoryCommando::Memory {

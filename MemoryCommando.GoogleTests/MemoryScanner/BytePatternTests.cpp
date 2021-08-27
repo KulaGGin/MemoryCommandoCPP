@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "Memory/Scan/PatternScanner/BytePattern.h"
+#include "Memory/Scan/BytePattern.h"
 
 namespace MemoryCommando::Memory {
     TEST(BytePattern, CanInitialize) {

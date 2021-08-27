@@ -9,7 +9,7 @@
 
 #include "Memory/CodeInjector.h"
 #include "Memory/MemoryManager.h"
-#include "Memory/Scan/MemoryScanner.h"
+#include "Memory/Scan/PatternScannerOld/MemoryScanner.h"
 
 
 namespace MemoryCommando {

@@ -66,10 +66,10 @@
       <Filter>Memory\Internal</Filter>
     </ClCompile>
     <ClCompile Include="HelperMethods.cpp" />
-    <ClCompile Include="Memory\Scan\BytePatternScanner.cpp">
+    <ClCompile Include="Memory\Scan\PatternScannerOld\BytePatternScanner.cpp">
       <Filter>Memory\Scan</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\Scan\MemoryScanner.cpp">
+    <ClCompile Include="Memory\Scan\PatternScannerOld\MemoryScanner.cpp">
       <Filter>Memory\Scan</Filter>
     </ClCompile>
     <ClCompile Include="Memory\Scan\ScanHelperMethods.cpp">
@@ -82,11 +82,13 @@
       <Filter>Exceptions</Filter>
     </ClCompile>
     <ClCompile Include="BadWritePointerException.cpp" />
-    <ClCompile Include="Memory\Scan\PatternScanner\PatternConverter.cpp" />
-    <ClCompile Include="Memory\Scan\PatternScanner\BytePattern.cpp" />
-    <ClCompile Include="Memory\Scan\PatternScanner\BadByteHeuristic.cpp" />
-    <ClCompile Include="Memory\Scan\PatternScanner\PatternScanner.cpp" />
-    <ClCompile Include="Memory\Scan\PatternScanner\MemoryScannerNew.cpp" />
+    <ClCompile Include="Memory\Scan\PatternConverter.cpp" />
+    <ClCompile Include="Memory\Scan\BytePattern.cpp" />
+    <ClCompile Include="Memory\Scan\BadByteHeuristic.cpp" />
+    <ClCompile Include="Memory\Scan\PatternScanner.cpp" />
+    <ClCompile Include="Memory\Scan\MemoryScannerAbstract.cpp" />
+    <ClCompile Include="Memory\Scan\MemoryScannerNew.cpp" />
+    <ClCompile Include="Memory\Scan\MemoryScannerInternal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -160,10 +162,10 @@
       <Filter>Memory\Internal</Filter>
     </ClInclude>
     <ClInclude Include="HelperMethods.h" />
-    <ClInclude Include="Memory\Scan\BytePatternScanner.h">
+    <ClInclude Include="Memory\Scan\PatternScannerOld\BytePatternScanner.h">
       <Filter>Memory\Scan</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\Scan\MemoryScanner.h">
+    <ClInclude Include="Memory\Scan\PatternScannerOld\MemoryScanner.h">
       <Filter>Memory\Scan</Filter>
     </ClInclude>
     <ClInclude Include="Memory\Scan\ScanHelperMethods.h">
@@ -176,11 +178,13 @@
       <Filter>Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="BadWritePointerException.h" />
-    <ClInclude Include="Memory\Scan\PatternScanner\PatternConverter.h" />
-    <ClInclude Include="Memory\Scan\PatternScanner\BytePattern.h" />
-    <ClInclude Include="Memory\Scan\PatternScanner\BadByteHeuristic.h" />
-    <ClInclude Include="Memory\Scan\PatternScanner\PatternScanner.h" />
-    <ClInclude Include="Memory\Scan\PatternScanner\MemoryScannerNew.h" />
+    <ClInclude Include="Memory\Scan\PatternConverter.h" />
+    <ClInclude Include="Memory\Scan\BytePattern.h" />
+    <ClInclude Include="Memory\Scan\BadByteHeuristic.h" />
+    <ClInclude Include="Memory\Scan\PatternScanner.h" />
+    <ClInclude Include="Memory\Scan\MemoryScannerNew.h" />
+    <ClInclude Include="Memory\Scan\MemoryScannerAbstract.h" />
+    <ClInclude Include="Memory\Scan\MemoryScannerInternal.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">

@@ -6,7 +6,7 @@
 #include "Exceptions/WinAPIException.h"
 #include "Memory/External/MemoryManagerExternal.h"
 #include "Native/Enumerations/MemoryProtection.h"
-#include "ScanHelperMethods.h"
+#include "../ScanHelperMethods.h"
 
 namespace MemoryCommando::Memory {
     MemoryScanner::MemoryScanner(const std::shared_ptr<const MemoryManager>& memoryManager) :
