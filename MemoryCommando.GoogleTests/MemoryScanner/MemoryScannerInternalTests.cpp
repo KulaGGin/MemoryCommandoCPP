@@ -18,7 +18,6 @@ namespace MemoryCommando::Memory {
     };
 
     TEST_F(MemoryScannerInternalF, ScansContiguousMemory) {
-        
         std::vector<BYTE> byteText{0x00, 0x01, 0x05, 0x10, 0xFC};
         ScanResults scanResults = memoryScanner.ScanVirtualMemory((uintptr_t)&byteText.front(), (uintptr_t)&byteText.back(), "05 10 FC");
 
