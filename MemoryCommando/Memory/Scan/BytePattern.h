@@ -16,7 +16,7 @@ namespace MemoryCommando::Memory {
 
         std::pair<uint32_t, BYTE>& operator[](int index);
 
-        std::vector<std::pair<uint32_t, BYTE>> bytePattern{};
+        std::vector<std::pair<uint32_t, BYTE>> indexedPattern{};
     private:
         PatternConverter patternConverter{};
 

@@ -18,20 +18,20 @@ namespace MemoryCommando::Memory {
             badByte = defaultLastOccurenceIndex;
         }
 
-        for(const auto& [patternIndex, value] : bytePattern.bytePattern) {
+        for(const auto& [patternIndex, value] : bytePattern.indexedPattern) {
             badByteTable[value] = patternIndex;
         }
     }
 
     long long BadByteHeuristic::GetLastUnknownByteIndex() const {
-        uint32_t lastPatternMemberIndex = bytePattern.bytePattern.back().first;
+        uint32_t lastPatternMemberIndex = bytePattern.indexedPattern.back().first;
 
         if(lastPatternMemberIndex < bytePattern.GetSize() - 1)
             return bytePattern.GetSize() - 1;
 
-        for(long long index = bytePattern.bytePattern.size() - 1; index > 0; --index) {
-            auto previousPatternMemberIndex = bytePattern.bytePattern[index - 1].first;
-            auto currentPatternMemberIndex = bytePattern.bytePattern[index].first;
+        for(long long index = bytePattern.indexedPattern.size() - 1; index > 0; --index) {
+            auto previousPatternMemberIndex = bytePattern.indexedPattern[index - 1].first;
+            auto currentPatternMemberIndex = bytePattern.indexedPattern[index].first;
             if(previousPatternMemberIndex < currentPatternMemberIndex - 1)
                 return currentPatternMemberIndex - 1;
         }

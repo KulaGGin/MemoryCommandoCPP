@@ -32,14 +32,14 @@ namespace MemoryCommando::Memory {
     MatchResult PatternScanner::MatchPatternWithMemory() const {
         BYTE* memoryAddressStart = memory_bytes + memory_currentScanShift;
         MatchResult matchResult{};
-        size_t bytePattern_index = bytePattern.bytePattern.size() - 1;
-        size_t currentByteMatchPatternIndex = bytePattern.bytePattern[bytePattern_index].first; // start from the end
+        size_t bytePattern_index = bytePattern.indexedPattern.size() - 1;
+        size_t currentByteMatchPatternIndex = bytePattern.indexedPattern[bytePattern_index].first; // start from the end
         while(true) {
-            BYTE patternByte = bytePattern.bytePattern[bytePattern_index].second;
+            BYTE patternByte = bytePattern.indexedPattern[bytePattern_index].second;
             BYTE memoryByte = memoryAddressStart[currentByteMatchPatternIndex];
 
             if(patternByte != memoryByte) {
-                matchResult.MismatchIndex = bytePattern.bytePattern[bytePattern_index].first;
+                matchResult.MismatchIndex = bytePattern.indexedPattern[bytePattern_index].first;
                 break;
             }
 
@@ -49,7 +49,7 @@ namespace MemoryCommando::Memory {
             }
 
             --bytePattern_index;
-            currentByteMatchPatternIndex = bytePattern.bytePattern[bytePattern_index].first;
+            currentByteMatchPatternIndex = bytePattern.indexedPattern[bytePattern_index].first;
         }
         return matchResult;
     }
