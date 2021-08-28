@@ -64,4 +64,23 @@ namespace MemoryCommando::Memory {
         EXPECT_EQ(byteSequence[0].second, 0x05);
         EXPECT_EQ(byteSequence[1].second, 0xFC);
     }
+
+    TEST(BytePattern, GivenByteSequence_GeneratesPatternWithProperSize) {
+        BytePattern bytePattern(std::vector<BYTE>{0x05, 0x10, 0xFC});
+
+        EXPECT_EQ(bytePattern.GetSize(), 3);
+    }
+
+    TEST(BytePattern, GivenByteSequence_GeneratesCorrectPattern) {
+        BytePattern bytePattern(std::vector<BYTE>{0x05, 0x10, 0xFC});
+        auto indexedBytePattern = bytePattern.GetPattern();
+
+        EXPECT_EQ(indexedBytePattern[0].first, 0);
+        EXPECT_EQ(indexedBytePattern[1].first, 1);
+        EXPECT_EQ(indexedBytePattern[2].first, 2);
+
+        EXPECT_EQ(indexedBytePattern[0].second, 0x05);
+        EXPECT_EQ(indexedBytePattern[1].second, 0x10);
+        EXPECT_EQ(indexedBytePattern[2].second, 0xFC);
+    }
 }

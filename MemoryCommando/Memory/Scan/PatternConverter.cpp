@@ -1,7 +1,7 @@
 #include "PatternConverter.h"
 
 namespace MemoryCommando::Memory {
-    std::vector<std::pair<uint32_t, BYTE>> PatternConverter::ToByteSequence(const std::string& stringPattern) {
+    std::vector<std::pair<uint32_t, BYTE>> PatternConverter::StringToIndexedPattern(const std::string& stringPattern) {
         std::vector<std::string> patternMembers = SplitPatternToPatternMembers(stringPattern);
         std::vector<std::pair<uint32_t, BYTE>> bytePattern = ConvertPatternMembersToBytePattern(patternMembers);
         return bytePattern;
@@ -44,5 +44,15 @@ namespace MemoryCommando::Memory {
         }
 
         return bytePattern;
+    }
+
+    std::vector<std::pair<uint32_t, BYTE>> PatternConverter::ConvertByteSequenceToIndexedBytePattern(const std::vector<BYTE>& byteSequence) const {
+        std::vector<std::pair<uint32_t, BYTE>> indexedBytePattern{};
+
+        for(size_t currentIndex = 0; currentIndex < byteSequence.size(); ++currentIndex) {
+            indexedBytePattern.emplace_back(currentIndex, byteSequence[currentIndex]);
+        }
+
+        return indexedBytePattern;
     }
 }

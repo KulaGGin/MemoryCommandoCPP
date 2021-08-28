@@ -1,11 +1,28 @@
 #include "PatternScanner.h"
 
+#include <utility>
+
 namespace MemoryCommando::Memory {
     ScanResults PatternScanner::Scan(uintptr_t startAddress, uintptr_t endAddress, std::string pattern) {
-        ScanResults scanResults;
         bytePattern = BytePattern(pattern);
-        badByteHeuristic = BadByteHeuristic(bytePattern);
+        
+        ScanResults scanResults = Scan(startAddress, endAddress, bytePattern);
 
+        return scanResults;
+    }
+
+    ScanResults PatternScanner::Scan(uintptr_t startAddress, uintptr_t endAddress, const std::vector<BYTE>& byteSequence) {
+        bytePattern = BytePattern(byteSequence);
+
+        ScanResults scanResults = Scan(startAddress, endAddress, bytePattern);
+
+        return scanResults;
+    }
+
+    ScanResults PatternScanner::Scan(uintptr_t startAddress, uintptr_t endAddress, const BytePattern& bytePattern) {
+        ScanResults scanResults;
+        this->bytePattern = bytePattern;
+        badByteHeuristic = BadByteHeuristic(bytePattern);
 
         memory_bytes = reinterpret_cast<BYTE*>(startAddress);
         memory_currentScanShift = 0;

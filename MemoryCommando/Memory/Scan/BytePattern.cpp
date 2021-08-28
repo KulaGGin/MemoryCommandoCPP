@@ -8,6 +8,11 @@ namespace MemoryCommando::Memory {
         indexedPattern = patternConverter.ConvertPatternMembersToBytePattern(patternMembers);
     }
 
+    BytePattern::BytePattern(const std::vector<BYTE>& byteSequence) {
+        indexedPattern = patternConverter.ConvertByteSequenceToIndexedBytePattern(byteSequence);
+        size = indexedPattern.size();
+    }
+
     uint32_t BytePattern::GetSize() const {
         return size;
     }

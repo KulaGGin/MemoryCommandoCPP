@@ -32,6 +32,41 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults.front(), (uintptr_t)&byteArray.front() + 2);
     }
+
+    void InitializeByteSequence(std::vector<BYTE>& byteSequence) {
+        byteSequence = {0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+    }
+
+    TEST(PatternScanner, ScaneWithByteSequence) {
+        PatternConverter patternConverter{};
+        PatternScanner patternScanner{};
+        std::vector<BYTE> byteText{0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+        std::vector<BYTE> byteSequence;
+        InitializeByteSequence(byteSequence);
+
+        uintptr_t startAddress = reinterpret_cast<uintptr_t>(&byteText.front());
+        uintptr_t endAddress = reinterpret_cast<uintptr_t>(&byteText.back());
+
+        auto scanResults = patternScanner.Scan(startAddress, endAddress, byteSequence);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&byteText.front() + 2);
+    }
+
+    TEST(PatternScanner, ScansWithBytePattern) {
+        PatternScanner patternScanner{};
+        std::vector<BYTE> byteText{0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+        const std::string pattern = "CA F0 18 33 17 F0 31 BC C4 FC";
+        BytePattern bytePattern{pattern};
+
+        uintptr_t startAddress = reinterpret_cast<uintptr_t>(&byteText.front());
+        uintptr_t endAddress = reinterpret_cast<uintptr_t>(&byteText.back());
+
+        auto scanResults = patternScanner.Scan(startAddress, endAddress, bytePattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&byteText.front() + 2);
+    }
     TEST(PatternScanner, CorrectlyDeterminesIfPatternReachesPastEndAddress) {
         PatternScanner patternScanner{};
         std::vector<BYTE> bytePattern{0x00, 0x01, 0x05, 0x10, 0xFC};
