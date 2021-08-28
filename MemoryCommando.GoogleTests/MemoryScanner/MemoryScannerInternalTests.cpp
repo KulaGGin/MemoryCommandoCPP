@@ -24,13 +24,138 @@ namespace MemoryCommando::Memory {
                 byte = 0;
             }
         }
+
+        void InitializeVector(std::vector<BYTE>& byteText) {
+            byteText = {0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00};
+        }
+
+        std::wstring StringToWideString(const std::string& str)
+        {
+            int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
+            std::wstring wstrTo(size_needed, 0);
+            MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
+            return wstrTo;
+        }
     };
-    TEST_F(MemoryScannerInternalF, ScansContiguousMemory) {
+
+    TEST_F(MemoryScannerInternalF, GivenStartAndEndAddressAndBytePattern_ScansCorrectly) {
+        ByteText = {0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+        BytePattern bytePattern("CA F0 18 33 17 F0 31 BC C4 FC");
+
+        uintptr_t scanStartAddress = (uintptr_t)&ByteText.front();
+        uintptr_t scanEndAddress = (uintptr_t)&ByteText.back();
+        auto scanResults = MemoryScanner.ScanVirtualMemory(scanStartAddress, scanEndAddress, bytePattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenStartAndEndAddressAndStringPattern_ScansCorrectly) {
         ByteText = {0x00, 0x01, 0x05, 0x10, 0xFC};
         ScanResults scanResults = MemoryScanner.ScanVirtualMemory((uintptr_t)&ByteText.front(), (uintptr_t)&ByteText.back(), "05 10 FC");
 
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults[0], (uintptr_t)&ByteText[2]);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenStartAddressAndBytePattern_ScansCorrectly) {
+        InitializeVector(ByteText);
+        BytePattern bytePattern{"CA F0 18 33 17 F0 31 BC C4 FC"};
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory((uintptr_t)&ByteText.front(), bytePattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 2);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenStartAddressAndStringPattern_ScansCorrectly) {
+        InitializeVector(ByteText);
+        const std::string pattern = "CA F0 18 33 17 F0 31 BC C4 FC";
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory((uintptr_t)&ByteText.front(), pattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 2);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenOnlyBytePattern_ScansCorrectly) {
+        InitializeVector(ByteText);
+
+        BytePattern bytePattern{"43 5C CA F0 18 33 17 F0 31 BC C4 FC 00"};
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(bytePattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front());
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenOnlyStringPattern_ScansCorrectly) {
+        InitializeVector(ByteText);
+
+        const std::string pattern = "43 5C CA F0 18 33 17 F0 31 BC C4 FC 00";
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(pattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front());
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenModuleNameAndBytePattern_ScansCorrectly) {
+        auto* byteArr = staticByteArray;
+
+        BytePattern bytePattern{"da d9 48 53 9b cd 21 00 8d 8f"};
+
+        std::string mainModuleName(PROJECT_NAME".exe");
+        auto scanResults = MemoryScanner.ScanVirtualMemory(StringToWideString(mainModuleName), bytePattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenModuleNameAndStringPattern_ScansCorrectly) {
+        auto* byteArr = staticByteArray;
+        std::string pattern = "da d9 48 53 9b cd 21 00 8d 8f";
+
+        std::string projectName(PROJECT_NAME".exe");
+        auto scanResults = MemoryScanner.ScanVirtualMemory(StringToWideString(projectName), pattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenSequenceOfModuleNamesAndStringPattern_ScansCorrectly) {
+        std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());
+
+        auto* byteArr = staticByteArray;
+        BytePattern bytePattern{"da d9 48 53 9b cd 21 00 8d 8f"};
+
+        std::vector<std::wstring> moduleNames;
+        moduleNames.reserve(modules.size());
+        for(auto currentModule : modules) {
+            moduleNames.emplace_back(currentModule.szModule);
+        }
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(moduleNames, bytePattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
+    }
+
+    TEST_F(MemoryScannerInternalF, ScansBySequenceOfModuleNames) {
+        std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());
+
+        auto* byteArr = staticByteArray;
+        std::string pattern = "da d9 48 53 9b cd 21 00 8d 8f";
+
+        std::vector<std::wstring> moduleNames;
+        moduleNames.reserve(modules.size());
+        for(auto currentModule : modules) {
+            moduleNames.emplace_back(currentModule.szModule);
+        }
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(moduleNames, pattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
     }
 
     class MemoryScannerInternalTwoMemoryRegionsF : public MemoryScannerInternalF {
@@ -66,67 +191,6 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(results.size(), 2);
         ASSERT_EQ(results[0], AllocationAddress + 2);
         ASSERT_EQ(results[1], ThirdMemoryRegionAddress + 2);
-    }
-    TEST_F(MemoryScannerInternalF, ScansWithOnlyStartAddressGiven) {
-        ByteText = {0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
-        const std::string pattern = "CA F0 18 33 17 F0 31 BC C4 FC";
-
-        auto scanResults = MemoryScanner.ScanVirtualMemory((uintptr_t)&pattern.front(), pattern);
-
-        ASSERT_EQ(scanResults.size(), 1);
-        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 2);
-    }
-
-    void InitializeVector(std::vector<BYTE>& byteText) {
-        byteText = {0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00};
-    }
-
-    TEST_F(MemoryScannerInternalF, ScansWithoutStartAndEndAddressesGiven) {
-        InitializeVector(ByteText);
-
-        const std::string pattern = "43 5C CA F0 18 33 17 F0 31 BC C4 FC 00";
-
-        auto scanResults = MemoryScanner.ScanVirtualMemory(pattern);
-
-        ASSERT_EQ(scanResults.size(), 1);
-        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front());
-    }
-
-    std::wstring StringToWideString(const std::string& str)
-    {
-        int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
-        std::wstring wstrTo(size_needed, 0);
-        MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
-        return wstrTo;
-    }
-    TEST_F(MemoryScannerInternalF, ScansByModuleName) {
-        auto* byteArr = staticByteArray;
-        std::string pattern = "da d9 48 53 9b cd 21 00 8d 8f";
-
-        std::string projectName(PROJECT_NAME".exe");
-        auto scanResults = MemoryScanner.ScanVirtualMemory(StringToWideString(projectName), pattern);
-
-        ASSERT_EQ(scanResults.size(), 1);
-        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
-    }
-
-    TEST_F(MemoryScannerInternalF, ScansBySequenceOfModuleNames) {
-        std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());
-
-        auto* byteArr = staticByteArray;
-        std::string pattern = "da d9 48 53 9b cd 21 00 8d 8f";
-
-        std::vector<std::wstring> moduleNames;
-        moduleNames.reserve(modules.size());
-        for(auto currentModule : modules) {
-            moduleNames.emplace_back(currentModule.szModule);
-        }
-
-        std::string projectName(PROJECT_NAME".exe");
-        auto scanResults = MemoryScanner.ScanVirtualMemory(moduleNames, pattern);
-
-        ASSERT_EQ(scanResults.size(), 1);
-        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
     }
     TEST_F(MemoryScannerInternalF, GetsReadableMemoryRegions) {
         size_t allocationSize = 0x3000;

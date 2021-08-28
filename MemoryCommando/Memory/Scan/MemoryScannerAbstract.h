@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "HelperMethods.h"
+#include "Memory/Scan/BytePattern.h"
 
 namespace MemoryCommando::Memory {
     class MemoryScannerAbstract {
@@ -16,7 +17,7 @@ namespace MemoryCommando::Memory {
         virtual std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const std::string& pattern) = 0;
         virtual std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::string& pattern) = 0;
 
-        //virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::vector<BYTE>& bytePattern) const = 0;
+        //virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::vector<BYTE>& byteSequence) const = 0;
         //virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, const std::vector<BYTE>& bytePattern) const = 0;
         //virtual std::vector<uintptr_t> ScanVirtualMemory(const std::vector<BYTE>& bytePattern) const = 0;
         //virtual std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const std::vector<BYTE>& bytePattern) const = 0;
@@ -33,6 +34,12 @@ namespace MemoryCommando::Memory {
         template<typename Classname>
         std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, Classname object) const;
     protected:
+        virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const BytePattern& bytePattern) = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, const BytePattern& bytePattern) = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const BytePattern& bytePattern) = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const BytePattern& bytePattern) = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const BytePattern& bytePattern) = 0;
+
         uintptr_t _minimumApplicationAddress{};
         uintptr_t _maximumApplicationAddress{};
     };

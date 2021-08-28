@@ -6,14 +6,15 @@ namespace MemoryCommando::Memory {
 
     }
 
-    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const std::string& pattern) {
-        ScanResults scanResults;
+    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const BytePattern& bytePattern) {
+        std::vector<uintptr_t> scanResults;
+
         auto memoryRegions = GetReadableMemoryRegions(desiredStartAddress, desiredEndAddress);
         for(auto& memoryRegion : memoryRegions) {
             uintptr_t scanStartAddress = (uintptr_t)memoryRegion.BaseAddress >= desiredStartAddress ? (uintptr_t)memoryRegion.BaseAddress : desiredStartAddress;
             uintptr_t regionEndAddress = (uintptr_t)memoryRegion.BaseAddress + memoryRegion.RegionSize - 1;
             uintptr_t scanEndAddress = regionEndAddress <= desiredEndAddress ? regionEndAddress : desiredEndAddress;
-            auto memoryRegionScanResults = _patternScanner.Scan(scanStartAddress, scanEndAddress, pattern);
+            auto memoryRegionScanResults = _patternScanner.Scan(scanStartAddress, scanEndAddress, bytePattern);
             if(!memoryRegionScanResults.empty())
                 scanResults.insert(scanResults.end(), memoryRegionScanResults.begin(), memoryRegionScanResults.end());
         }
@@ -21,23 +22,70 @@ namespace MemoryCommando::Memory {
         return scanResults;
     }
 
+    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const std::string& pattern) {
+        BytePattern bytePattern(pattern);
+
+        ScanResults scanResults = ScanVirtualMemory(desiredStartAddress, desiredEndAddress, bytePattern);
+
+        return scanResults;
+    }
+
+    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, const BytePattern& bytePattern) {
+        auto scanResults = ScanVirtualMemory(desiredStartAddress, _maximumApplicationAddress, bytePattern);
+        return scanResults;
+    }
+
     std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, const std::string& pattern) {
-        auto scanResults = ScanVirtualMemory(desiredStartAddress, _maximumApplicationAddress, pattern);
+        BytePattern bytePattern{pattern};
+
+        auto scanResults = ScanVirtualMemory(desiredStartAddress, bytePattern);
+
+        return scanResults;
+    }
+
+    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const BytePattern& bytePattern) {
+        auto scanResults = ScanVirtualMemory(_minimumApplicationAddress, _maximumApplicationAddress, bytePattern);
         return scanResults;
     }
 
     std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::string& pattern) {
-        auto scanResults = ScanVirtualMemory(_minimumApplicationAddress, _maximumApplicationAddress, pattern);
+        BytePattern bytePattern{pattern};
+
+        auto scanResults = ScanVirtualMemory(bytePattern);
+
+        return scanResults;
+    }
+
+    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::wstring& moduleName, const BytePattern& bytePattern) {
+        MODULEENTRY32W moduleInst = _memoryManager->GetModule(moduleName);
+        const uintptr_t scanStartAddress = uintptr_t(moduleInst.modBaseAddr);
+        const uintptr_t scanEndAddress = uintptr_t(moduleInst.modBaseAddr + moduleInst.modBaseSize);
+
+        return ScanVirtualMemory(scanStartAddress, scanEndAddress, bytePattern);
+    }
+
+    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::wstring& moduleName, const std::string& pattern) {
+        BytePattern bytePattern{pattern};
+
+        auto scanResults = ScanVirtualMemory(moduleName, bytePattern);
+
+        return scanResults;
+    }
+
+    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const BytePattern& bytePattern) {
+        std::vector<uintptr_t> scanResults;
+
+        for(const auto& currentModule : moduleNames) {
+            std::vector<uintptr_t> moduleResults = ScanVirtualMemory(currentModule, bytePattern);
+            scanResults.insert(scanResults.end(), moduleResults.begin(), moduleResults.end());
+        }
+
         return scanResults;
     }
 
     std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::string& pattern) {
-        std::vector<uintptr_t> scanResults;
-
-        for(const auto& currentModule : moduleNames) {
-            std::vector<uintptr_t> moduleResults = ScanVirtualMemory(currentModule, pattern);
-            scanResults.insert(scanResults.end(), moduleResults.begin(), moduleResults.end());
-        }
+        BytePattern bytePattern{pattern};
+        std::vector<uintptr_t> scanResults = ScanVirtualMemory(moduleNames, bytePattern);
 
         return scanResults;
     }
@@ -82,13 +130,5 @@ namespace MemoryCommando::Memory {
         bool isMemoryRegionUsed = memoryInformation.State == MEM_COMMIT;
 
         return isMemoryRegionUsed;
-    }
-
-    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::wstring& moduleName, const std::string& pattern) {
-        MODULEENTRY32W moduleInst = _memoryManager->GetModule(moduleName);
-        const uintptr_t scanStartAddress = uintptr_t(moduleInst.modBaseAddr);
-        const uintptr_t scanEndAddress = uintptr_t(moduleInst.modBaseAddr + moduleInst.modBaseSize);
-
-        return ScanVirtualMemory(scanStartAddress, scanEndAddress, pattern);
     }
 }
