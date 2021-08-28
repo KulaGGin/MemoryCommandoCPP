@@ -8,12 +8,13 @@
 namespace MemoryCommando::Memory {
     class MemoryScannerAbstract {
     public:
+        MemoryScannerAbstract();
         virtual ~MemoryScannerAbstract() = default;
         virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::string& pattern) = 0;
-        //virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, const std::string& pattern) const = 0;
-        //virtual std::vector<uintptr_t> ScanVirtualMemory(const std::string& pattern) const = 0;
-        //virtual std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const std::string& pattern) const = 0;
-        //virtual std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::string& pattern) const = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, const std::string& pattern) = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::string& pattern) = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const std::string& pattern) = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::string& pattern) = 0;
 
         //virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const std::vector<BYTE>& bytePattern) const = 0;
         //virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, const std::vector<BYTE>& bytePattern) const = 0;
@@ -31,8 +32,9 @@ namespace MemoryCommando::Memory {
         std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, Classname object) const;
         template<typename Classname>
         std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, Classname object) const;
-    private:
+    protected:
         uintptr_t _minimumApplicationAddress{};
+        uintptr_t _maximumApplicationAddress{};
     };
 
     template <typename Classname>

@@ -17,6 +17,7 @@ namespace MemoryCommando::Memory {
 
     class PatternScanner {
         FRIEND_TEST(PatternScanner, CorrectlyDeterminesIfPatternReachesPastEndAddress);
+        FRIEND_TEST(PatternScanner, CorrectlyDeterminesIfOffsetReachesPastScanEndAddress);
         FRIEND_TEST(PatternScanner, DeterminesBadByteHeuristicOffset);
         FRIEND_TEST(PatternScanner, MatchesPatternWithMemory);
         FRIEND_TEST(PatternScanner, MatchResultIsTrueOnFullMatch);
@@ -26,6 +27,7 @@ namespace MemoryCommando::Memory {
         MatchResult MatchPatternWithMemory() const;
         uint32_t DetermineBadByteHeuristicOffset(const MatchResult& matchResult) const;
         bool DoesPatternReachPastEndOffset(uintptr_t currentMemoryOffset) const;
+        bool DoesOffsetReachPastScanEndAddress(uintptr_t mMemoryOffset) const;
 
         BytePattern bytePattern{};
         BadByteHeuristic badByteHeuristic{};

@@ -18,7 +18,7 @@ namespace MemoryCommando::Memory {
                 scanResults.push_back(startAddress + memory_currentScanShift);
 
             uint32_t badByteHeuristicOffset = DetermineBadByteHeuristicOffset(matchResult);
-            if(DoesPatternReachPastEndOffset(memory_currentScanShift + badByteHeuristicOffset))
+            if(DoesOffsetReachPastScanEndAddress(memory_currentScanShift + badByteHeuristicOffset))
                 break;
 
             BYTE memoryByte = memory_bytes[memory_currentScanShift + badByteHeuristicOffset];
@@ -68,5 +68,11 @@ namespace MemoryCommando::Memory {
     bool PatternScanner::DoesPatternReachPastEndOffset(uintptr_t currentMemoryOffset) const {
         bool doesPatternReachPastEndAddress = currentMemoryOffset + bytePattern.GetSize() - 1 > memory_maximumByteOffset;
         return doesPatternReachPastEndAddress;
+    }
+
+    bool PatternScanner::DoesOffsetReachPastScanEndAddress(uintptr_t memoryOffset) const {
+        bool doesOffsetReachPastScanEndAddress = memoryOffset > memory_maximumByteOffset;
+
+        return doesOffsetReachPastScanEndAddress;
     }
 }
