@@ -11,7 +11,7 @@ namespace MemoryCommando::Memory {
         return scanResults;
     }
 
-    ScanResults PatternScanner::Scan(uintptr_t startAddress, uintptr_t endAddress, const std::vector<BYTE>& byteSequence) {
+    ScanResults PatternScanner::Scan(uintptr_t startAddress, uintptr_t endAddress, const ByteSequence& byteSequence) {
         bytePattern = BytePattern(byteSequence);
 
         ScanResults scanResults = Scan(startAddress, endAddress, bytePattern);

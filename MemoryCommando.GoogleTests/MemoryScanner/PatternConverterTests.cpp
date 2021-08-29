@@ -31,7 +31,7 @@ namespace MemoryCommando::Memory {
     TEST(PatternConverter, ConvertsPatternMembersToBytePattern) {
         std::vector<std::string> patternMembers{"05", "10", "FC"};
         PatternConverter patternConverter{};
-        std::vector<std::pair<uint32_t, BYTE>> bytePattern = patternConverter.ConvertPatternMembersToBytePattern(patternMembers);
+        IndexedBytePattern bytePattern = patternConverter.ConvertPatternMembersToIndexedBytePattern(patternMembers);
 
         ASSERT_EQ(bytePattern.size(), 3);
 
@@ -46,8 +46,8 @@ namespace MemoryCommando::Memory {
 
     TEST(PatternConverter, GivenByteSequence_ConvertsToCorrectIndexedBytePattern) {
         PatternConverter patternConverter{};
-        std::vector<BYTE> byteSequence{0x05, 0x10, 0xFC};
-        std::vector<std::pair<uint32_t, BYTE>> indexedBytePattern = patternConverter.ConvertByteSequenceToIndexedBytePattern(byteSequence);
+        ByteSequence byteSequence{0x05, 0x10, 0xFC};
+        IndexedBytePattern indexedBytePattern = patternConverter.ConvertByteSequenceToIndexedBytePattern(byteSequence);
 
         EXPECT_EQ(indexedBytePattern.size(), 3);
 

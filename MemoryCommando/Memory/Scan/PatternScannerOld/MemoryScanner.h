@@ -63,7 +63,7 @@ namespace MemoryCommando::Memory {
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const Classname& object) const {
-        auto objectBytesSequence = HelperMethods::ConvertObjectToBytes(object);
+        auto objectBytesSequence = HelperMethods::ConvertObjectToByteSequence(object);
         auto scanResults = ScanVirtualMemory(scanStartAddress, scanEndAddress, objectBytesSequence);
 
         return scanResults;
@@ -71,7 +71,7 @@ namespace MemoryCommando::Memory {
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(uintptr_t scanStartAddress, const Classname& object) const {
-        auto objectByteSequence = HelperMethods::ConvertObjectToBytes(object);
+        auto objectByteSequence = HelperMethods::ConvertObjectToByteSequence(object);
 
         std::vector<uintptr_t> scanResults = ScanVirtualMemory(scanStartAddress, objectByteSequence);
 
@@ -80,7 +80,7 @@ namespace MemoryCommando::Memory {
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(const Classname& object) const {
-        auto objectByteSequence = HelperMethods::ConvertObjectToBytes(object);
+        auto objectByteSequence = HelperMethods::ConvertObjectToByteSequence(object);
 
         std::vector<uintptr_t> scanResults = ScanVirtualMemory(_minimumApplicationAddress, objectByteSequence);
 
@@ -89,7 +89,7 @@ namespace MemoryCommando::Memory {
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(const std::wstring& moduleName, Classname object) const {
-        auto objectByteSequence = HelperMethods::ConvertObjectToBytes(object);
+        auto objectByteSequence = HelperMethods::ConvertObjectToByteSequence(object);
 
         std::vector<uintptr_t> scanResults = ScanVirtualMemory(moduleName, objectByteSequence);
 
@@ -98,7 +98,7 @@ namespace MemoryCommando::Memory {
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, Classname object) const {
-        auto objectByteSequence = HelperMethods::ConvertObjectToBytes(object);
+        auto objectByteSequence = HelperMethods::ConvertObjectToByteSequence(object);
 
         std::vector<uintptr_t> scanResults = ScanVirtualMemory(moduleNames, objectByteSequence);
 

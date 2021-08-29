@@ -185,6 +185,7 @@
     <ClInclude Include="Memory\Scan\MemoryScannerNew.h" />
     <ClInclude Include="Memory\Scan\MemoryScannerAbstract.h" />
     <ClInclude Include="Memory\Scan\MemoryScannerInternal.h" />
+    <ClInclude Include="Memory\Scan\ScanTypeDefinitions.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">

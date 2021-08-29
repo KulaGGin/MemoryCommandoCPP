@@ -302,7 +302,7 @@ namespace MemoryCommandoTests {
         const unsigned long long testNumber = 0x0123456789ABCDEF;
         const std::vector<BYTE> testNumberBytes = { 0xEF, 0xCD, 0xAB, 0x89, 0x67, 0x45, 0x23, 0x01 };
 
-        const auto numberBytesConverted = HelperMethods::ConvertObjectToBytes(testNumber);
+        const auto numberBytesConverted = HelperMethods::ConvertObjectToByteSequence(testNumber);
 
         if(numberBytesConverted.size() != testNumberBytes.size())
             Assert::IsTrue(false);

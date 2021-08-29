@@ -48,14 +48,14 @@ namespace MemoryCommando::Memory {
         return scanResults;
     }
 
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, std::vector<BYTE> byteSequence) {
+    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, ByteSequence byteSequence) {
         BytePattern bytePattern{byteSequence};
         auto scanResults = ScanVirtualMemory(scanStartAddress, scanEndAddress, bytePattern);
 
         return scanResults;
     }
 
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(uintptr_t scanStartAddress, const std::vector<BYTE>& byteSequence) {
+    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(uintptr_t scanStartAddress, const ByteSequence& byteSequence) {
         BytePattern bytePattern{byteSequence};
 
         auto scanResults = ScanVirtualMemory(scanStartAddress, bytePattern);
@@ -63,7 +63,7 @@ namespace MemoryCommando::Memory {
         return scanResults;
     }
 
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::vector<BYTE>& byteSequence) {
+    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const ByteSequence& byteSequence) {
         BytePattern bytePattern{byteSequence};
 
         auto scanResults = ScanVirtualMemory(bytePattern);
@@ -71,7 +71,7 @@ namespace MemoryCommando::Memory {
         return scanResults;
     }
 
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::wstring& moduleName, const std::vector<BYTE>& byteSequence) {
+    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::wstring& moduleName, const ByteSequence& byteSequence) {
         BytePattern bytePattern{byteSequence};
 
         auto scanResults = ScanVirtualMemory(moduleName, bytePattern);
@@ -79,7 +79,7 @@ namespace MemoryCommando::Memory {
         return scanResults;
     }
 
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::vector<BYTE>& byteSequence) {
+    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const ByteSequence& byteSequence) {
         BytePattern bytePattern{byteSequence};
 
         auto scanResults = ScanVirtualMemory(moduleNames, bytePattern);

@@ -7,14 +7,16 @@
 #include <stdexcept>
 #include <iostream>
 
+#include "ScanTypeDefinitions.h"
+
 namespace MemoryCommando::Memory {
     class PatternConverter {
     public:
-        std::vector<std::pair<uint32_t, BYTE>> StringToIndexedPattern(const std::string& stringPattern);
+        IndexedBytePattern StringToIndexedPattern(const StringPattern& stringPattern);
 
-        std::vector<std::string> SplitPatternToPatternMembers(const std::string& stringPattern);
+        PatternMembersSequence SplitPatternToPatternMembers(const StringPattern& stringPattern);
 
-        std::vector<std::pair<uint32_t, BYTE>> ConvertPatternMembersToBytePattern(const std::vector<std::string>& patternMembers) const;
-        std::vector<std::pair<uint32_t, BYTE>> ConvertByteSequenceToIndexedBytePattern(const std::vector<BYTE>& byteSequence) const;
+        IndexedBytePattern ConvertPatternMembersToIndexedBytePattern(const PatternMembersSequence& patternMembers) const;
+        IndexedBytePattern ConvertByteSequenceToIndexedBytePattern(const ByteSequence& byteSequence) const;
     };
 }

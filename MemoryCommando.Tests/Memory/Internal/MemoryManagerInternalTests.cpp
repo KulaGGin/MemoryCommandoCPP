@@ -94,7 +94,7 @@ namespace MemoryCommandoTests {
     void MemoryManagerInternalTests::WriteVirtualMemory() {
         try {
             const int  testInteger = 0x1234;
-            const auto integerBytes = HelperMethods::ConvertObjectToBytes(testInteger);
+            const auto integerBytes = HelperMethods::ConvertObjectToVectorOfBytes(testInteger);
             const auto integerPointer = std::make_unique<int>();
             _memoryManagerInternal.WriteVirtualMemory(uintptr_t(integerPointer.get()), integerBytes);
             if(testInteger != *integerPointer)

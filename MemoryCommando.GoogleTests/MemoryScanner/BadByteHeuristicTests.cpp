@@ -10,7 +10,7 @@ namespace MemoryCommando::Memory {
         bool IsPatternByte(const BytePattern& bytePattern, BYTE byte) {
             bool isPatternByte = false;
 
-            for(const auto& patternMember : bytePattern.GetPattern()) {
+            for(const auto& patternMember : bytePattern.GetIndexedPattern()) {
                 if(byte == patternMember.second) {
                     isPatternByte = true;
                     break;
@@ -63,7 +63,7 @@ namespace MemoryCommando::Memory {
 
         const long long(&badByteTable)[256] = badCharacterHeuristic.badByteTable;
 
-        for(const auto& [patternIndex, value] : patternToFind.GetPattern()) {
+        for(const auto& [patternIndex, value] : patternToFind.GetIndexedPattern()) {
             long long badByteShiftIndex = badByteTable[value];
 
             EXPECT_EQ(badByteShiftIndex, patternIndex);

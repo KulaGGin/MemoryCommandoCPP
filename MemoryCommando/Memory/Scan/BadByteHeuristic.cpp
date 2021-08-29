@@ -6,7 +6,7 @@ namespace MemoryCommando::Memory {
         PopulateBadByteTable();
     }
 
-    long long BadByteHeuristic::GetShiftSuggestion(BYTE memoryByte, uint32_t memoryByteOffset) {
+    long long BadByteHeuristic::GetShiftSuggestion(int memoryByte, uint32_t memoryByteOffset) {
         long long shiftSuggestion = memoryByteOffset - badByteTable[memoryByte];
         return shiftSuggestion;
     }

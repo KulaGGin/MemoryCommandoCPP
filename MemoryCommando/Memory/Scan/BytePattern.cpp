@@ -3,12 +3,12 @@
 namespace MemoryCommando::Memory {
 
     BytePattern::BytePattern(const std::string& pattern) {
-        auto patternMembers = patternConverter.SplitPatternToPatternMembers(pattern);
+        PatternMembersSequence patternMembers = patternConverter.SplitPatternToPatternMembers(pattern);
         size = static_cast<uint32_t>(patternMembers.size());
-        indexedPattern = patternConverter.ConvertPatternMembersToBytePattern(patternMembers);
+        indexedPattern = patternConverter.ConvertPatternMembersToIndexedBytePattern(patternMembers);
     }
 
-    BytePattern::BytePattern(const std::vector<BYTE>& byteSequence) {
+    BytePattern::BytePattern(const ByteSequence& byteSequence) {
         indexedPattern = patternConverter.ConvertByteSequenceToIndexedBytePattern(byteSequence);
         size = indexedPattern.size();
     }
@@ -17,11 +17,11 @@ namespace MemoryCommando::Memory {
         return size;
     }
 
-    std::vector<std::pair<uint32_t, BYTE>> BytePattern::GetPattern() const {
+    IndexedBytePattern BytePattern::GetIndexedPattern() const {
         return indexedPattern;
     }
 
-    std::pair<uint32_t, BYTE>& BytePattern::operator[](int index) {
+    IndexedByte& BytePattern::operator[](int index) {
         return indexedPattern[index];
     }
 }

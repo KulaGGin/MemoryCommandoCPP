@@ -1,13 +1,13 @@
 #include "PatternConverter.h"
 
 namespace MemoryCommando::Memory {
-    std::vector<std::pair<uint32_t, BYTE>> PatternConverter::StringToIndexedPattern(const std::string& stringPattern) {
+    IndexedBytePattern PatternConverter::StringToIndexedPattern(const StringPattern& stringPattern) {
         std::vector<std::string> patternMembers = SplitPatternToPatternMembers(stringPattern);
-        std::vector<std::pair<uint32_t, BYTE>> bytePattern = ConvertPatternMembersToBytePattern(patternMembers);
+        IndexedBytePattern bytePattern = ConvertPatternMembersToIndexedBytePattern(patternMembers);
         return bytePattern;
     }
 
-    std::vector<std::string> PatternConverter::SplitPatternToPatternMembers(const std::string& stringPattern) {
+    PatternMembersSequence PatternConverter::SplitPatternToPatternMembers(const StringPattern& stringPattern) {
         std::vector<std::string> splitPattern;
         std::string delimiter = " ";
 
@@ -25,8 +25,8 @@ namespace MemoryCommando::Memory {
         return splitPattern;
     }
 
-    std::vector<std::pair<uint32_t, BYTE>> PatternConverter::ConvertPatternMembersToBytePattern(const std::vector<std::string>& patternMembers) const {
-        std::vector<std::pair<uint32_t, BYTE>> bytePattern;
+    IndexedBytePattern PatternConverter::ConvertPatternMembersToIndexedBytePattern(const PatternMembersSequence& patternMembers) const {
+        IndexedBytePattern bytePattern;
 
         for(size_t index = 0; index < patternMembers.size(); ++index) {
             const auto& patternMember = patternMembers[index];
@@ -46,8 +46,8 @@ namespace MemoryCommando::Memory {
         return bytePattern;
     }
 
-    std::vector<std::pair<uint32_t, BYTE>> PatternConverter::ConvertByteSequenceToIndexedBytePattern(const std::vector<BYTE>& byteSequence) const {
-        std::vector<std::pair<uint32_t, BYTE>> indexedBytePattern{};
+    IndexedBytePattern PatternConverter::ConvertByteSequenceToIndexedBytePattern(const ByteSequence& byteSequence) const {
+        IndexedBytePattern indexedBytePattern{};
 
         for(size_t currentIndex = 0; currentIndex < byteSequence.size(); ++currentIndex) {
             indexedBytePattern.emplace_back(currentIndex, byteSequence[currentIndex]);

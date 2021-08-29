@@ -5,9 +5,9 @@
 
 #include "BadByteHeuristic.h"
 #include "BytePattern.h"
+#include "ScanTypeDefinitions.h"
 
 namespace MemoryCommando::Memory {
-    using ScanResults = std::vector<uintptr_t>;
 
     class MatchResult {
     public:
@@ -23,7 +23,7 @@ namespace MemoryCommando::Memory {
         FRIEND_TEST(PatternScanner, MatchResultIsTrueOnFullMatch);
     public:
         ScanResults Scan(uintptr_t startAddress, uintptr_t endAddress, std::string pattern);
-        ScanResults Scan(uintptr_t startAddress, uintptr_t endAddress, const std::vector<BYTE>& byteSequence);
+        ScanResults Scan(uintptr_t startAddress, uintptr_t endAddress, const ByteSequence& byteSequence);
         ScanResults Scan(uintptr_t startAddress, uintptr_t endAddress, const BytePattern& bytePattern);
     private:
         MatchResult MatchPatternWithMemory() const;

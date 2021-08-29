@@ -52,7 +52,7 @@ namespace MemoryCommando::Memory {
 
     TEST_F(MemoryScannerInternalF, GivenStartAndEndAddressAndByteSequence_ScansCorrectly) {
         ByteText = {0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
-        std::vector<BYTE> byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+        ByteSequence byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
 
         intptr_t scanStartAddress = (uintptr_t)&ByteText.front();
         uintptr_t scanEndAddress = (uintptr_t)&ByteText.back();
@@ -98,7 +98,7 @@ namespace MemoryCommando::Memory {
 
     TEST_F(MemoryScannerInternalF, GivenStartAndByteSequence_ScansCorrectly) {
         InitializeVector(ByteText);
-        std::vector<BYTE> byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+        ByteSequence byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
 
         intptr_t scanStartAddress = (uintptr_t)&ByteText.front();
 
@@ -123,9 +123,8 @@ namespace MemoryCommando::Memory {
 
         uintptr_t scanStartAddress = (uintptr_t)&ByteText.front();
 
-        UINT64 integerObject{};
         std::vector<BYTE> bytePattern{0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0};
-        std::memcpy(&integerObject, &bytePattern[0], bytePattern.size());
+        UINT64& integerObject = *reinterpret_cast<UINT64*>(&bytePattern.front());
 
         auto scanResults = MemoryScanner.ScanVirtualMemory(scanStartAddress, integerObject);
 
@@ -147,11 +146,11 @@ namespace MemoryCommando::Memory {
     TEST_F(MemoryScannerInternalF, GivenOnlyByteSequence_Finds3Results) {
         InitializeVector(ByteText);
 
-        std::vector<BYTE> byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+        ByteSequence byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
 
         auto scanResults = MemoryScanner.ScanVirtualMemory(byteSequence);
 
-        ASSERT_EQ(scanResults.size(), 3);
+        ASSERT_EQ(scanResults.size(), 1);
     }
     TEST_F(MemoryScannerInternalF, GivenOnlyStringPattern_ScansCorrectly) {
         InitializeVector(ByteText);
@@ -190,7 +189,7 @@ namespace MemoryCommando::Memory {
 
     TEST_F(MemoryScannerInternalF, GivenModuleNameAndByteSequence_ScansCorrectly) {
         auto* byteArr = staticByteArray;
-        std::vector<BYTE> byteSequence{0xda, 0xd9, 0x48, 0x53, 0x9b, 0xcd, 0x21, 0x00, 0x8d, 0x8f};
+        ByteSequence byteSequence{0xda, 0xd9, 0x48, 0x53, 0x9b, 0xcd, 0x21, 0x00, 0x8d, 0x8f};
 
         std::string mainModuleName(PROJECT_NAME".exe");
 
@@ -229,7 +228,7 @@ namespace MemoryCommando::Memory {
         std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());
 
         auto* byteArr = staticByteArray;
-        std::vector<BYTE> byteSequence{0xda, 0xd9, 0x48, 0x53, 0x9b, 0xcd, 0x21, 0x00, 0x8d, 0x8f};
+        ByteSequence byteSequence{0xda, 0xd9, 0x48, 0x53, 0x9b, 0xcd, 0x21, 0x00, 0x8d, 0x8f};
 
         std::vector<std::wstring> moduleNames;
         moduleNames.reserve(modules.size());

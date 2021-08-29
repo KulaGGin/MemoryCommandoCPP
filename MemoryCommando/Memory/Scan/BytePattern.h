@@ -11,13 +11,13 @@ namespace MemoryCommando::Memory {
     public:
         BytePattern() = default;
         explicit BytePattern(const std::string& pattern);
-        explicit BytePattern(const std::vector<BYTE>& byteSequence);
+        explicit BytePattern(const ByteSequence& byteSequence);
         uint32_t GetSize() const;
-        std::vector<std::pair<uint32_t, BYTE>> GetPattern() const;
+        IndexedBytePattern GetIndexedPattern() const;
 
-        std::pair<uint32_t, BYTE>& operator[](int index);
+        IndexedByte& operator[](int index);
 
-        std::vector<std::pair<uint32_t, BYTE>> indexedPattern{};
+        IndexedBytePattern indexedPattern{};
     private:
         PatternConverter patternConverter{};
 

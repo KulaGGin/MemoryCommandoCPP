@@ -33,7 +33,7 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.front(), (uintptr_t)&byteArray.front() + 2);
     }
 
-    void InitializeByteSequence(std::vector<BYTE>& byteSequence) {
+    void InitializeByteSequence(ByteSequence& byteSequence) {
         byteSequence = {0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
     }
 
@@ -41,7 +41,7 @@ namespace MemoryCommando::Memory {
         PatternConverter patternConverter{};
         PatternScanner patternScanner{};
         std::vector<BYTE> byteText{0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
-        std::vector<BYTE> byteSequence;
+        ByteSequence byteSequence;
         InitializeByteSequence(byteSequence);
 
         uintptr_t startAddress = reinterpret_cast<uintptr_t>(&byteText.front());

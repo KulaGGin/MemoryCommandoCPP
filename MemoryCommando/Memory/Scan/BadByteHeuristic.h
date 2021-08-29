@@ -17,7 +17,7 @@ namespace MemoryCommando::Memory {
     public:
         BadByteHeuristic() = default;
         BadByteHeuristic(BytePattern bytePattern);
-        long long GetShiftSuggestion(BYTE memoryByte, uint32_t memoryByteOffset);
+        long long GetShiftSuggestion(int memoryByte, uint32_t memoryByteOffset);
     private:
         void PopulateBadByteTable();
         long long GetLastUnknownByteIndex() const;
