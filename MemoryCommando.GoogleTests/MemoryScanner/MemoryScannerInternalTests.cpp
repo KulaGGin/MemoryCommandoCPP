@@ -65,10 +65,26 @@ namespace MemoryCommando::Memory {
 
     TEST_F(MemoryScannerInternalF, GivenStartAndEndAddressAndStringPattern_ScansCorrectly) {
         ByteText = {0x00, 0x01, 0x05, 0x10, 0xFC};
-        ScanResults scanResults = MemoryScanner.ScanVirtualMemory((uintptr_t)&ByteText.front(), (uintptr_t)&ByteText.back(), "05 10 FC");
+        ScanResults scanResults = MemoryScanner.ScanVirtualMemory((uintptr_t)&ByteText.front(), (uintptr_t)&ByteText.back(), std::string("05 10 FC"));
 
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults[0], (uintptr_t)&ByteText[2]);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenStartAndEndAddressAndObject_ScansCorrectly) {
+        ByteText = {0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81};
+
+        uintptr_t scanStartAddress = (uintptr_t)&ByteText.front();
+        uintptr_t scanEndAddress = (uintptr_t)&ByteText.back();
+
+        UINT64 integerObject{};
+        const auto bytePattern = std::vector<BYTE>{0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0};
+        std::memcpy(&integerObject, &bytePattern[0], bytePattern.size());
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(scanStartAddress, scanEndAddress, integerObject);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 3);
     }
     TEST_F(MemoryScannerInternalF, GivenStartAddressAndBytePattern_ScansCorrectly) {
         InitializeVector(ByteText);
@@ -102,6 +118,21 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 2);
     }
 
+    TEST_F(MemoryScannerInternalF, GivenStartAddressAndObject_ScansCorrectly) {
+        ByteText = {0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81};
+
+        uintptr_t scanStartAddress = (uintptr_t)&ByteText.front();
+
+        UINT64 integerObject{};
+        std::vector<BYTE> bytePattern{0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0};
+        std::memcpy(&integerObject, &bytePattern[0], bytePattern.size());
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(scanStartAddress, integerObject);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 3);
+    }
+
     TEST_F(MemoryScannerInternalF, GivenOnlyBytePattern_ScansCorrectly) {
         InitializeVector(ByteText);
 
@@ -133,6 +164,18 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front());
     }
 
+    //TEST_F(MemoryScannerInternalF, DISABLED_GivenOnlyObject_ScansCorrectly) {
+    //    ByteText = {0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81};
+
+    //    UINT64 integerObject{};
+    //    std::vector<BYTE> bytePattern{0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0};
+    //    std::memcpy(&integerObject, &bytePattern[0], bytePattern.size());
+
+    //    auto scanResults = MemoryScanner.ScanVirtualMemory(integerObject);
+
+    //    ASSERT_EQ(scanResults.size(), 1);
+    //    ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 3);
+    //}
     TEST_F(MemoryScannerInternalF, GivenModuleNameAndBytePattern_ScansCorrectly) {
         auto* byteArr = staticByteArray;
 
@@ -163,6 +206,20 @@ namespace MemoryCommando::Memory {
 
         std::string projectName(PROJECT_NAME".exe");
         auto scanResults = MemoryScanner.ScanVirtualMemory(StringToWideString(projectName), pattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenModuleNameAndObject_ScansCorrectly) {
+        auto* byteArr = staticByteArray;
+
+        UINT64 integerObject{};
+        std::vector<BYTE> bytePattern{0xda, 0xd9, 0x48, 0x53, 0x9b, 0xcd, 0x21, 0x00};
+        std::memcpy(&integerObject, &bytePattern[0], bytePattern.size());
+
+        std::string projectName(PROJECT_NAME".exe");
+        auto scanResults = MemoryScanner.ScanVirtualMemory(StringToWideString(projectName), integerObject);
 
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
@@ -202,9 +259,7 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
     }
-
-
-    TEST_F(MemoryScannerInternalF, ScansBySequenceOfModuleNames) {
+    TEST_F(MemoryScannerInternalF, GivenSequenceOfModuleNamesAndStringPattern_ScansCorrectly) {
         std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());
 
         auto* byteArr = staticByteArray;
@@ -217,6 +272,27 @@ namespace MemoryCommando::Memory {
         }
 
         auto scanResults = MemoryScanner.ScanVirtualMemory(moduleNames, pattern);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenSequenceOfModuleNamesAndObject_ScansCorrectly) {
+        std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());
+
+        auto* byteArr = staticByteArray;
+
+        UINT64 integerObject{};
+        std::vector<BYTE> bytePattern{0xda, 0xd9, 0x48, 0x53, 0x9b, 0xcd, 0x21, 0x00};
+        std::memcpy(&integerObject, &bytePattern[0], bytePattern.size());
+
+        std::vector<std::wstring> moduleNames;
+        moduleNames.reserve(modules.size());
+        for(auto currentModule : modules) {
+            moduleNames.emplace_back(currentModule.szModule);
+        }
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(moduleNames, integerObject);
 
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
@@ -251,7 +327,7 @@ namespace MemoryCommando::Memory {
         std::memcpy((LPVOID)AllocationAddress, &ByteText[0], ByteText.size());
         std::memcpy((LPVOID)ThirdMemoryRegionAddress, &ByteText[0], ByteText.size());
 
-        auto results = MemoryScanner.ScanVirtualMemory(AllocationAddress, EndAddress, "05 10 FC");
+        auto results = MemoryScanner.ScanVirtualMemory(AllocationAddress, EndAddress, std::string("05 10 FC"));
         ASSERT_EQ(results.size(), 2);
         ASSERT_EQ(results[0], AllocationAddress + 2);
         ASSERT_EQ(results[1], ThirdMemoryRegionAddress + 2);

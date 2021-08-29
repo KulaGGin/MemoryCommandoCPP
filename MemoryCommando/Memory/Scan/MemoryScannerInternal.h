@@ -21,12 +21,6 @@ namespace MemoryCommando::Memory {
     public:
         using MemoryScannerAbstract::ScanVirtualMemory;
         MemoryScannerInternal(std::shared_ptr<MemoryManager> memoryManager);
-
-        std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const std::string& pattern) override;
-        std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, const std::string& pattern) override;
-        std::vector<uintptr_t> ScanVirtualMemory(const std::string& pattern) override;
-        std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const std::string& pattern) override;
-        std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::string& pattern) override;
     protected:
         std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const BytePattern& bytePattern) override;
         std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, const BytePattern& bytePattern) override;

@@ -22,37 +22,13 @@ namespace MemoryCommando::Memory {
         return scanResults;
     }
 
-    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const std::string& pattern) {
-        BytePattern bytePattern(pattern);
-
-        ScanResults scanResults = ScanVirtualMemory(desiredStartAddress, desiredEndAddress, bytePattern);
-
-        return scanResults;
-    }
-
     std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, const BytePattern& bytePattern) {
         auto scanResults = ScanVirtualMemory(desiredStartAddress, _maximumApplicationAddress, bytePattern);
         return scanResults;
     }
 
-    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, const std::string& pattern) {
-        BytePattern bytePattern{pattern};
-
-        auto scanResults = ScanVirtualMemory(desiredStartAddress, bytePattern);
-
-        return scanResults;
-    }
-
     std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const BytePattern& bytePattern) {
         auto scanResults = ScanVirtualMemory(_minimumApplicationAddress, _maximumApplicationAddress, bytePattern);
-        return scanResults;
-    }
-
-    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::string& pattern) {
-        BytePattern bytePattern{pattern};
-
-        auto scanResults = ScanVirtualMemory(bytePattern);
-
         return scanResults;
     }
 
@@ -64,14 +40,6 @@ namespace MemoryCommando::Memory {
         return ScanVirtualMemory(scanStartAddress, scanEndAddress, bytePattern);
     }
 
-    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::wstring& moduleName, const std::string& pattern) {
-        BytePattern bytePattern{pattern};
-
-        auto scanResults = ScanVirtualMemory(moduleName, bytePattern);
-
-        return scanResults;
-    }
-
     std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const BytePattern& bytePattern) {
         std::vector<uintptr_t> scanResults;
 
@@ -79,13 +47,6 @@ namespace MemoryCommando::Memory {
             std::vector<uintptr_t> moduleResults = ScanVirtualMemory(currentModule, bytePattern);
             scanResults.insert(scanResults.end(), moduleResults.begin(), moduleResults.end());
         }
-
-        return scanResults;
-    }
-
-    std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const std::string& pattern) {
-        BytePattern bytePattern{pattern};
-        std::vector<uintptr_t> scanResults = ScanVirtualMemory(moduleNames, bytePattern);
 
         return scanResults;
     }
