@@ -10,8 +10,8 @@ namespace MemoryCommando::Memory {
     class BytePattern {
     public:
         BytePattern() = default;
-        BytePattern(const std::string& pattern);
-        BytePattern(const std::vector<BYTE>& byteSequence);
+        explicit BytePattern(const std::string& pattern);
+        explicit BytePattern(const std::vector<BYTE>& byteSequence);
         uint32_t GetSize() const;
         std::vector<std::pair<uint32_t, BYTE>> GetPattern() const;
 

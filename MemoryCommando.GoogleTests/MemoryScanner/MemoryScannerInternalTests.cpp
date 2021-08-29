@@ -47,6 +47,20 @@ namespace MemoryCommando::Memory {
         auto scanResults = MemoryScanner.ScanVirtualMemory(scanStartAddress, scanEndAddress, bytePattern);
 
         ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults[0], (uintptr_t)&ByteText[2]);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenStartAndEndAddressAndByteSequence_ScansCorrectly) {
+        ByteText = {0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+        std::vector<BYTE> byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+
+        intptr_t scanStartAddress = (uintptr_t)&ByteText.front();
+        uintptr_t scanEndAddress = (uintptr_t)&ByteText.back();
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(scanStartAddress, scanEndAddress, byteSequence);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults[0], (uintptr_t)&ByteText[2]);
     }
 
     TEST_F(MemoryScannerInternalF, GivenStartAndEndAddressAndStringPattern_ScansCorrectly) {
@@ -56,7 +70,6 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults[0], (uintptr_t)&ByteText[2]);
     }
-
     TEST_F(MemoryScannerInternalF, GivenStartAddressAndBytePattern_ScansCorrectly) {
         InitializeVector(ByteText);
         BytePattern bytePattern{"CA F0 18 33 17 F0 31 BC C4 FC"};
@@ -65,6 +78,18 @@ namespace MemoryCommando::Memory {
 
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 2);
+    }
+
+    TEST_F(MemoryScannerInternalF, GivenStartAndByteSequence_ScansCorrectly) {
+        InitializeVector(ByteText);
+        std::vector<BYTE> byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+
+        intptr_t scanStartAddress = (uintptr_t)&ByteText.front();
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(scanStartAddress, byteSequence);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults[0], (uintptr_t)&ByteText[2]);
     }
 
     TEST_F(MemoryScannerInternalF, GivenStartAddressAndStringPattern_ScansCorrectly) {
@@ -88,6 +113,15 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front());
     }
 
+    TEST_F(MemoryScannerInternalF, GivenOnlyByteSequence_Finds3Results) {
+        InitializeVector(ByteText);
+
+        std::vector<BYTE> byteSequence{0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC};
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(byteSequence);
+
+        ASSERT_EQ(scanResults.size(), 3);
+    }
     TEST_F(MemoryScannerInternalF, GivenOnlyStringPattern_ScansCorrectly) {
         InitializeVector(ByteText);
 
@@ -111,6 +145,18 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
     }
 
+    TEST_F(MemoryScannerInternalF, GivenModuleNameAndByteSequence_ScansCorrectly) {
+        auto* byteArr = staticByteArray;
+        std::vector<BYTE> byteSequence{0xda, 0xd9, 0x48, 0x53, 0x9b, 0xcd, 0x21, 0x00, 0x8d, 0x8f};
+
+        std::string mainModuleName(PROJECT_NAME".exe");
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(StringToWideString(mainModuleName), byteSequence);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
+    }
+
     TEST_F(MemoryScannerInternalF, GivenModuleNameAndStringPattern_ScansCorrectly) {
         auto* byteArr = staticByteArray;
         std::string pattern = "da d9 48 53 9b cd 21 00 8d 8f";
@@ -122,7 +168,24 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
     }
 
-    TEST_F(MemoryScannerInternalF, GivenSequenceOfModuleNamesAndStringPattern_ScansCorrectly) {
+    TEST_F(MemoryScannerInternalF, GivenSequenceOfModuleNamesAndByteSequence_ScansCorrectly) {
+        std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());
+
+        auto* byteArr = staticByteArray;
+        std::vector<BYTE> byteSequence{0xda, 0xd9, 0x48, 0x53, 0x9b, 0xcd, 0x21, 0x00, 0x8d, 0x8f};
+
+        std::vector<std::wstring> moduleNames;
+        moduleNames.reserve(modules.size());
+        for(auto currentModule : modules) {
+            moduleNames.emplace_back(currentModule.szModule);
+        }
+
+        auto scanResults = MemoryScanner.ScanVirtualMemory(moduleNames, byteSequence);
+
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
+    }
+    TEST_F(MemoryScannerInternalF, GivenSequenceOfModuleNamesAndBytePattern_ScansCorrectly) {
         std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());
 
         auto* byteArr = staticByteArray;
@@ -139,6 +202,7 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.size(), 1);
         ASSERT_EQ(scanResults.front(), (uintptr_t)byteArr);
     }
+
 
     TEST_F(MemoryScannerInternalF, ScansBySequenceOfModuleNames) {
         std::vector<MODULEENTRY32W> modules = HelperMethods::GetModules(GetCurrentProcessId());

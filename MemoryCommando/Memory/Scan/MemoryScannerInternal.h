@@ -17,8 +17,9 @@ namespace MemoryCommando::Memory {
         FRIEND_TEST(MemoryScannerInternalF, GivenStartAddressAndBytePattern_ScansCorrectly);
         FRIEND_TEST(MemoryScannerInternalF, GivenOnlyBytePattern_ScansCorrectly);
         FRIEND_TEST(MemoryScannerInternalF, GivenModuleNameAndBytePattern_ScansCorrectly);
-        FRIEND_TEST(MemoryScannerInternalF, GivenSequenceOfModuleNamesAndStringPattern_ScansCorrectly);
+        FRIEND_TEST(MemoryScannerInternalF, GivenSequenceOfModuleNamesAndBytePattern_ScansCorrectly);
     public:
+        using MemoryScannerAbstract::ScanVirtualMemory;
         MemoryScannerInternal(std::shared_ptr<MemoryManager> memoryManager);
 
         std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const std::string& pattern) override;
