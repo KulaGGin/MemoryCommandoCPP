@@ -1,9 +1,8 @@
 #include "MemoryScannerInternal.h"
 
 namespace MemoryCommando::Memory {
-    MemoryScannerInternal::MemoryScannerInternal(std::shared_ptr<MemoryManager> memoryManager)
-    : _memoryManager{std::move(memoryManager)} {
-
+    MemoryScannerInternal::MemoryScannerInternal(const std::shared_ptr<MemoryManager>& memoryManager) {
+        _memoryManager = memoryManager;
     }
 
     std::vector<uintptr_t> MemoryScannerInternal::ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const BytePattern& bytePattern) {
@@ -49,47 +48,5 @@ namespace MemoryCommando::Memory {
         }
 
         return scanResults;
-    }
-
-    std::vector<MEMORY_BASIC_INFORMATION> MemoryScannerInternal::GetReadableMemoryRegions(uintptr_t startAddress, uintptr_t endAddress) const {
-        std::vector<MEMORY_BASIC_INFORMATION> memoryRegions{};
-
-        uintptr_t queryAddress = startAddress;
-        MEMORY_BASIC_INFORMATION memoryRegion;
-
-        while(queryAddress < endAddress) {
-            try {
-                memoryRegion = _memoryManager->QueryVirtualMemory(queryAddress);
-            }
-            catch(const WinAPIException&) {
-                queryAddress += 0x1000;
-                continue;
-            }
-            if(IsMemoryRegionUsed(queryAddress) && IsMemoryRegionReadable(queryAddress))
-                memoryRegions.push_back(memoryRegion);
-
-            queryAddress = uintptr_t(memoryRegion.BaseAddress) + memoryRegion.RegionSize;
-        }
-
-        return memoryRegions;
-    }
-
-    bool MemoryScannerInternal::IsMemoryRegionReadable(uintptr_t address) const {
-        auto memoryInformation = _memoryManager->QueryVirtualMemory(address);
-
-        bool isMemoryNoAccess = memoryInformation.Protect & PAGE_NOACCESS;
-        bool isMemoryGuard = memoryInformation.Protect & PAGE_GUARD;
-
-        bool isMemoryRegionReadable = !isMemoryNoAccess && !isMemoryGuard;
-
-        return isMemoryRegionReadable;
-    }
-
-    bool MemoryScannerInternal::IsMemoryRegionUsed(uintptr_t address) const {
-        auto memoryInformation = _memoryManager->QueryVirtualMemory(address);
-
-        bool isMemoryRegionUsed = memoryInformation.State == MEM_COMMIT;
-
-        return isMemoryRegionUsed;
     }
 }

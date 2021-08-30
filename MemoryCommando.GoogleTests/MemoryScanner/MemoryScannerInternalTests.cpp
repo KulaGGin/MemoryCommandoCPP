@@ -1,7 +1,7 @@
 #include <utility>
 
-#include "Exceptions/WinAPIException.h"
 #include "gtest/gtest.h"
+#include "Exceptions/WinAPIException.h"
 #include "Memory/MemoryManager.h"
 #include "Memory/Internal/MemoryManagerInternal.h"
 #include "Memory/Scan/MemoryScannerAbstract.h"
@@ -26,7 +26,25 @@ namespace MemoryCommando::Memory {
         }
 
         void InitializeVector(std::vector<BYTE>& byteText) {
-            byteText = {0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00};
+            byteText.emplace_back(0x43);
+            byteText.emplace_back(0x5C);
+            byteText.emplace_back(0xCA);
+            byteText.emplace_back(0xF0);
+            byteText.emplace_back(0x18);
+            byteText.emplace_back(0x33);
+            byteText.emplace_back(0x17);
+            byteText.emplace_back(0xF0);
+            byteText.emplace_back(0x31);
+            byteText.emplace_back(0xBC);
+            byteText.emplace_back(0xC4);
+            byteText.emplace_back(0xFC);
+            byteText.emplace_back(0x00);
+        }
+
+        void InitializeByteVectorFromIntegerVector(std::vector<BYTE>& byteVector, std::vector<int>& integerVector) {
+            for(const auto& currentInteger : integerVector) {
+                byteVector.emplace_back(static_cast<BYTE>(currentInteger));
+            }
         }
 
         std::wstring StringToWideString(const std::string& str)
@@ -119,17 +137,18 @@ namespace MemoryCommando::Memory {
     }
 
     TEST_F(MemoryScannerInternalF, GivenStartAddressAndObject_ScansCorrectly) {
-        ByteText = {0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81};
+        InitializeByteVectorFromIntegerVector(ByteText, std::vector<int>{0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00});
+        std::vector<BYTE> byteArray{};
+        InitializeByteVectorFromIntegerVector(byteArray, std::vector<int>{0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4});
 
         uintptr_t scanStartAddress = (uintptr_t)&ByteText.front();
 
-        std::vector<BYTE> bytePattern{0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0};
-        UINT64& integerObject = *reinterpret_cast<UINT64*>(&bytePattern.front());
+        UINT64& integerObject = *reinterpret_cast<UINT64*>(&byteArray[0]);
 
         auto scanResults = MemoryScanner.ScanVirtualMemory(scanStartAddress, integerObject);
 
         ASSERT_EQ(scanResults.size(), 1);
-        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 3);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 2);
     }
 
     TEST_F(MemoryScannerInternalF, GivenOnlyBytePattern_ScansCorrectly) {
@@ -163,18 +182,18 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front());
     }
 
-    //TEST_F(MemoryScannerInternalF, DISABLED_GivenOnlyObject_ScansCorrectly) {
-    //    ByteText = {0x43, 0x5C, 0xCA, 0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x62, 0xA0, 0x35, 0x34, 0x81};
+    TEST_F(MemoryScannerInternalF, GivenOnlyObject_ScansCorrectly) {        
+        InitializeByteVectorFromIntegerVector(ByteText, std::vector<int>{0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00});
+        std::vector<BYTE> byteArray{};
+        InitializeByteVectorFromIntegerVector(byteArray, std::vector<int>{0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4});
 
-    //    UINT64 integerObject{};
-    //    std::vector<BYTE> bytePattern{0x18, 0x33, 0x17, 0xF0, 0x18, 0x33, 0x17, 0xF0};
-    //    std::memcpy(&integerObject, &bytePattern[0], bytePattern.size());
+        UINT64& integerObject = *reinterpret_cast<UINT64*>(&byteArray.front());
 
-    //    auto scanResults = MemoryScanner.ScanVirtualMemory(integerObject);
+        auto scanResults = MemoryScanner.ScanVirtualMemory(integerObject);
 
-    //    ASSERT_EQ(scanResults.size(), 1);
-    //    ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 3);
-    //}
+        ASSERT_EQ(scanResults.size(), 1);
+        ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front() + 2);
+    }
     TEST_F(MemoryScannerInternalF, GivenModuleNameAndBytePattern_ScansCorrectly) {
         auto* byteArr = staticByteArray;
 

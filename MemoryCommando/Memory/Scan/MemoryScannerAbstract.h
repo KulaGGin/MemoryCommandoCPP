@@ -4,10 +4,15 @@
 #include <vector>
 
 #include "HelperMethods.h"
+#include "Memory/MemoryManager.h"
 #include "Memory/Scan/BytePattern.h"
+#include "Memory/Scan/PatternScanner.h"
 
 namespace MemoryCommando::Memory {
     class MemoryScannerAbstract {
+        FRIEND_TEST(MemoryScannerInternalF, IsMemoryRegionUsed);
+        FRIEND_TEST(MemoryScannerInternalF, IsMemoryRegionReadable);
+        FRIEND_TEST(MemoryScannerInternalF, GetsReadableMemoryRegions);
     public:
         MemoryScannerAbstract();
         virtual ~MemoryScannerAbstract() = default;
@@ -41,6 +46,14 @@ namespace MemoryCommando::Memory {
         virtual std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const BytePattern& bytePattern) = 0;
         virtual std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const BytePattern& bytePattern) = 0;
 
+        std::vector<MEMORY_BASIC_INFORMATION> GetReadableMemoryRegions(uintptr_t startAddress, uintptr_t endAddress) const;
+        bool IsMemoryRegionReadable(uintptr_t address) const;
+        bool IsMemoryRegionUsed(uintptr_t address) const;
+
+        std::shared_ptr<MemoryManager> _memoryManager{};
+
+        PatternScanner _patternScanner{};
+
         uintptr_t _minimumApplicationAddress{};
         uintptr_t _maximumApplicationAddress{};
     };
@@ -50,41 +63,53 @@ namespace MemoryCommando::Memory {
         ByteSequence objectBytesSequence = HelperMethods::ConvertObjectToByteSequence(object);
         auto scanResults = ScanVirtualMemory(scanStartAddress, scanEndAddress, objectBytesSequence);
 
+        uintptr_t objectAddress = reinterpret_cast<uintptr_t>(&object);
+        for(size_t scanResultIndex = 0; scanResultIndex < scanResults.size();) {
+            auto& currentScanResult = scanResults[scanResultIndex];
+            if(objectAddress == currentScanResult) {
+                scanResults.erase(scanResults.begin() + scanResultIndex);
+                continue;
+            }
+
+            ++scanResultIndex;
+        }
+
         return scanResults;
     }
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(uintptr_t scanStartAddress, const Classname& object) {
-        ByteSequence objectByteSequence = HelperMethods::ConvertObjectToByteSequence(object);
-
-        std::vector<uintptr_t> scanResults = ScanVirtualMemory(scanStartAddress, objectByteSequence);
+        std::vector<uintptr_t> scanResults = ScanVirtualMemory(scanStartAddress, _maximumApplicationAddress, object);
 
         return scanResults;
     }
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const Classname& object) {
-        ByteSequence objectByteSequence = HelperMethods::ConvertObjectToByteSequence(object);
-
-        std::vector<uintptr_t> scanResults = ScanVirtualMemory(_minimumApplicationAddress, objectByteSequence);
+        std::vector<uintptr_t> scanResults = ScanVirtualMemory(_minimumApplicationAddress, _maximumApplicationAddress, object);
 
         return scanResults;
     }
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::wstring& moduleName, Classname object) {
-        ByteSequence objectByteSequence = HelperMethods::ConvertObjectToByteSequence(object);
+        MODULEENTRY32W moduleInst = _memoryManager->GetModule(moduleName);
+        const uintptr_t scanStartAddress = uintptr_t(moduleInst.modBaseAddr);
+        const uintptr_t scanEndAddress = uintptr_t(moduleInst.modBaseAddr + moduleInst.modBaseSize);
 
-        std::vector<uintptr_t> scanResults = ScanVirtualMemory(moduleName, objectByteSequence);
+        std::vector<uintptr_t> scanResults = ScanVirtualMemory(scanStartAddress, scanEndAddress, object);
 
         return scanResults;
     }
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, Classname object) {
-        ByteSequence objectByteSequence = HelperMethods::ConvertObjectToByteSequence(object);
+        std::vector<uintptr_t> scanResults;
 
-        std::vector<uintptr_t> scanResults = ScanVirtualMemory(moduleNames, objectByteSequence);
+        for(const auto& currentModule : moduleNames) {
+            std::vector<uintptr_t> moduleResults = ScanVirtualMemory(currentModule, object);
+            scanResults.insert(scanResults.end(), moduleResults.begin(), moduleResults.end());
+        }
 
         return scanResults;
     }
