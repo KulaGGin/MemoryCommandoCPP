@@ -17,6 +17,12 @@ namespace MemoryCommando::Memory {
         MemoryScannerAbstract();
         virtual ~MemoryScannerAbstract() = default;
 
+        virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const BytePattern& bytePattern) = 0;
+        virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, const BytePattern& bytePattern);
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const BytePattern& bytePattern);
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const BytePattern& bytePattern);
+        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const BytePattern& bytePattern);
+
         virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const std::string& stringPattern);
         virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, const std::string& stringPattern);
         virtual std::vector<uintptr_t> ScanVirtualMemory(const std::string& stringPattern);
@@ -39,17 +45,11 @@ namespace MemoryCommando::Memory {
         std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, Classname object);
         template<typename Classname>
         std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, Classname object);
-    protected:
-        virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const BytePattern& bytePattern) = 0;
-        virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t scanStartAddress, const BytePattern& bytePattern) = 0;
-        virtual std::vector<uintptr_t> ScanVirtualMemory(const BytePattern& bytePattern) = 0;
-        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const BytePattern& bytePattern) = 0;
-        virtual std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const BytePattern& bytePattern) = 0;
 
         std::vector<MEMORY_BASIC_INFORMATION> GetReadableMemoryRegions(uintptr_t startAddress, uintptr_t endAddress) const;
         bool IsMemoryRegionReadable(uintptr_t address) const;
         bool IsMemoryRegionUsed(uintptr_t address) const;
-
+    protected:
         std::shared_ptr<MemoryManager> _memoryManager{};
 
         PatternScanner _patternScanner{};

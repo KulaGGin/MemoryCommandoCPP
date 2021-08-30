@@ -89,6 +89,7 @@
     <ClCompile Include="Memory\Scan\MemoryScannerAbstract.cpp" />
     <ClCompile Include="Memory\Scan\MemoryScannerNew.cpp" />
     <ClCompile Include="Memory\Scan\MemoryScannerInternal.cpp" />
+    <ClCompile Include="Memory\Scan\MemoryScannerExternal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryCommando.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Memory\Scan\MemoryScannerAbstract.h" />
     <ClInclude Include="Memory\Scan\MemoryScannerInternal.h" />
     <ClInclude Include="Memory\Scan\ScanTypeDefinitions.h" />
+    <ClInclude Include="Memory\Scan\MemoryScannerExternal.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Memory">
