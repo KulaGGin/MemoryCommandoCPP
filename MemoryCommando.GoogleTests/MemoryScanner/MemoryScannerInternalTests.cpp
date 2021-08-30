@@ -54,6 +54,13 @@ namespace MemoryCommando::Memory {
             MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstrTo[0], size_needed);
             return wstrTo;
         }
+
+        template<class Classname>
+        void NullOutVector(std::vector<Classname>& vector) {
+            for(auto& currentMember : vector) {
+                currentMember = 0;
+            }
+        }
     };
 
     TEST_F(MemoryScannerInternalF, GivenStartAndEndAddressAndBytePattern_ScansCorrectly) {
@@ -137,9 +144,11 @@ namespace MemoryCommando::Memory {
     }
 
     TEST_F(MemoryScannerInternalF, GivenStartAddressAndObject_ScansCorrectly) {
-        InitializeByteVectorFromIntegerVector(ByteText, std::vector<int>{0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00});
+        std::vector<int> integerVector = {0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00};
+        InitializeByteVectorFromIntegerVector(ByteText, integerVector);
         std::vector<BYTE> byteArray{};
-        InitializeByteVectorFromIntegerVector(byteArray, std::vector<int>{0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4});
+        integerVector = {0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4};
+        InitializeByteVectorFromIntegerVector(byteArray, integerVector);
 
         uintptr_t scanStartAddress = (uintptr_t)&ByteText.front();
 
@@ -182,10 +191,13 @@ namespace MemoryCommando::Memory {
         ASSERT_EQ(scanResults.front(), (uintptr_t)&ByteText.front());
     }
 
-    TEST_F(MemoryScannerInternalF, GivenOnlyObject_ScansCorrectly) {        
-        InitializeByteVectorFromIntegerVector(ByteText, std::vector<int>{0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00});
+    TEST_F(MemoryScannerInternalF, GivenOnlyObject_ScansCorrectly) {
+        std::vector<int> integerVector{0x43, 0x5C, 0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4, 0xFC, 0x00};
+        InitializeByteVectorFromIntegerVector(ByteText, integerVector);
         std::vector<BYTE> byteArray{};
-        InitializeByteVectorFromIntegerVector(byteArray, std::vector<int>{0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4});
+
+        integerVector = {0xCA, 0xF0, 0x18, 0x33, 0xF0, 0x31, 0xBC, 0xC4};
+        InitializeByteVectorFromIntegerVector(byteArray, integerVector);
 
         UINT64& integerObject = *reinterpret_cast<UINT64*>(&byteArray.front());
 

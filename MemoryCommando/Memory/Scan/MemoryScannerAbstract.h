@@ -64,15 +64,8 @@ namespace MemoryCommando::Memory {
         auto scanResults = ScanVirtualMemory(scanStartAddress, scanEndAddress, objectBytesSequence);
 
         uintptr_t objectAddress = reinterpret_cast<uintptr_t>(&object);
-        for(size_t scanResultIndex = 0; scanResultIndex < scanResults.size();) {
-            auto& currentScanResult = scanResults[scanResultIndex];
-            if(objectAddress == currentScanResult) {
-                scanResults.erase(scanResults.begin() + scanResultIndex);
-                continue;
-            }
 
-            ++scanResultIndex;
-        }
+        erase_if(scanResults, [objectAddress](uintptr_t currentScanResult) { return currentScanResult == objectAddress; });
 
         return scanResults;
     }
