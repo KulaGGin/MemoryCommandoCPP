@@ -19,23 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BadWritePointerException.cpp" />
+    <ClCompile Include="Exceptions\BadWritePointerException.cpp" />
     <ClCompile Include="Exceptions\BadReadPointerException.cpp" />
-    <ClCompile Include="Memory\CodeInjector.cpp" />
     <ClCompile Include="Exceptions\BaseException.cpp" />
     <ClCompile Include="HelperMethods.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\Internal\MemoryManagerInternal.cpp" />
     <ClCompile Include="Memory\Scan\MemoryScannerExternal.cpp" />
     <ClCompile Include="Memory\Scan\MemoryScannerInternal.cpp" />
-    <ClCompile Include="Memory\Scan\MemoryScannerNew.cpp" />
-    <ClCompile Include="Memory\Scan\PatternScannerOld\BytePatternScanner.cpp" />
     <ClCompile Include="Exceptions\CreateToolhelp32SnapshotException.cpp" />
     <ClCompile Include="Exceptions\GetProcessIdException.cpp" />
     <ClCompile Include="Exceptions\GetProcessImageFileNameException.cpp" />
     <ClCompile Include="MemoryCommando.cpp" />
     <ClCompile Include="Memory\External\MemoryManagerExternal.cpp" />
-    <ClCompile Include="Memory\Scan\PatternScannerOld\MemoryScanner.cpp" />
     <ClCompile Include="Exceptions\Module32Exception.cpp" />
     <ClCompile Include="Exceptions\VirtualAllocException.cpp" />
     <ClCompile Include="Exceptions\VirtualFreeException.cpp" />
@@ -50,7 +46,7 @@
     <ClCompile Include="Exceptions\VirtualProtectExException.cpp" />
     <ClCompile Include="Exceptions\WinAPIException.cpp" />
     <ClCompile Include="Exceptions\WriteProcessMemoryException.cpp" />
-    <ClCompile Include="Memory\Scan\MemoryScannerAbstract.cpp" />
+    <ClCompile Include="Memory\Scan\MemoryScanner.cpp" />
     <ClCompile Include="Memory\Scan\BadByteHeuristic.cpp" />
     <ClCompile Include="Memory\Scan\BytePattern.cpp" />
     <ClCompile Include="Memory\Scan\PatternConverter.cpp" />
@@ -58,30 +54,26 @@
     <ClCompile Include="Memory\Scan\ScanHelperMethods.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BadWritePointerException.h" />
+    <ClInclude Include="Exceptions\BadWritePointerException.h" />
     <ClInclude Include="Exceptions\BadReadPointerException.h" />
-    <ClInclude Include="Memory\CodeInjector.h" />
     <ClInclude Include="Exceptions\BaseException.h" />
     <ClInclude Include="HelperMethods.h" />
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\Internal\MemoryManagerInternal.h" />
     <ClInclude Include="Memory\Scan\MemoryScannerExternal.h" />
     <ClInclude Include="Memory\Scan\MemoryScannerInternal.h" />
-    <ClInclude Include="Memory\Scan\PatternScannerOld\BytePatternScanner.h" />
     <ClInclude Include="Exceptions\CreateToolhelp32SnapshotException.h" />
     <ClInclude Include="Exceptions\GetProcessIdException.h" />
     <ClInclude Include="Exceptions\GetProcessImageFileNameException.h" />
     <ClInclude Include="MemoryCommando.h" />
     <ClInclude Include="Memory\External\MemoryManagerExternal.h" />
-    <ClInclude Include="Memory\Scan\MemoryScannerAbstract.h" />
+    <ClInclude Include="Memory\Scan\MemoryScanner.h" />
     <ClInclude Include="Memory\Scan\BadByteHeuristic.h" />
     <ClInclude Include="Memory\Scan\BytePattern.h" />
-    <ClInclude Include="Memory\Scan\MemoryScannerNew.h" />
     <ClInclude Include="Memory\Scan\PatternConverter.h" />
     <ClInclude Include="Memory\Scan\PatternScanner.h" />
     <ClInclude Include="Memory\Scan\ScanTypeDefinitions.h" />
     <ClInclude Include="Native\Enumerations\MemoryProtection.h" />
-    <ClInclude Include="Memory\Scan\PatternScannerOld\MemoryScanner.h" />
     <ClInclude Include="Exceptions\Module32Exception.h" />
     <ClInclude Include="Exceptions\VirtualAllocException.h" />
     <ClInclude Include="Exceptions\VirtualFreeException.h" />
@@ -251,13 +243,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(SolutionDir)\packages\Microsoft.Windows.ImplementationLibrary.1.0.201120.3\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('$(SolutionDir)\packages\Microsoft.Windows.ImplementationLibrary.1.0.201120.3\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />
-    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
+    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\packages\Microsoft.Windows.ImplementationLibrary.1.0.201120.3\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\Microsoft.Windows.ImplementationLibrary.1.0.201120.3\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
   </Target>
 </Project>

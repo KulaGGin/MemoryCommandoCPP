@@ -6,10 +6,8 @@
 
 #include <TlHelp32.h>
 
-
-#include "Memory/CodeInjector.h"
 #include "Memory/MemoryManager.h"
-#include "Memory/Scan/PatternScannerOld/MemoryScanner.h"
+#include "Memory/Scan/MemoryScanner.h"
 
 
 namespace MemoryCommando {
@@ -90,15 +88,9 @@ namespace MemoryCommando {
         std::vector<uintptr_t> ScanVirtualMemory(const std::wstring& moduleName, const Classname& object) const;
         template<typename Classname>
         std::vector<uintptr_t> ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const Classname& object) const;
-
-        uintptr_t InjectCode(uintptr_t injectionAddress, size_t instructionLength, const std::vector<BYTE>& machineCode) const;
-        std::vector<BYTE> GetJumpMachineCode(uintptr_t originalAddress, uintptr_t jumpAddress) const;
-        void AppendJumpMachineCode(std::vector<BYTE>& machineCode, uintptr_t originalAddress, uintptr_t jumpAddress) const;
-
     private:
-        const std::shared_ptr<const MemoryManager> _memoryManager;
-        const MemoryScanner _memoryScanner;
-        const CodeInjector _codeInjector;
+        std::shared_ptr<MemoryManager> _memoryManager;
+        std::shared_ptr<MemoryScanner> _memoryScannerAbstract;
     };
 
     template <typename TStructure>
@@ -153,26 +145,26 @@ namespace MemoryCommando {
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const uintptr_t scanStartAddress, const uintptr_t scanEndAddress, const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(scanStartAddress, scanEndAddress, object);
+        return _memoryScannerAbstract->ScanVirtualMemory(scanStartAddress, scanEndAddress, object);
     }
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const uintptr_t scanStartAddress, const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(scanStartAddress, object);
+        return _memoryScannerAbstract->ScanVirtualMemory(scanStartAddress, object);
     }
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(object);
+        return _memoryScannerAbstract->ScanVirtualMemory(object);
     }
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const std::wstring& moduleName, const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(moduleName, object);
+        return _memoryScannerAbstract->ScanVirtualMemory(moduleName, object);
     }
 
     template <typename Classname>
     std::vector<uintptr_t> MemoryCommando::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, const Classname& object) const {
-        return _memoryScanner.ScanVirtualMemory(moduleNames, object);
+        return _memoryScannerAbstract->ScanVirtualMemory(moduleNames, object);
     }
 }

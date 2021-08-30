@@ -7,16 +7,16 @@
 #include "Memory/MemoryManager.h"
 #include "Memory/Scan/BytePattern.h"
 #include "Memory/Scan/PatternScanner.h"
+#include <gtest/gtest_prod.h>
 
 namespace MemoryCommando::Memory {
-    class MemoryScannerAbstract {
+    class MemoryScanner {
         FRIEND_TEST(MemoryScannerInternalF, IsMemoryRegionUsed);
         FRIEND_TEST(MemoryScannerInternalF, IsMemoryRegionReadable);
         FRIEND_TEST(MemoryScannerInternalF, GetsReadableMemoryRegions);
     public:
-        MemoryScannerAbstract();
-        virtual ~MemoryScannerAbstract() = default;
-
+        MemoryScanner();
+        virtual ~MemoryScanner() = default;
         virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, uintptr_t desiredEndAddress, const BytePattern& bytePattern) = 0;
         virtual std::vector<uintptr_t> ScanVirtualMemory(uintptr_t desiredStartAddress, const BytePattern& bytePattern);
         virtual std::vector<uintptr_t> ScanVirtualMemory(const BytePattern& bytePattern);
@@ -59,7 +59,7 @@ namespace MemoryCommando::Memory {
     };
 
     template <typename Classname>
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const Classname& object) {
+    std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(uintptr_t scanStartAddress, uintptr_t scanEndAddress, const Classname& object) {
         ByteSequence objectBytesSequence = HelperMethods::ConvertObjectToByteSequence(object);
         auto scanResults = ScanVirtualMemory(scanStartAddress, scanEndAddress, objectBytesSequence);
 
@@ -71,21 +71,21 @@ namespace MemoryCommando::Memory {
     }
 
     template <typename Classname>
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(uintptr_t scanStartAddress, const Classname& object) {
+    std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(uintptr_t scanStartAddress, const Classname& object) {
         std::vector<uintptr_t> scanResults = ScanVirtualMemory(scanStartAddress, _maximumApplicationAddress, object);
 
         return scanResults;
     }
 
     template <typename Classname>
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const Classname& object) {
+    std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(const Classname& object) {
         std::vector<uintptr_t> scanResults = ScanVirtualMemory(_minimumApplicationAddress, _maximumApplicationAddress, object);
 
         return scanResults;
     }
 
     template <typename Classname>
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::wstring& moduleName, Classname object) {
+    std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(const std::wstring& moduleName, Classname object) {
         MODULEENTRY32W moduleInst = _memoryManager->GetModule(moduleName);
         const uintptr_t scanStartAddress = uintptr_t(moduleInst.modBaseAddr);
         const uintptr_t scanEndAddress = uintptr_t(moduleInst.modBaseAddr + moduleInst.modBaseSize);
@@ -96,7 +96,7 @@ namespace MemoryCommando::Memory {
     }
 
     template <typename Classname>
-    std::vector<uintptr_t> MemoryScannerAbstract::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, Classname object) {
+    std::vector<uintptr_t> MemoryScanner::ScanVirtualMemory(const std::vector<std::wstring>& moduleNames, Classname object) {
         std::vector<uintptr_t> scanResults;
 
         for(const auto& currentModule : moduleNames) {

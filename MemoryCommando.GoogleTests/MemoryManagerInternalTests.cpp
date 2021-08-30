@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "BadWritePointerException.h"
+#include "Exceptions/BadWritePointerException.h"
 #include "Exceptions/BadReadPointerException.h"
 #include "Exceptions/VirtualAllocException.h"
 #include "Exceptions/VirtualFreeException.h"
@@ -46,7 +46,7 @@ namespace MemoryCommando::GoogleTests {
             [[maybe_unused]] uintptr_t allocatedAddress = MemoryManagerInternal.AllocateVirtualMemory(wantedAllocationAddress, wantedAllocationSize, wantedProtectionType, wantedAllocationType);
             FAIL(); // Test will fail if the line above executes successfully and doesn't throw an exception.
         }
-        catch(Exceptions::VirtualAllocException virtualAllocException) {
+        catch(Exceptions::VirtualAllocException& virtualAllocException) {
             EXPECT_EQ(virtualAllocException.BaseAddress, wantedAllocationAddress);
             EXPECT_EQ(virtualAllocException.AllocationSize, wantedAllocationSize);
             EXPECT_EQ(virtualAllocException.AllocationType, wantedAllocationType);
@@ -61,7 +61,7 @@ namespace MemoryCommando::GoogleTests {
             MemoryManagerInternal.FreeVirtualMemory(allocationAddress, MEM_RELEASE, 1);
             FAIL();
         }
-        catch(std::invalid_argument invalidArgument) {
+        catch(std::invalid_argument& invalidArgument) {
             SUCCEED();
         }
     }
@@ -75,7 +75,7 @@ namespace MemoryCommando::GoogleTests {
             MemoryManagerInternal.FreeVirtualMemory(wantedFreeAddress, wantedMemFreeType, wantedMemFreeSize);
             FAIL();
         }
-        catch(Exceptions::VirtualFreeException virtualFreeException) {
+        catch(Exceptions::VirtualFreeException& virtualFreeException) {
             EXPECT_EQ(virtualFreeException.Address, wantedFreeAddress);
             EXPECT_EQ(virtualFreeException.FreeType, wantedMemFreeType);
             EXPECT_EQ(virtualFreeException.Size, wantedMemFreeSize);
@@ -106,7 +106,7 @@ namespace MemoryCommando::GoogleTests {
             MemoryManagerInternal.ProtectVirtualMemory(wantedProtectionAddress, wantedSize, protectionType);
             FAIL();
         }
-        catch(Exceptions::VirtualProtectException virtualProtectException) {
+        catch(Exceptions::VirtualProtectException& virtualProtectException) {
             EXPECT_EQ(virtualProtectException.Address, wantedProtectionAddress);
             EXPECT_EQ(virtualProtectException.ProtectionSize, wantedSize);
             EXPECT_EQ(virtualProtectException.ProtectionType, protectionType);
@@ -141,7 +141,7 @@ namespace MemoryCommando::GoogleTests {
                 MemoryManagerInternal.QueryVirtualMemory(wantedQueryAddress);
             FAIL();
         }
-        catch(Exceptions::VirtualQueryException virtualQueryException) {
+        catch(Exceptions::VirtualQueryException& virtualQueryException) {
             EXPECT_EQ(virtualQueryException.Address, wantedQueryAddress);
         }
     }
@@ -183,13 +183,13 @@ namespace MemoryCommando::GoogleTests {
         try {
             std::vector<BYTE> readBytes = MemoryManagerInternal.ReadVirtualMemory(allocationAddress, 0x4);
         }
-        catch(Exceptions::BadReadPointerException badReadPointerException) {
+        catch(Exceptions::BadReadPointerException& badReadPointerException) {
             EXPECT_EQ(badReadPointerException.Address, allocationAddress);
         }
         try {
             std::vector<BYTE> readBytes = MemoryManagerInternal.ReadVirtualMemory(-1, 0x4);
         }
-        catch(Exceptions::BadReadPointerException badReadPointerException) {
+        catch(Exceptions::BadReadPointerException& badReadPointerException) {
             EXPECT_EQ(badReadPointerException.Address, -1);
         }
     }
@@ -219,14 +219,14 @@ namespace MemoryCommando::GoogleTests {
             MemoryManagerInternal.WriteVirtualMemory(allocationAddress, integerBytesSequence);
             FAIL();
         }
-        catch(Exceptions::BadWritePointerException badWritePointerException) {
+        catch(Exceptions::BadWritePointerException& badWritePointerException) {
             EXPECT_EQ(badWritePointerException.Address, allocationAddress);
         }
         try {
             MemoryManagerInternal.WriteVirtualMemory(-1, integerBytesSequence);
             FAIL();
         }
-        catch(Exceptions::BadWritePointerException badWritePointerException) {
+        catch(Exceptions::BadWritePointerException& badWritePointerException) {
             EXPECT_EQ(badWritePointerException.Address, -1);
         }
     }

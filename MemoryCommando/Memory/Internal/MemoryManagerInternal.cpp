@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 
-#include "BadWritePointerException.h"
+#include "Exceptions/BadWritePointerException.h"
 #include "../../Exceptions/CreateToolhelp32SnapshotException.h"
 #include "../../Exceptions/Module32Exception.h"
 #include "../../Exceptions/VirtualAllocException.h"

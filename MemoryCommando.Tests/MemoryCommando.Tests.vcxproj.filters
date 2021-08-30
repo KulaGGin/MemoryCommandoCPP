@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Memory\Scan\BytePatternScannerTests.cpp">
-      <Filter>Memory\Scan</Filter>
-    </ClCompile>
-    <ClCompile Include="Memory\Scan\MemoryScannerTests.cpp">
-      <Filter>Memory\Scan</Filter>
-    </ClCompile>
     <ClCompile Include="Memory\Scan\ScanHelperMethodsTests.cpp">
       <Filter>Memory\Scan</Filter>
     </ClCompile>
@@ -27,12 +21,6 @@
     <ClCompile Include="MemoryCommandoTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Memory\Scan\BytePatternScannerTests.h">
-      <Filter>Memory\Scan</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\Scan\MemoryScannerTests.h">
-      <Filter>Memory\Scan</Filter>
-    </ClInclude>
     <ClInclude Include="Memory\Scan\ScanHelperMethodsTests.h">
       <Filter>Memory\Scan</Filter>
     </ClInclude>

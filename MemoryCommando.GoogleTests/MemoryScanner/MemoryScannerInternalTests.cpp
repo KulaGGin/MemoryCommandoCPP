@@ -4,7 +4,7 @@
 #include "Exceptions/WinAPIException.h"
 #include "Memory/MemoryManager.h"
 #include "Memory/Internal/MemoryManagerInternal.h"
-#include "Memory/Scan/MemoryScannerAbstract.h"
+#include "Memory/Scan/MemoryScanner.h"
 #include "Memory/Scan/PatternScanner.h"
 #include "Memory/Scan/MemoryScannerInternal.h"
 
@@ -15,7 +15,7 @@ namespace MemoryCommando::Memory {
 
     class MemoryScannerInternalF : public Test {
     public:
-        std::shared_ptr<MemoryManager> MemoryManager{std::make_shared<Internal::MemoryManagerInternal>()};
+        std::shared_ptr<MemoryManagerInternal> MemoryManager{std::make_shared<MemoryManagerInternal>()};
         MemoryScannerInternal MemoryScanner{MemoryManager};
         std::vector<BYTE> ByteText{};
     protected:

@@ -1,7 +1,7 @@
 #include "MemoryScannerInternal.h"
 
 namespace MemoryCommando::Memory {
-    MemoryScannerInternal::MemoryScannerInternal(const std::shared_ptr<MemoryManager>& memoryManager) {
+    MemoryScannerInternal::MemoryScannerInternal(const std::shared_ptr<MemoryManagerInternal>& memoryManager) {
         _memoryManager = memoryManager;
     }
 

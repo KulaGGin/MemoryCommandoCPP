@@ -1,12 +1,12 @@
 #pragma once
 #include "Memory/MemoryManager.h"
 #include "Memory/Internal/MemoryManagerInternal.h"
-#include "Memory/Scan/MemoryScannerAbstract.h"
+#include "Memory/Scan/MemoryScanner.h"
 #include "Memory/Scan/MemoryScannerInternal.h"
 
 namespace MemoryCommando::Memory {
     using namespace Internal;
-    class MemoryScannerExternal : public MemoryScannerAbstract {
+    class MemoryScannerExternal : public MemoryScanner {
     public:
         MemoryScannerExternal() = default;
         MemoryScannerExternal(std::shared_ptr<MemoryManager> memoryManager);
